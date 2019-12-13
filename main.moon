@@ -11,7 +11,9 @@ WINDOW_DEFAULT_SIZE = {
 }
 
 love.load = ->
-    love.graphics.setDefaultFilter("nearest", "nearest", 1)
+		print("Hello World!")
+
+	  love.graphics.setDefaultFilter("nearest", "nearest", 1)
 
     push_opts = {
         fullscreen:false,
