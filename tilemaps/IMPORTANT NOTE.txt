@@ -1,0 +1,6 @@
+
+NOTE:
+
+The 'tilemaps' folder is a dev folder to be used with 'Tiled' for creating areas of the game, saving the editable '.tmx' and '.tsx' files and exporting levels as '.lua' files.
+
+Finished levels / areas / rooms are to be put in the 'rooms' folder to be loaded and used by the game.

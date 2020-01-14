@@ -1,38 +1,40 @@
-push = require "lib/push"
 
-CANVAS_SIZE = {
-    width: 240,
-    height: 160
-}
+export Input = require "lib/Input"
+export Push  = require "lib/push"
+export STI   = require "lib/sti"
 
-WINDOW_DEFAULT_SIZE = {
-    width: 800,
-    height: 600
-}
+require "constants"
+require "utils"
+require "graphics"
+require "input"
+require "game"
+
+requireFolder("states")
+requireFolder("objects")
+requireFolder("rooms")
 
 love.load = ->
-		print("Hello World!")
+		setupGraphics!
+		setupWindow!
+		
+		-- Exporting variables makes them global so they can be accessed from anywhere else
+		export input = setupInput!
+		export game = Game!
 
-	  love.graphics.setDefaultFilter("nearest", "nearest", 1)
 
-    push_opts = {
-        fullscreen:false,
-        resizable:true,
-        pixelperfect:true,
-        canvas:true
-    }
-    push\setupScreen(CANVAS_SIZE.width, CANVAS_SIZE.height, WINDOW_DEFAULT_SIZE.width, WINDOW_DEFAULT_SIZE.height, push_opts)
-
-    export image = love.graphics.newImage("sprites/example.png")
-    
 love.update = ->
+	export dt = love.timer.getDelta()
+	
+	game\update!
+
 
 love.resize = (w, h) ->
-    push\resize(w, h)
+		Push\resize(w, h)
+
 
 love.draw = ->
-    export image
-
-    push\start!
-    love.graphics.draw(image, 10, 10)
-    push\finish!
+		Push\start!
+		
+		game\draw!
+		
+		Push\finish!
