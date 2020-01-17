@@ -12,13 +12,21 @@ do
         }
       end
       lg.setColor(WHITE)
-      return self.map:draw(-pos.x, -pos.y)
+      self.map:draw(-pos.x, -pos.y)
+      if SHOW_COLLIDERS then
+        lg.setColor(RED)
+        return self.map:bump_draw(self.world, -pos.x, -pos.y)
+      end
     end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
     __init = function(self, room_path)
-      self.map = STI("rooms/" .. tostring(room_path) .. ".lua")
+      self.world = Bump.newWorld()
+      self.map = STI("rooms/" .. tostring(room_path) .. ".lua", {
+        "bump"
+      })
+      return self.map:bump_init(self.world)
     end,
     __base = _base_0,
     __name = "Room"

@@ -1,6 +1,11 @@
 do
   local _class_0
   local _base_0 = {
+    addObject = function(self, obj)
+      if obj then
+        return table.insert(self.objects, obj)
+      end
+    end,
     updateObjects = function(self)
       for i = 1, #self.objects do
         local o = self.objects[i]

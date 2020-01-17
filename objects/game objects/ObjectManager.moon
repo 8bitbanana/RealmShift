@@ -3,6 +3,10 @@ export class ObjectManager
 	new: =>
 		@objects = {}
 	
+	addObject: (obj) =>
+		if obj then
+			table.insert(@objects, obj)
+	
 	updateObjects: =>
 		for i=1, #@objects do
 			o = @objects[i]

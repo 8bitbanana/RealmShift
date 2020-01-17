@@ -1,8 +1,9 @@
 do
   local _class_0
   local _base_0 = {
-    enterState = function(self) end,
-    exitState = function(self) end,
+    changeState = function(self, new_state)
+      self.parent.state = new_state(self.parent)
+    end,
     update = function(self) end,
     draw = function(self) end
   }

@@ -4,15 +4,19 @@ function setupRandom()
 	math.random();math.random();math.random();
 end
 
+function dirPressed()
+	return input:down("left") or input:down("right") or input:down("up") or input:down("down")
+end
+
 -- function setupGraphics()
 	-- lg.setDefaultFilter("nearest", "nearest")
 	-- lg.setLineStyle("rough")
 	-- lm.setVisible(false)
 -- end
 
-function cheat()
+-- function cheat()
 	
-end
+-- end
 
 -- function setupInput()
 	-- local input = Input()

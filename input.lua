@@ -15,6 +15,8 @@ function setupInput()
 	input:bind("down", "down")
 	
 	-- MISC. KEYBOARD
+	input:bind("1", function() SHOW_COLLIDERS = not SHOW_COLLIDERS end)
+	
 	input:bind("r", function() le.quit("restart") end)
 	input:bind("escape", le.quit)
 	input:bind("f",

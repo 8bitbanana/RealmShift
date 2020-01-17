@@ -1,33 +1,31 @@
-require("states/state")
 do
   local _class_0
   local _parent_0 = State
   local _base_0 = {
+    resetVel = function(self)
+      self.parent.vel.x = 0
+      self.parent.vel.y = 0
+    end,
     update = function(self)
-      self.camera:move()
-      self.camera:limitPos(self.current_room)
-      self.objects:updateObjects()
-      return self.objects:checkDestroyed()
+      if dirPressed() then
+        return self:changeState(PlayerMoveState)
+      end
     end,
     draw = function(self)
-      self.current_room:draw(self.camera.pos)
-      return self.objects:drawObjects()
+      if self.parent.sprite then
+        return self.parent.sprite:draw(self.parent.pos.x, self.parent.pos.y)
+      end
     end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self, parent, room_path)
-      if room_path == nil then
-        room_path = "towns/test_town"
-      end
+    __init = function(self, parent)
       self.parent = parent
-      self.current_room = Room(room_path)
-      self.objects = ObjectManager()
-      self.camera = Camera()
+      return self:resetVel()
     end,
     __base = _base_0,
-    __name = "GameExploreState",
+    __name = "PlayerIdleState",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -51,5 +49,5 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  GameExploreState = _class_0
+  PlayerIdleState = _class_0
 end

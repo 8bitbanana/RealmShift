@@ -36,7 +36,254 @@ return {
       properties = {},
       terrains = {},
       tilecount = 70,
-      tiles = {}
+      tiles = {
+        {
+          id = 4,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 5,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 9,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 10,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 11,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 12,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 13,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 14,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 18,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 19,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 21,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 22,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 23,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 24,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 25,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 26,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 27,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 28,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 32,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 33,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 35,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 36,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 37,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 38,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 39,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 40,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 41,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 42,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 43,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 44,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 45,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 46,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 47,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 51,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 52,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 53,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 54,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 55,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 62,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 63,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 64,
+          properties = {
+            ["collidable"] = true
+          }
+        }
+      }
     }
   },
   layers = {
