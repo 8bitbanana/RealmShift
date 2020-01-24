@@ -2,16 +2,20 @@ do
   local _class_0
   local _base_0 = {
     update = function(self)
-      return self.state:update()
+      self.state:update()
+      return self.dialogbox:update(0)
     end,
     draw = function(self)
-      return self.state:draw()
+      self.state:draw()
+      return self.dialogbox:draw()
     end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
     __init = function(self)
       self.state = GameExploreState(self)
+      self.dialogbox = DialogBox("This is a test")
+      return self.dialogbox:begin()
     end,
     __base = _base_0,
     __name = "Game"

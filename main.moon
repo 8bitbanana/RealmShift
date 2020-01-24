@@ -12,6 +12,7 @@ require "font"
 require "image"
 require "input"
 require "game"
+require "dialog"
 
 requireFolder("states")
 requireFolder("objects")
