@@ -3,11 +3,20 @@ do
   local _base_0 = {
     update = function(self)
       self.state:update()
-      return self.dialogbox:update(0)
+      self.dialogbox:update(0)
+      if input:pressed("dialogdebug") then
+        if self.dialogbox.done then
+          return self.dialogbox:reset()
+        else
+          return self.dialogbox:begin()
+        end
+      end
     end,
     draw = function(self)
       self.state:draw()
-      return self.dialogbox:draw()
+      if self.dialogbox.started then
+        return self.dialogbox:draw()
+      end
     end
   }
   _base_0.__index = _base_0
@@ -15,7 +24,6 @@ do
     __init = function(self)
       self.state = GameExploreState(self)
       self.dialogbox = DialogBox("This is a test of the dialog box{pause,30}\nIt seems to work fairly well so far,\nalthough I did have to edit {colour,0,0,1,1,8}Push.lua.{pause,30}\n3{pause,30}\n4{pause,30}\n5{pause,30}\n6{pause,50}\n{wave,4}Wow!")
-      return self.dialogbox:begin()
     end,
     __base = _base_0,
     __name = "Game"

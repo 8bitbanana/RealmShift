@@ -20,15 +20,13 @@ export setupWindow = ->
 		{
 			{
 				name: "main",
-				stencil: true
 			},
-			{
+			{ -- Push has been modified to support x,y,w,h for canvases
 				name: "dialogbox",
 				width: 234,
 				height: 50,
 				x: 3,
 				y: 107
-				stencil: true
 			}
 		}
 	)

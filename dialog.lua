@@ -40,6 +40,7 @@ do
     reset = function(self)
       self.started = false
       self.done = false
+      self.visible = false
       self.chars = string.totable(self.text)
       self.currentState = { }
       self.currentIndex = 0

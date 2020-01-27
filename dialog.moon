@@ -27,6 +27,7 @@ export class DialogBox
     reset: () =>
         @started = false
         @done = false
+        @visible = false
         @chars = string.totable(@text)
         @currentState = {}
         @currentIndex = 0
