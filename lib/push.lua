@@ -84,8 +84,10 @@ function push:addCanvas(params)
     name = params.name,
     private = params.private,
     shader = params.shader,
-    canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT),
-    stencil = params.stencil or self._stencil
+    canvas = love.graphics.newCanvas(params.width or self._WWIDTH, params.height or self._WHEIGHT),
+    stencil = params.stencil or self._stencil,
+    x = params.x,
+    y = params.y
   })
 end
 
@@ -147,11 +149,13 @@ function push:start()
   end
 end
 
-function push:applyShaders(canvas, shaders)
+function push:applyShaders(canvas, shaders, x, y)
+  if x == nil then x = 0 end
+  if y == nil then y = 0 end
   local _shader = love.graphics.getShader()
   if #shaders <= 1 then
     love.graphics.setShader(shaders[1])
-    love.graphics.draw(canvas)
+    love.graphics.draw(canvas, x, y)
   else
     local _canvas = love.graphics.getCanvas()
 
@@ -198,7 +202,9 @@ function push:finish(shader)
       if not _table.private then
         local _canvas = _table.canvas
         local _shader = _table.shader
-        self:applyShaders(_canvas, type(_shader) == "table" and _shader or { _shader })
+        local _x = _table.x
+        local _y = _table.y
+        self:applyShaders(_canvas, type(_shader) == "table" and _shader or { _shader }, _x, _y)
       end
     end
     love.graphics.setCanvas()
