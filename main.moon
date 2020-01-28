@@ -1,12 +1,14 @@
 
 export Input = require "lib/Input"
+export Timer = require "lib/Timer"
 export Push  = require "lib/push"
 export Bump  = require "lib/bump"
 export STI   = require "lib/sti"
 export Soda  = require "lib/sodapop"
 
 require "constants"
-require "utils"
+-- require "utils"
+require "utils_new"
 require "graphics"
 require "font"
 require "image"

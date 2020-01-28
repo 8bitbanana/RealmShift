@@ -53,7 +53,7 @@ do
       self:applyFric()
       self:limitVel()
       self:applyVel()
-      if not dirPressed() and (abs(self.parent.vel.x) + abs(self.parent.vel.y)) < 1 then
+      if not dirPressed() and (abs(self.parent.vel.x) + abs(self.parent.vel.y)) < 0.1 then
         return self:changeState(PlayerIdleState)
       end
     end,
@@ -68,7 +68,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent)
       self.parent = parent
-      self.acc = 14
+      self.acc = 10
       self.fric = 4
       self.max_vel = 60
     end,

@@ -1,24 +1,23 @@
-Timer = require "lib/Timer"
 
 X_SPACING = 0
 Y_SPACING = 0
 FRAME_MOD = 4
 
-string.split = (s, delim) ->
-    return [w for w in s\gmatch("([^"..delim.."]+)")]
+-- string.split = (s, delim) ->
+    -- return [w for w in s\gmatch("([^"..delim.."]+)")]
 
-string.totable = (s) ->
-    t = {}
-    s\gsub(".", (c)->table.insert(t, c)) 
-    return t
+-- string.totable = (s) ->
+    -- t = {}
+    -- s\gsub(".", (c)->table.insert(t, c)) 
+    -- return t
 
-table.shallow_copy = (t) ->
-    return {k, v for k, v in pairs t}
+-- table.shallow_copy = (t) ->
+    -- return {k, v for k, v in pairs t}
 
-math.sign = (x) ->
-    if x < 0 return -1
-    elseif x > 0 return 1
-    else return 0
+-- math.sign = (x) ->
+    -- if x < 0 return -1
+    -- elseif x > 0 return 1
+    -- else return 0
 
 export class DialogBox
     new: (@text) =>

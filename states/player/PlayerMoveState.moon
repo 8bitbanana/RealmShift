@@ -2,7 +2,7 @@
 export class PlayerMoveState extends State
 	new: (@parent) =>
 		-- Acceleration applied to velocity when pressing directional key
-		@acc  = 14
+		@acc  = 10
 		-- Friction for slowing velocity
 		@fric = 4
 		-- Max speed player can move by
@@ -63,7 +63,7 @@ export class PlayerMoveState extends State
 		@\limitVel!
 		@\applyVel!
 		
-		if not dirPressed! and (abs(@parent.vel.x) + abs(@parent.vel.y)) < 1
+		if not dirPressed! and (abs(@parent.vel.x) + abs(@parent.vel.y)) < 0.1
 			@\changeState(PlayerIdleState)
 	
 	draw: =>

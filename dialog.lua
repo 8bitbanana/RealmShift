@@ -1,39 +1,6 @@
-local Timer = require("lib/Timer")
 local X_SPACING = 0
 local Y_SPACING = 0
 local FRAME_MOD = 4
-string.split = function(s, delim)
-  local _accum_0 = { }
-  local _len_0 = 1
-  for w in s:gmatch("([^" .. delim .. "]+)") do
-    _accum_0[_len_0] = w
-    _len_0 = _len_0 + 1
-  end
-  return _accum_0
-end
-string.totable = function(s)
-  local t = { }
-  s:gsub(".", function(c)
-    return table.insert(t, c)
-  end)
-  return t
-end
-table.shallow_copy = function(t)
-  local _tbl_0 = { }
-  for k, v in pairs(t) do
-    _tbl_0[k] = v
-  end
-  return _tbl_0
-end
-math.sign = function(x)
-  if x < 0 then
-    return -1
-  elseif x > 0 then
-    return 1
-  else
-    return 0
-  end
-end
 do
   local _class_0
   local _base_0 = {
