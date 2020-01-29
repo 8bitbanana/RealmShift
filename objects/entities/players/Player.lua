@@ -2,7 +2,8 @@ do
   local _class_0
   local _base_0 = {
     update = function(self)
-      return self.state:update()
+      self.state:update()
+      return limitPosToCurrentRoom(self)
     end,
     draw = function(self)
       return self.state:draw()

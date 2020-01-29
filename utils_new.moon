@@ -13,6 +13,12 @@ string.totable = (s) ->
     s\gsub(".", (c)->table.insert(t, c)) 
     return t
 
+-- stripKeys returns a copy of the passed table that contains only the values and no keys
+-- e.g. {["name"] = "Garry", ["height"] = 12} becomes
+--			{"Garry", 12}
+table.stripKeys = (t) ->
+	return [v for k,v in pairs(t)]
+
 table.shallow_copy = (t) ->
     return {k, v for k, v in pairs t}
 
@@ -21,10 +27,13 @@ math.sign = (x) ->
     elseif x > 0 return 1
     else return 0
 
+--------------------------------
 
 setupRandom = () ->
 	math.randomseed(os.time())
 	math.random() math.random() math.random()
+
+--------------------------------
 
 dirPressed = () ->
 	return input\down("left") or input\down("right") or input\down("up") or input\down("down")
@@ -44,6 +53,15 @@ clamp = (low, n, high) ->
 
 getAngle = (x1,y1, x2,y2) ->
 	return math.atan2(y2-y1, x2-x1)
+
+limitPosToCurrentRoom = (obj) ->
+	map = game.state.current_room.map
+	tile_size = map.tilewidth
+	maxw = (map.width * tile_size) - obj.width
+	maxh = (map.height * tile_size) - obj.height
+	
+	obj.pos.x = clamp(0, obj.pos.x, maxw)
+	obj.pos.y = clamp(0, obj.pos.y, maxh)
 
 onScreen = (x, y, border=0) ->
 	cam = game.state.camera

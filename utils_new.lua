@@ -14,6 +14,15 @@ string.totable = function(s)
   end)
   return t
 end
+table.stripKeys = function(t)
+  local _accum_0 = { }
+  local _len_0 = 1
+  for k, v in pairs(t) do
+    _accum_0[_len_0] = v
+    _len_0 = _len_0 + 1
+  end
+  return _accum_0
+end
 table.shallow_copy = function(t)
   local _tbl_0 = { }
   for k, v in pairs(t) do
@@ -58,6 +67,14 @@ clamp = function(low, n, high)
 end
 getAngle = function(x1, y1, x2, y2)
   return math.atan2(y2 - y1, x2 - x1)
+end
+limitPosToCurrentRoom = function(obj)
+  local map = game.state.current_room.map
+  local tile_size = map.tilewidth
+  local maxw = (map.width * tile_size) - obj.width
+  local maxh = (map.height * tile_size) - obj.height
+  obj.pos.x = clamp(0, obj.pos.x, maxw)
+  obj.pos.y = clamp(0, obj.pos.y, maxh)
 end
 onScreen = function(x, y, border)
   if border == nil then

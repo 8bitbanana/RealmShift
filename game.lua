@@ -1,8 +1,13 @@
 do
   local _class_0
   local _base_0 = {
+    init = function(self)
+      return self.state:init()
+    end,
     update = function(self)
-      self.state:update()
+      if self.state then
+        self.state:update()
+      end
       self.dialogbox:update(0)
       if input:pressed("dialogdebug") then
         if self.dialogbox.done then
@@ -13,7 +18,9 @@ do
       end
     end,
     draw = function(self)
-      self.state:draw()
+      if self.state then
+        self.state:draw()
+      end
       if self.dialogbox.started then
         return self.dialogbox:draw()
       end

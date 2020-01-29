@@ -8,8 +8,8 @@ return {
   height = 64,
   tilewidth = 8,
   tileheight = 8,
-  nextlayerid = 3,
-  nextobjectid = 1,
+  nextlayerid = 4,
+  nextobjectid = 10,
   properties = {},
   tilesets = {
     {
@@ -366,6 +366,53 @@ return {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 17, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 66, 66, 66, 66, 66, 66, 66, 66, 66, 7, 66, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 66, 66, 66, 66, 66, 66, 66, 66, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      }
+    },
+    {
+      type = "objectgroup",
+      id = 3,
+      name = "Room Exits",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 8,
+          name = "test exit 1",
+          type = "",
+          shape = "rectangle",
+          x = 0,
+          y = 72,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dest_room"] = "test_room_1",
+            ["tx"] = 32,
+            ["ty"] = 32
+          }
+        },
+        {
+          id = 9,
+          name = "test exit 2",
+          type = "",
+          shape = "rectangle",
+          x = 112,
+          y = 152,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dest_room"] = "test_room_2",
+            ["tx"] = 32,
+            ["ty"] = 32
+          }
+        }
       }
     }
   }

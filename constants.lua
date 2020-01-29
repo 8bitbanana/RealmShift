@@ -26,4 +26,9 @@ RED = {
   0,
   0
 }
+ORANGE = {
+  1,
+  0.45,
+  0
+}
 SHOW_COLLIDERS = false

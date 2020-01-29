@@ -22,6 +22,7 @@ love.load = function()
   loadSprites()
   input = setupInput()
   game = Game()
+  return game:init()
 end
 love.update = function()
   dt = love.timer.getDelta()

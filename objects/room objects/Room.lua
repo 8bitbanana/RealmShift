@@ -1,6 +1,48 @@
 do
   local _class_0
   local _base_0 = {
+    init = function(self)
+      return self:loadObjects()
+    end,
+    getObjectLayers = function(self)
+      local object_layers = { }
+      local layers = self.map.layers
+      for _index_0 = 1, #layers do
+        local layer = layers[_index_0]
+        if layer.type == "objectgroup" then
+          table.insert(object_layers, layer)
+        end
+      end
+      return object_layers
+    end,
+    createMapObject = function(self, obj_data)
+      local pos = {
+        x = obj_data.x,
+        y = obj_data.y
+      }
+      local width = obj_data.width
+      local height = obj_data.height
+      local obj_class = _G[obj_data.type]
+      local params = table.stripKeys(obj_data.properties)
+      if obj_class then
+        local obj = obj_class(pos, width, height, unpack(params))
+        return obj
+      end
+    end,
+    loadObjects = function(self)
+      local object_layers = self:getObjectLayers()
+      for _index_0 = 1, #object_layers do
+        local layer = object_layers[_index_0]
+        local _list_0 = layer.objects
+        for _index_1 = 1, #_list_0 do
+          local obj_data = _list_0[_index_1]
+          local obj = self:createMapObject(obj_data)
+          if obj then
+            game.state.objects:addObject(obj)
+          end
+        end
+      end
+    end,
     update = function(self)
       return self.map:update(dt)
     end,

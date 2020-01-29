@@ -2,12 +2,13 @@
 require "states/state"
 
 export class GameExploreState extends State
-	new: (@parent, room_path="towns/test_town") =>
-	
-		-- no need to pass reference of 'game' object to 'current_room' as 'game' is global
-		@current_room = Room(room_path)
+	new: (@parent, @room_path="towns/test_town") =>
 		@objects = ObjectManager!
+		@current_room = Room(@room_path)
 		
+	init: =>
+		@current_room\init!
+	
 		@player = Player({x: 64, y: 64})
 		@camera = Camera!
 		

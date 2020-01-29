@@ -29,6 +29,7 @@ love.load = ->
 		-- Exporting variables makes them global so they can be accessed from anywhere else
 		export input = setupInput!
 		export game = Game!
+		game\init!
 
 
 love.update = ->

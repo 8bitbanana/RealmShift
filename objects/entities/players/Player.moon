@@ -9,6 +9,7 @@ export class Player
 	
 	update: =>
 		@state\update!
+		limitPosToCurrentRoom(@)
 		
 	draw: =>
 		@state\draw!

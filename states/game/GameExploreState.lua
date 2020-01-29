@@ -3,6 +3,17 @@ do
   local _class_0
   local _parent_0 = State
   local _base_0 = {
+    init = function(self)
+      self.current_room:init()
+      self.player = Player({
+        x = 64,
+        y = 64
+      })
+      self.camera = Camera()
+      self.objects:addObject(self.player)
+      self.objects:addObject(self.camera)
+      return self.current_room.world:add(self.player, self.player.pos.x, self.player.pos.y, self.player.width, self.player.height)
+    end,
     update = function(self)
       self.objects:updateObjects()
       return self.objects:checkDestroyed()
@@ -22,17 +33,9 @@ do
       if room_path == nil then
         room_path = "towns/test_town"
       end
-      self.parent = parent
-      self.current_room = Room(room_path)
+      self.parent, self.room_path = parent, room_path
       self.objects = ObjectManager()
-      self.player = Player({
-        x = 64,
-        y = 64
-      })
-      self.camera = Camera()
-      self.objects:addObject(self.player)
-      self.objects:addObject(self.camera)
-      return self.current_room.world:add(self.player, self.player.pos.x, self.player.pos.y, self.player.width, self.player.height)
+      self.current_room = Room(self.room_path)
     end,
     __base = _base_0,
     __name = "GameExploreState",
