@@ -1,3 +1,4 @@
+local Timer = require("lib/Timer")
 local X_SPACING = 0
 local Y_SPACING = 0
 local FRAME_MOD = 4
@@ -24,7 +25,7 @@ do
         return self:incText()
       end
     end,
-    update = function(self, dt)
+    update = function(self)
       if self.started then
         self.framecount = self.framecount + 1
         if self.skipcount > 0 then
