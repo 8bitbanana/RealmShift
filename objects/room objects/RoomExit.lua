@@ -6,10 +6,10 @@ do
       lg.rectangle("line", self.pos.x, self.pos.y, self.width, self.height)
       lg.print({
         BLACK,
-        self.dest
+        "Dest: " .. tostring(self.dest)
       }, self.pos.x + 1, self.pos.y - 15)
       lg.setColor(WHITE)
-      return lg.print(self.dest, self.pos.x, self.pos.y - 16)
+      return lg.print("Dest: " .. tostring(self.dest), self.pos.x, self.pos.y - 16)
     end
   }
   _base_0.__index = _base_0

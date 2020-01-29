@@ -6,6 +6,6 @@ export class RoomExit
 	draw: =>
 		lg.setColor(ORANGE)
 		lg.rectangle("line", @pos.x, @pos.y, @width, @height)
-		lg.print({BLACK, @dest}, @pos.x+1, @pos.y-15)
+		lg.print({BLACK, "Dest: #{@dest}"}, @pos.x+1, @pos.y-15)
 		lg.setColor(WHITE)
-		lg.print(@dest, @pos.x, @pos.y-16)
+		lg.print("Dest: #{@dest}", @pos.x, @pos.y-16)
