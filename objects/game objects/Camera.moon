@@ -26,5 +26,7 @@ export class Camera
 		@pos.y = clamp(0, @pos.y, height)
 		
 	update: =>
-		@\followObject(game.state.player)
-		@\limitPos(game.state.current_room)
+		if game.state.player
+			@\followObject(game.state.player)
+		if game.state.current_room
+			@\limitPos(game.state.current_room)

@@ -1,8 +1,17 @@
 do
   local _class_0
   local _base_0 = {
+    destroy = function(self)
+      if self.objects then
+        return self.objects:destroyAll()
+      end
+    end,
     changeState = function(self, new_state)
+      self.parent.state:destroy()
       self.parent.state = new_state(self.parent)
+      if self.parent.state.init then
+        return self.parent.state:init()
+      end
     end,
     update = function(self) end,
     draw = function(self) end

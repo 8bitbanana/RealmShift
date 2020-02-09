@@ -74,6 +74,11 @@ pointBoxCollision = (point, box) ->
 	return point.x > box.x and point.x < box.x + box.width and
 				 point.y > box.y and point.y < box.y + box.height
 
+shadowPrint = (text="empty_text", x=0, y=0) ->
+	lg.setColor(WHITE)
+	lg.print({BLACK, text}, x+1, y+1)
+	lg.print(text, x, y)
+
 ------------------------------------------
 
 -- recursiveEnumerate used with requireFiles to recursively require all .lua files in a directory

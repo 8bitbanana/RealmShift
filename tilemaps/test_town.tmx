@@ -70,7 +70,11 @@
 </data>
  </layer>
  <objectgroup color="#ffbc10" id="3" name="Room Exits">
-  <object id="8" template="Object Templates/exit.tx" name="test exit 1" type="RoomExit" x="0" y="72"/>
+  <object id="8" template="Object Templates/exit.tx" name="test exit 1" type="RoomExit" x="0" y="72">
+   <properties>
+    <property name="dest_room" value="overworld"/>
+   </properties>
+  </object>
   <object id="9" template="Object Templates/exit.tx" name="test exit 2" type="RoomExit" x="112" y="152">
    <properties>
     <property name="dest_room" value="test_room_2"/>

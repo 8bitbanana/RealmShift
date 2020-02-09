@@ -4,6 +4,10 @@ do
     init = function(self)
       return self.state:init()
     end,
+    gotoNextState = function(self)
+      self.state:changeState(self.next_state)
+      self.next_state = nil
+    end,
     update = function(self)
       if self.state then
         self.state:update()
@@ -11,10 +15,14 @@ do
       self.dialogbox:update(0)
       if input:pressed("dialogdebug") then
         if self.dialogbox.done then
-          return self.dialogbox:reset()
+          self.dialogbox:reset()
         else
-          return self.dialogbox:begin()
+          self.dialogbox:begin()
         end
+      end
+      if self.next_state then
+        self:gotoNextState()
+        return print(self.state.__name)
       end
     end,
     draw = function(self)
@@ -30,6 +38,7 @@ do
   _class_0 = setmetatable({
     __init = function(self)
       self.state = GameExploreState(self)
+      self.next_state = nil
       self.dialogbox = DialogBox("This is a test of the dialog box{pause,30}\nIt seems to work fairly well so far,\nalthough I did have to edit {colour,0,0,1,1,8}Push.lua.{pause,30}\n3{pause,30}\n4{pause,30}\n5{pause,30}\n6{pause,50}\n{wave,4}Wow!")
     end,
     __base = _base_0,

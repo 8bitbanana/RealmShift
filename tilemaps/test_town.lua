@@ -382,7 +382,7 @@ return {
         {
           id = 8,
           name = "test exit 1",
-          type = "",
+          type = "RoomExit",
           shape = "rectangle",
           x = 0,
           y = 72,
@@ -391,7 +391,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["dest_room"] = "test_room_1",
+            ["dest_room"] = "overworld",
             ["tx"] = 32,
             ["ty"] = 32
           }
@@ -399,7 +399,7 @@ return {
         {
           id = 9,
           name = "test exit 2",
-          type = "",
+          type = "RoomExit",
           shape = "rectangle",
           x = 112,
           y = 152,

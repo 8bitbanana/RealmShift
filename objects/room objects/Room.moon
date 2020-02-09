@@ -2,6 +2,8 @@
 export class Room
 	new: (room_path) =>
 		@world = Bump.newWorld!
+		-- print(@world)
+		
 		@map = STI("rooms/#{room_path}.lua", {"bump"})
 		@map\bump_init(@world)
 		
