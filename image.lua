@@ -4,6 +4,9 @@ function loadSprites()
 		player = {
 			idle = Soda.newSprite(lg.newImage("images/sprites/characters/test_char.png"), 8, 8)
 		},
+		dialog = {
+			cursor = Soda.newSprite(lg.newImage("images/sprites/dialog/cursor.png"), 12, 8)
+		}
 	}
 end
 

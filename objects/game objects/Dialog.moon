@@ -2,18 +2,21 @@ Timer = require "lib/Timer"
 
 X_SPACING = 0
 Y_SPACING = 0
-FRAME_MOD = 4
+FRAME_MOD = 2
+CURSOR_BLINK_MOD = 60
 
 export class DialogBox
     new: (@text) =>
         @reset!
 
     reset: () =>
-        @started = false
-        @done = false
-        @visible = false
+        @started = false -- The dialog has started
+        @waitingForInput = false -- The dialog is waiting for input
+        @waitingForClose = false -- The dialog is waiting for the final input to be done
+        @done = false -- The user has finished with the dialog - the manager should move on
+        @visible = false -- Flag to make the dialog not draw (hold key to hide dialogs for example)
         @chars = string.totable(@text)
-        @currentState = {}
+        @currentState = {} 
         @currentIndex = 0
         @framecount = 0
 
@@ -21,8 +24,17 @@ export class DialogBox
         @effectData = {}
 
         @linecount = 1
-        @targetscrolloffset = 0
-        @scrolloffset = @targetscrolloffset
+        @scrollFlag = false -- Set this to true to scroll up on the next time waitingForInput is cleared
+        @targetscrollOffset = 0 -- Scroll offset (w/ interpolation)
+        @scrollOffset = @targetscrollOffset
+
+        @cursorBlinkFrameOffset = 0 -- An offset for what frames the cursor blinks at, so that the flashing will start from the beginning every time
+
+    advanceInput: () =>
+        @waitingForInput = false if @waitingForInput
+        if @waitingForClose
+            @done = true
+            @waitingForClose = false
 
     begin: () =>
         if not @started
@@ -33,8 +45,11 @@ export class DialogBox
         if @started
             @framecount += 1
             @skipcount -= 1 if @skipcount > 0
-            if @targetscrolloffset != @scrolloffset
-                @scrolloffset += math.sign(@targetscrolloffset - @scrolloffset)
+            if @scrollFlag and not @waitingForInput
+                @targetscrollOffset -= dialogfont\getHeight!
+                @scrollFlag = false
+            if @targetscrollOffset != @scrollOffset
+                @scrollOffset += math.sign(@targetscrollOffset - @scrollOffset)
             if @framecount % FRAME_MOD == 0 and @skipcount == 0
                 @incText!
 
@@ -53,16 +68,17 @@ export class DialogBox
             switch code
                 when "test"
                     print args[1]
-                when "wave"
+                when "wave" -- w a v y
                     @effectData.wave = tonumber(args[1])
-                -- when "framemod" -- update framemod (speed) to arg1
-                --     @config.framemod = tonumber(args[1])
                 when "pause" -- pause for arg1 frames
                     @skipcount = tonumber(args[1])
                     effects.cancel = true
-                when "colour" -- set colour to arg1-4 for arg5 characters
+                when "color" -- set colour to arg1-4 rgba for arg5 characters
                     @effectData.textColour = [tonumber(x) for x in *args[1,4]]
                     @effectData.colourCount = tonumber(args[5])
+                when "input" -- pause until user input
+                    @waitingForInput = true
+                    effects.cancel = true
                 else
                     print "Unknown code parsed - " .. code
         if @effectData.wave != nil
@@ -81,6 +97,7 @@ export class DialogBox
         return @chars[@currentIndex]
 
     incText: () =>
+        return if @waitingForInput
         @currentIndex += 1
         if @currentIndex <= #@text
             effects = @handleEffects!
@@ -96,20 +113,24 @@ export class DialogBox
                 if @currentChar! == "\n"
                     @linecount += 1
                     if @linecount > 3
-                        @targetscrolloffset -= dialogfont\getHeight!
+                        @scrollFlag = true
+                        @waitingForInput = true
+                        @cursorBlinkFrameOffset = @framecount % CURSOR_BLINK_MOD
         else
-            @done = true
+            @waitingForInput = true
+            @waitingForClose = true
+            @cursorBlinkFrameOffset = @framecount % CURSOR_BLINK_MOD
 
     draw: () =>
         lg.setColor(1, 1, 1)
         lg.rectangle("fill", 3, 107, 234, 50)
 
-        Push\setCanvas("dialogbox")
-        lg.clear()
-        width = 0
-        height = 0
-        lg.setFont(dialogfont)
         if @started
+            Push\setCanvas("dialogbox")
+            lg.clear()
+            width = 0
+            height = 0
+            lg.setFont(dialogfont)
             for index, state in pairs @currentState
                 if state.effects.colour != nil
                     lg.setColor(state.effects.colour)
@@ -123,6 +144,9 @@ export class DialogBox
                     height += state.height + Y_SPACING
                     width = 0
                 else
-                    lg.print(state.char, 3+xoffset, 3+yoffset+@scrolloffset, 0)
+                    lg.print(state.char, 3+xoffset, 3+yoffset+@scrollOffset, 0)
                     width += state.width + X_SPACING
-        Push\setCanvas("main")
+            Push\setCanvas("main")
+            if @waitingForInput and (@framecount - @cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2
+                sprites.dialog.cursor\draw(219, 146)
+

@@ -1,5 +1,5 @@
 @ECHO OFF
-moonc *.moon
+moonc .
 IF %errorlevel% == 0 (
     love .
 )
