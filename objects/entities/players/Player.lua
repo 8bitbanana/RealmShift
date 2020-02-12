@@ -1,6 +1,13 @@
 do
   local _class_0
   local _base_0 = {
+    destroy = function(self)
+      self.destroyed = true
+      local world = game.state.current_room.world
+      if world then
+        return world:remove(self)
+      end
+    end,
     update = function(self)
       self.state:update()
       return limitPosToCurrentRoom(self)

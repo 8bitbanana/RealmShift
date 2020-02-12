@@ -7,10 +7,10 @@ export class ObjectManager
 		if obj then
 			table.insert(@objects, obj)
 	
-	updateObjects: =>
+	updateObjects: =>		
 		for i=1, #@objects do
 			o = @objects[i]
-			if o.update then
+			if o.update and not o.destroyed then
 				o\update!
 	
 	drawObjects: =>
@@ -18,6 +18,13 @@ export class ObjectManager
 			o = @objects[i]
 			if o.draw then
 				o\draw!
+	
+	destroyAll: =>		
+		for i=#@objects, 1, -1 do
+			o = @objects[i]
+			if o.destroy
+				o\destroy!
+			table.remove(@objects, i)
 	
 	checkDestroyed: =>
 		for i=#@objects, 1, -1 do

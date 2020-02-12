@@ -9,7 +9,7 @@ do
     updateObjects = function(self)
       for i = 1, #self.objects do
         local o = self.objects[i]
-        if o.update then
+        if o.update and not o.destroyed then
           o:update()
         end
       end
@@ -20,6 +20,15 @@ do
         if o.draw then
           o:draw()
         end
+      end
+    end,
+    destroyAll = function(self)
+      for i = #self.objects, 1, -1 do
+        local o = self.objects[i]
+        if o.destroy then
+          o:destroy()
+        end
+        table.remove(self.objects, i)
       end
     end,
     checkDestroyed = function(self)

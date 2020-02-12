@@ -87,6 +87,23 @@ end
 pointBoxCollision = function(point, box)
   return point.x > box.x and point.x < box.x + box.width and point.y > box.y and point.y < box.y + box.height
 end
+shadowPrint = function(text, x, y)
+  if text == nil then
+    text = "empty_text"
+  end
+  if x == nil then
+    x = 0
+  end
+  if y == nil then
+    y = 0
+  end
+  lg.setColor(WHITE)
+  lg.print({
+    BLACK,
+    text
+  }, x + 1, y + 1)
+  return lg.print(text, x, y)
+end
 recursiveEnumerate = function(folder, file_list)
   local items = love.filesystem.getDirectoryItems(folder)
   for _, item in ipairs(items) do

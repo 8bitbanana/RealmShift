@@ -28,8 +28,12 @@ do
       self.pos.y = clamp(0, self.pos.y, height)
     end,
     update = function(self)
-      self:followObject(game.state.player)
-      return self:limitPos(game.state.current_room)
+      if game.state.player then
+        self:followObject(game.state.player)
+      end
+      if game.state.current_room then
+        return self:limitPos(game.state.current_room)
+      end
     end
   }
   _base_0.__index = _base_0

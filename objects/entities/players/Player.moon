@@ -7,6 +7,15 @@ export class Player
 		
 		@state = PlayerIdleState(@)
 	
+	destroy: =>
+		-- print("Player destroy called")
+	
+		@destroyed = true
+		-- Remove Player from physics world
+		world = game.state.current_room.world
+		if world
+			world\remove(@)
+	
 	update: =>
 		@state\update!
 		limitPosToCurrentRoom(@)

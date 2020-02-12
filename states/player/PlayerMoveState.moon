@@ -1,10 +1,12 @@
 
+Inspect = require "lib/inspect"
+
 export class PlayerMoveState extends State
 	new: (@parent) =>
 		-- Acceleration applied to velocity when pressing directional key
-		@acc  = 10
+		@acc  = 24
 		-- Friction for slowing velocity
-		@fric = 4
+		@fric = 12
 		-- Max speed player can move by
 		@max_vel = 60
 		
@@ -54,6 +56,11 @@ export class PlayerMoveState extends State
 		world = game.state.current_room.world
 		
 		p = @parent
+		
+		-- print(Inspect(world))
+		-- print("\n\n\n")
+		-- print(Inspect(p))
+		
 		-- Apply velocity to position and handle collisions with walls etc.
 		p.pos.x, p.pos.y = world\move(p, p.pos.x + p.vel.x, p.pos.y + p.vel.y)
 	

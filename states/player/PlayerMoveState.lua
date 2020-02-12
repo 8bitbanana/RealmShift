@@ -1,3 +1,4 @@
+local Inspect = require("lib/inspect")
 do
   local _class_0
   local _parent_0 = State
@@ -68,8 +69,8 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent)
       self.parent = parent
-      self.acc = 10
-      self.fric = 4
+      self.acc = 24
+      self.fric = 12
       self.max_vel = 60
     end,
     __base = _base_0,

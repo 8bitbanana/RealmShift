@@ -391,7 +391,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["dest_room"] = "test_room_1",
+            ["dest_room"] = "overworld",
             ["tx"] = 32,
             ["ty"] = 32
           }
