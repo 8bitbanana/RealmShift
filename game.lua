@@ -14,10 +14,10 @@ do
       end
       self.dialogmanager:update()
       if input:pressed("dialogdebug") then
-        if self.dialogbox.done then
-          self.dialogbox:reset()
+        if self.dialogmanager.running then
+          self.dialogmanager:advanceInput()
         else
-          self.dialogbox:begin()
+          self.dialogmanager:push(DialogBox("This is a test of the {color,1,0,0,1,6}{wave,6}dialog box{pause,30}\nIt seems to work fairly well so far,\nalthough I did have to edit {colour,0,0,1,1,8}Push.lua.\n3\n4 test input{input}wow\n5\n6\n{wave,4}Wow!"))
         end
       end
       if self.next_state then
@@ -38,9 +38,8 @@ do
   _class_0 = setmetatable({
     __init = function(self)
       self.state = GameExploreState(self)
-      self.dialogmanager = DialogManager()
       self.next_state = nil
-      self.dialogbox = DialogBox("This is a test of the dialog box{pause,30}\nIt seems to work fairly well so far,\nalthough I did have to edit {colour,0,0,1,1,8}Push.lua.{pause,30}\n3{pause,30}\n4{pause,30}\n5{pause,30}\n6{pause,50}\n{wave,4}Wow!")
+      self.dialogmanager = DialogManager()
     end,
     __base = _base_0,
     __name = "Game"
