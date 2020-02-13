@@ -11,7 +11,7 @@ export class Game
 		@state\init!
 	
 	gotoNextState: =>
-		@state\changeState(@next_state)
+		@state\changeState(@next_state.state, @next_state.params)
 		@next_state = nil
 	
 	update: =>
@@ -30,7 +30,6 @@ export class Game
 		
 		if @next_state
 			@\gotoNextState!
-			print(@state.__name)
 		
 	draw: =>
 		if @state

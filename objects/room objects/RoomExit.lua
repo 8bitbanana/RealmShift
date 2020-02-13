@@ -2,10 +2,22 @@ do
   local _class_0
   local _base_0 = {
     gotoOverworld = function(self)
-      print("gotoOverworld")
-      game.next_state = GameOverworldState
+      game.next_state = {
+        state = GameTransitionState,
+        params = {
+          GameOverworldState
+        }
+      }
     end,
-    gotoRoom = function(self) end,
+    gotoRoom = function(self)
+      game.next_state = {
+        state = GameTransitionState,
+        params = {
+          GameExploreState,
+          self.dest
+        }
+      }
+    end,
     changeRoom = function(self)
       if self.dest == "overworld" then
         return self:gotoOverworld()
@@ -16,20 +28,26 @@ do
     checkPlayerEntered = function(self)
       local p = game.state.player
       if p then
-        local hw = p.width / 2
-        local hh = p.height / 2
-        local point = {
-          x = p.pos.x + hw,
-          y = p.pos.y + hh
+        local box1 = {
+          x = p.pos.x,
+          y = p.pos.y,
+          width = p.width,
+          height = p.height
         }
-        local box = {
+        local box2 = {
           x = self.pos.x,
           y = self.pos.y,
           width = self.width,
           height = self.height
         }
-        if pointBoxCollision(point, box) then
-          return self:changeRoom()
+        if AABB(box1, box2) then
+          if self.is_door then
+            if input:pressed("open_door") then
+              return self:changeRoom()
+            end
+          else
+            return self:changeRoom()
+          end
         end
       end
     end,
@@ -49,7 +67,7 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, pos, width, height, dest, tx, ty)
+    __init = function(self, pos, width, height, dest, is_door, tx, ty)
       if pos == nil then
         pos = {
           x = 0,
@@ -63,7 +81,10 @@ do
         height = 16
       end
       if dest == nil then
-        dest = "test_room_1"
+        dest = "test_town"
+      end
+      if is_door == nil then
+        is_door = false
       end
       if tx == nil then
         tx = 0
@@ -71,7 +92,7 @@ do
       if ty == nil then
         ty = 0
       end
-      self.pos, self.width, self.height, self.dest, self.tx, self.ty = pos, width, height, dest, tx, ty
+      self.pos, self.width, self.height, self.dest, self.is_door, self.tx, self.ty = pos, width, height, dest, is_door, tx, ty
     end,
     __base = _base_0,
     __name = "RoomExit"

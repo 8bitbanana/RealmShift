@@ -43,7 +43,7 @@ love.resize = (w, h) ->
 
 love.draw = ->
 		Push\start!
-		
+				
 		game\draw!
 		
 		Push\finish!

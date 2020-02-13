@@ -1,15 +1,15 @@
 
 export class RoomExit
-	new: (@pos={x: 0, y: 0}, @width=16, @height=16, @dest="test_room_1", @tx=0, @ty=0) =>
+	new: (@pos={x: 0, y: 0}, @width=16, @height=16, @dest="test_town", @is_door=false, @tx=0, @ty=0) =>
 		
 	
 	gotoOverworld: =>
-		print("gotoOverworld")
-		-- game.state\changeState(GameOverworldState)
-		game.next_state = GameOverworldState
+		-- game.next_state = {state: GameOverworldState, params: {}}
+		game.next_state = {state: GameTransitionState, params: {GameOverworldState}}
 	
 	gotoRoom: =>
-		
+		-- game.next_state = {state: GameExploreState, params: {@dest, @tx, @ty}}
+		game.next_state = {state: GameTransitionState, params: {GameExploreState, @dest}}
 	
 	changeRoom: =>
 		if @dest == "overworld"
@@ -19,15 +19,16 @@ export class RoomExit
 	
 	checkPlayerEntered: =>
 		p = game.state.player
-		if p
-			hw = p.width/2
-			hh = p.height/2
+		if p			
+			box1 = {x: p.pos.x, y: p.pos.y, width: p.width, height: p.height}
+			box2 = {x: @pos.x, y: @pos.y, width: @width, height: @height}
 			
-			point = {x: p.pos.x+hw, y: p.pos.y+hh}
-			box   = {x: @pos.x, y: @pos.y, width: @width, height: @height}
-			
-			if pointBoxCollision(point, box)
-				@\changeRoom!
+			if AABB(box1, box2)
+				if @is_door
+					if input\pressed("open_door")
+						@\changeRoom!
+				else
+					@\changeRoom!
 			
 	
 	update: =>

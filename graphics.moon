@@ -12,7 +12,7 @@ export setupWindow = ->
 		resizable: true,
 		pixelperfect: true,
 		canvas: true,
-		stencil: true
+		-- stencil: true
 	}
 	Push\setupScreen(GAME_WIDTH, GAME_HEIGHT, GAME_WIDTH*SCALE, GAME_HEIGHT*SCALE, push_opts)
 

@@ -12,13 +12,15 @@ export class GameOverworldState extends State
 		@player = OverworldPlayer!
 		@camera = Camera!
 		@objects\addObject(@camera)	
-		@objects\addObject(@player)	
+		@objects\addObject(@player)
 	
 	update: =>
 		@objects\updateObjects!
 		@objects\checkDestroyed!
 	
 	draw: =>
+		Push\setCanvas("main")
+		
 		@current_room\draw(@camera.pos)
 		
 		lg.push!

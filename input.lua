@@ -8,6 +8,8 @@ function setupInput()
 	input:bind("w", "up")
 	input:bind("s", "down")
 	
+	input:bind("z", "open_door")
+	
 	-- -- ARROW KEYS
 	input:bind("left", "left")
 	input:bind("right", "right")

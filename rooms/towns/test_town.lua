@@ -15,7 +15,7 @@ return {
     {
       name = "Grass Tileset",
       firstgid = 1,
-      filename = "Grass Tileset.tsx",
+      filename = "../../tilemaps/Grass Tileset.tsx",
       tilewidth = 8,
       tileheight = 8,
       spacing = 0,
@@ -392,6 +392,7 @@ return {
           visible = true,
           properties = {
             ["dest_room"] = "overworld",
+            ["is_door"] = false,
             ["tx"] = 32,
             ["ty"] = 32
           }
@@ -408,7 +409,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["dest_room"] = "test_room_2",
+            ["dest_room"] = "test_room",
+            ["is_door"] = true,
             ["tx"] = 32,
             ["ty"] = 32
           }

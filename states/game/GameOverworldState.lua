@@ -15,6 +15,7 @@ do
       return self.objects:checkDestroyed()
     end,
     draw = function(self)
+      Push:setCanvas("main")
       self.current_room:draw(self.camera.pos)
       lg.push()
       lg.translate(-self.camera.pos.x, -self.camera.pos.y)

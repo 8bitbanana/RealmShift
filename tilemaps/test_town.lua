@@ -392,6 +392,7 @@ return {
           visible = true,
           properties = {
             ["dest_room"] = "overworld",
+            ["is_door"] = false,
             ["tx"] = 32,
             ["ty"] = 32
           }
@@ -409,6 +410,7 @@ return {
           visible = true,
           properties = {
             ["dest_room"] = "test_room_2",
+            ["is_door"] = true,
             ["tx"] = 32,
             ["ty"] = 32
           }

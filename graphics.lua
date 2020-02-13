@@ -9,8 +9,7 @@ setupWindow = function()
     fullscreen = false,
     resizable = true,
     pixelperfect = true,
-    canvas = true,
-    stencil = true
+    canvas = true
   }
   Push:setupScreen(GAME_WIDTH, GAME_HEIGHT, GAME_WIDTH * SCALE, GAME_HEIGHT * SCALE, push_opts)
   return Push:setupCanvas({

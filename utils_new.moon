@@ -74,6 +74,11 @@ pointBoxCollision = (point, box) ->
 	return point.x > box.x and point.x < box.x + box.width and
 				 point.y > box.y and point.y < box.y + box.height
 
+-- Axis Aligned Bounding Box Collision Detection / Are these two squares overlapping?
+AABB = (b1, b2) ->
+	return b1.x < (b2.x+b2.width) and (b1.x+b1.width) > b2.x and
+	b1.y < (b2.y+b2.height) and (b1.y+b1.height) > b2.y
+
 shadowPrint = (text="empty_text", x=0, y=0) ->
 	lg.setColor(WHITE)
 	lg.print({BLACK, text}, x+1, y+1)

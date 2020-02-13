@@ -73,11 +73,13 @@
   <object id="8" template="Object Templates/exit.tx" name="test exit 1" type="RoomExit" x="0" y="72">
    <properties>
     <property name="dest_room" value="overworld"/>
+    <property name="is_door" type="bool" value="false"/>
    </properties>
   </object>
   <object id="9" template="Object Templates/exit.tx" name="test exit 2" type="RoomExit" x="112" y="152">
    <properties>
-    <property name="dest_room" value="test_room_2"/>
+    <property name="dest_room" value="test_room"/>
+    <property name="is_door" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

@@ -9,12 +9,15 @@ export class State
 		if @objects
 			@objects\destroyAll!
 	
-	changeState: (new_state) =>
-		-- print("changeState called")
-		-- print(new_state.__name)
-		
+	changeState: (new_state, params={}) =>
+		print("unpack params:")
+		print(unpack(params))
+	
+		if #params > 0
+			print(params[1].__name)
+	
 		@parent.state\destroy!
-		@parent.state = new_state(@parent)
+		@parent.state = new_state(@parent, params)
 		
 		if @parent.state.init
 			@parent.state\init!

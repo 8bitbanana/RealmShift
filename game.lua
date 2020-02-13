@@ -5,7 +5,7 @@ do
       return self.state:init()
     end,
     gotoNextState = function(self)
-      self.state:changeState(self.next_state)
+      self.state:changeState(self.next_state.state, self.next_state.params)
       self.next_state = nil
     end,
     update = function(self)
@@ -21,8 +21,7 @@ do
         end
       end
       if self.next_state then
-        self:gotoNextState()
-        return print(self.state.__name)
+        return self:gotoNextState()
       end
     end,
     draw = function(self)

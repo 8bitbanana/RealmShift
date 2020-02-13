@@ -4,7 +4,6 @@ require "states/state"
 export class GameExploreState extends State
 	new: (@parent, @room_path="towns/test_town") =>
 		@objects = ObjectManager!
-				
 		@current_room = Room(@room_path)
 		
 	init: =>	
@@ -24,7 +23,9 @@ export class GameExploreState extends State
 		@objects\updateObjects!
 		@objects\checkDestroyed!
 		
-	draw: =>		
+	draw: =>
+		Push\setCanvas("main")
+		
 		@current_room\draw(@camera.pos)
 		
 		lg.push!

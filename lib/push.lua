@@ -220,7 +220,7 @@ function push:finish(shader)
     --clear canvas
     for i = 1, #self.canvases do
       love.graphics.setCanvas(self.canvases[i].canvas)
-      love.graphics.clear()
+      -- love.graphics.clear() -- CODY: Commented out this line to prevent canvases from auto clearing when doing screen transitions (e.g. walking in and out of buildings etc.) 13/02/2020
     end
 
     love.graphics.setCanvas()
