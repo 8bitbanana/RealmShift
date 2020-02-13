@@ -1,12 +1,15 @@
 local Timer = require("lib/Timer")
 local X_SPACING = 0
 local Y_SPACING = 0
-local FRAME_MOD = 4
+local FRAME_MOD = 2
+local CURSOR_BLINK_MOD = 60
 do
   local _class_0
   local _base_0 = {
     reset = function(self)
       self.started = false
+      self.waitingForInput = false
+      self.waitingForClose = false
       self.done = false
       self.visible = false
       self.chars = string.totable(self.text)
@@ -16,8 +19,19 @@ do
       self.skipcount = 0
       self.effectData = { }
       self.linecount = 1
-      self.targetscrolloffset = 0
-      self.scrolloffset = self.targetscrolloffset
+      self.scrollFlag = false
+      self.targetscrollOffset = 0
+      self.scrollOffset = self.targetscrollOffset
+      self.cursorBlinkFrameOffset = 0
+    end,
+    advanceInput = function(self)
+      if self.waitingForInput then
+        self.waitingForInput = false
+      end
+      if self.waitingForClose then
+        self.done = true
+        self.waitingForClose = false
+      end
     end,
     begin = function(self)
       if not self.started then
@@ -31,8 +45,12 @@ do
         if self.skipcount > 0 then
           self.skipcount = self.skipcount - 1
         end
-        if self.targetscrolloffset ~= self.scrolloffset then
-          self.scrolloffset = self.scrolloffset + math.sign(self.targetscrolloffset - self.scrolloffset)
+        if self.scrollFlag and not self.waitingForInput then
+          self.targetscrollOffset = self.targetscrollOffset - dialogfont:getHeight()
+          self.scrollFlag = false
+        end
+        if self.targetscrollOffset ~= self.scrollOffset then
+          self.scrollOffset = self.scrollOffset + math.sign(self.targetscrollOffset - self.scrollOffset)
         end
         if self.framecount % FRAME_MOD == 0 and self.skipcount == 0 then
           return self:incText()
@@ -70,7 +88,7 @@ do
         elseif "pause" == _exp_0 then
           self.skipcount = tonumber(args[1])
           effects.cancel = true
-        elseif "colour" == _exp_0 then
+        elseif "color" == _exp_0 then
           do
             local _accum_0 = { }
             local _len_0 = 1
@@ -83,6 +101,9 @@ do
             self.effectData.textColour = _accum_0
           end
           self.effectData.colourCount = tonumber(args[5])
+        elseif "input" == _exp_0 then
+          self.waitingForInput = true
+          effects.cancel = true
         else
           print("Unknown code parsed - " .. code)
         end
@@ -108,6 +129,9 @@ do
       return self.chars[self.currentIndex]
     end,
     incText = function(self)
+      if self.waitingForInput then
+        return 
+      end
       self.currentIndex = self.currentIndex + 1
       if self.currentIndex <= #self.text then
         local effects = self:handleEffects()
@@ -123,23 +147,27 @@ do
           if self:currentChar() == "\n" then
             self.linecount = self.linecount + 1
             if self.linecount > 3 then
-              self.targetscrolloffset = self.targetscrolloffset - dialogfont:getHeight()
+              self.scrollFlag = true
+              self.waitingForInput = true
+              self.cursorBlinkFrameOffset = self.framecount % CURSOR_BLINK_MOD
             end
           end
         end
       else
-        self.done = true
+        self.waitingForInput = true
+        self.waitingForClose = true
+        self.cursorBlinkFrameOffset = self.framecount % CURSOR_BLINK_MOD
       end
     end,
     draw = function(self)
       lg.setColor(1, 1, 1)
       lg.rectangle("fill", 3, 107, 234, 50)
-      Push:setCanvas("dialogbox")
-      lg.clear()
-      local width = 0
-      local height = 0
-      lg.setFont(dialogfont)
       if self.started then
+        Push:setCanvas("dialogbox")
+        lg.clear()
+        local width = 0
+        local height = 0
+        lg.setFont(dialogfont)
         for index, state in pairs(self.currentState) do
           if state.effects.colour ~= nil then
             lg.setColor(state.effects.colour)
@@ -155,12 +183,15 @@ do
             height = height + (state.height + Y_SPACING)
             width = 0
           else
-            lg.print(state.char, 3 + xoffset, 3 + yoffset + self.scrolloffset, 0)
+            lg.print(state.char, 3 + xoffset, 3 + yoffset + self.scrollOffset, 0)
             width = width + (state.width + X_SPACING)
           end
         end
+        Push:setCanvas("main")
+        if self.waitingForInput and (self.framecount - self.cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2 then
+          return sprites.dialog.cursor:draw(219, 146)
+        end
       end
-      return Push:setCanvas("main")
     end
   }
   _base_0.__index = _base_0
