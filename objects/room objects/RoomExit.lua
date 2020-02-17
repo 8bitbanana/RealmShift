@@ -17,6 +17,7 @@ do
           self.dest
         }
       }
+      return print("@dest: " .. tostring(self.dest))
     end,
     changeRoom = function(self)
       if self.dest == "overworld" then

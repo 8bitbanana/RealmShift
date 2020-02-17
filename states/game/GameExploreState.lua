@@ -31,11 +31,16 @@ do
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self, parent, room_path)
-      if room_path == nil then
-        room_path = "towns/test_town"
-      end
-      self.parent, self.room_path = parent, room_path
+    __init = function(self, parent, params)
+      self.parent, self.params = parent, params
+      print("GameExploreState:")
+      print("@parent: " .. tostring(self.parent))
+      print("@params: " .. tostring(self.params))
+      print("#@params: " .. tostring(#self.params))
+      print("unpack(@params)")
+      print(unpack(self.params))
+      print()
+      self.room_path = self.params[1]
       self.objects = ObjectManager()
       self.current_room = Room(self.room_path)
     end,

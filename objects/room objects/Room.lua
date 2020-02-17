@@ -65,6 +65,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, room_path)
       self.world = Bump.newWorld()
+      print("room_path in Room: " .. tostring(room_path))
       self.map = STI("rooms/" .. tostring(room_path) .. ".lua", {
         "bump"
       })

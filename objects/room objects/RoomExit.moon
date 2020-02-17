@@ -10,6 +10,7 @@ export class RoomExit
 	gotoRoom: =>
 		-- game.next_state = {state: GameExploreState, params: {@dest, @tx, @ty}}
 		game.next_state = {state: GameTransitionState, params: {GameExploreState, @dest}}
+		print("@dest: #{@dest}")
 	
 	changeRoom: =>
 		if @dest == "overworld"

@@ -10,11 +10,11 @@ export class State
 			@objects\destroyAll!
 	
 	changeState: (new_state, params={}) =>
+		print("#params: #{#params}")
+		
 		print("unpack params:")
 		print(unpack(params))
-	
-		if #params > 0
-			print(params[1].__name)
+		print()
 	
 		@parent.state\destroy!
 		@parent.state = new_state(@parent, params)

@@ -20,9 +20,17 @@ do
       }, 'out-cubic')
     end,
     startNextState = function(self)
-      self.temp_state_buffer = self:next_state(self.parent, unpack(self.params))
-      if self.temp_state_buffer.init then
-        return self.temp_state_buffer:init()
+      print()
+      print("startNextState:")
+      print("params: " .. tostring(self.params))
+      print("#params: " .. tostring(#self.params))
+      print(unpack(self.params))
+      print("parent: " .. tostring(self.parent))
+      print("@next_state: " .. tostring(self.next_state.__name))
+      print()
+      local a
+      a = function()
+        return GameExploreState("test_room")
       end
     end,
     completeTransition = function(self)
@@ -56,7 +64,17 @@ do
         params = { }
       end
       self.parent, self.params = parent, params
+      print("params: " .. tostring(self.params))
+      print("#params: " .. tostring(#self.params))
+      if self.params[2] then
+        print(self.params[2])
+        print("room name is successfully sent to transition state")
+      end
+      print()
       self.next_state = table.remove(self.params, 1)
+      print("next state popped off @params")
+      print("#params: " .. tostring(#self.params))
+      print("next_state: " .. tostring(self.next_state))
       self.length = 2
       self.swipe_padding = 32
       self.swipe_x = -self.swipe_padding

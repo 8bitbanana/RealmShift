@@ -2,9 +2,20 @@
 require "states/state"
 
 export class GameExploreState extends State
-	new: (@parent, @room_path="towns/test_town") =>
+	new: (@parent, @params) =>
+	
+		print("GameExploreState:")
+		print("@parent: #{@parent}")
+		print("@params: #{@params}")
+		print("#@params: #{#@params}")
+		print("unpack(@params)")
+		print(unpack(@params))
+		print()
+		
+		@room_path = @params[1]
+	
 		@objects = ObjectManager!
-		@current_room = Room(@room_path)
+		@current_room = Room(@room_path)--Room(@room_path)
 		
 	init: =>	
 		@current_room\init!
