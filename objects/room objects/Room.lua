@@ -54,7 +54,9 @@ do
         }
       end
       lg.setColor(WHITE)
-      self.map:draw(-pos.x, -pos.y)
+      self.map.layers[1].x = -pos.x
+      self.map.layers[1].y = -pos.y
+      self.map:drawTileLayer(self.map.layers[1])
       if SHOW_COLLIDERS then
         lg.setColor(RED)
         return self.map:bump_draw(self.world, -pos.x, -pos.y)

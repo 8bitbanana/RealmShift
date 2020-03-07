@@ -10,11 +10,6 @@ do
       if params == nil then
         params = { }
       end
-      print("unpack params:")
-      print(unpack(params))
-      if #params > 0 then
-        print(params[1].__name)
-      end
       self.parent.state:destroy()
       self.parent.state = new_state(self.parent, params)
       if self.parent.state.init then

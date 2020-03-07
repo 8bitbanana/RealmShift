@@ -12,6 +12,7 @@ le = love.event
 abs = math.abs
 sin = math.sin
 cos = math.cos
+floor = math.floor
 
 GAME_WIDTH = 240
 GAME_HEIGHT = 160

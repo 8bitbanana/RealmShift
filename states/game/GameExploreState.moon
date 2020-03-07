@@ -2,14 +2,14 @@
 require "states/state"
 
 export class GameExploreState extends State
-	new: (@parent, @room_path="towns/test_town") =>
+	new: (@parent, @room_path="towns/test_town", @tx=64, @ty=64) =>
 		@objects = ObjectManager!
 		@current_room = Room(@room_path)
 		
 	init: =>	
 		@current_room\init!
 	
-		@player = Player({x: 64, y: 64})
+		@player = Player({x: @tx, y: @ty})
 		@camera = Camera!
 		
 		-- Add objects to object manager

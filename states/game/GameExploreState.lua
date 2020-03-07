@@ -6,8 +6,8 @@ do
     init = function(self)
       self.current_room:init()
       self.player = Player({
-        x = 64,
-        y = 64
+        x = self.tx,
+        y = self.ty
       })
       self.camera = Camera()
       self.objects:addObject(self.player)
@@ -31,11 +31,17 @@ do
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self, parent, room_path)
+    __init = function(self, parent, room_path, tx, ty)
       if room_path == nil then
         room_path = "towns/test_town"
       end
-      self.parent, self.room_path = parent, room_path
+      if tx == nil then
+        tx = 64
+      end
+      if ty == nil then
+        ty = 64
+      end
+      self.parent, self.room_path, self.tx, self.ty = parent, room_path, tx, ty
       self.objects = ObjectManager()
       self.current_room = Room(self.room_path)
     end,

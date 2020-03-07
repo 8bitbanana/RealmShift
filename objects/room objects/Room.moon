@@ -47,7 +47,9 @@ export class Room
 		
 	draw: (pos={x: 0, y: 0}) =>
 		lg.setColor(WHITE)
-		@map\draw(-pos.x, -pos.y)
+		@map.layers[1].x = -pos.x
+		@map.layers[1].y = -pos.y
+		@map\drawTileLayer(@map.layers[1])
 		
 		if SHOW_COLLIDERS
 			lg.setColor(RED)

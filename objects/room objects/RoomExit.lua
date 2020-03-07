@@ -3,18 +3,17 @@ do
   local _base_0 = {
     gotoOverworld = function(self)
       game.next_state = {
-        state = GameTransitionState,
-        params = {
-          GameOverworldState
-        }
+        state = GameOverworldState,
+        params = { }
       }
     end,
     gotoRoom = function(self)
       game.next_state = {
-        state = GameTransitionState,
+        state = GameExploreState,
         params = {
-          GameExploreState,
-          self.dest
+          self.dest,
+          self.tx,
+          self.ty
         }
       }
     end,

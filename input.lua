@@ -19,6 +19,7 @@ function setupInput()
 	-- MISC. KEYBOARD
 	input:bind("1", function() SHOW_COLLIDERS = not SHOW_COLLIDERS end)
 	input:bind("2", "dialogdebug")
+	input:bind("3", "battledebug")
 	
 	input:bind("r", function() le.quit("restart") end)
 	input:bind("escape", le.quit)
