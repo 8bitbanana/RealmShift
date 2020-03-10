@@ -4,34 +4,40 @@ WRAP_PLAYER_CURSOR = false
 
 export class GameBattleState extends State
     new: (@parent) =>
-        @objects = ObjectManager!
-        @selectedPlayer = 1
+        @players = {nil,nil,nil,nil}
+        @selectedSpace = 1
 
     init: =>
         @players = {
-            BattlePlayer({x:120+28*0,y:95}),
-            BattlePlayer({x:120+28*1,y:95}),
-            BattlePlayer({x:120+28*2,y:95}),
-            BattlePlayer({x:120+28*3,y:95}),
+            Paladin!,
+            Fighter!,
+            nil,
+            Mage!,
         }
-        for player in *@players
-            @objects\addObject(player)
+        for i, player in pairs @players
+            player.pos.x = 92+28*i
+            player.pos.y = 95
 
-    movePlayerCursor: (dir) =>
-        @selectedPlayer += dir
-        if WRAP_PLAYER_CURSOR
-            @selectedPlayer = 4 if @selectedPlayer < 1
-            @selectedPlayer = 1 if @selectedPlayer > 4
-        else
-            @selectedPlayer = 1 if @selectedPlayer < 1
-            @selectedPlayer = 4 if @selectedPlayer > 4
+    movePlayerCursor: (dir) => -- this was resursive but I wanted it to error rather than hang
+        for i=0, 8
+            @selectedSpace += dir
+            if WRAP_PLAYER_CURSOR
+                @selectedSpace = 4 if @selectedSpace < 1
+                @selectedSpace = 1 if @selectedSpace > 4
+            else
+                @selectedSpace = 1 if @selectedSpace < 1
+                @selectedSpace = 4 if @selectedSpace > 4
+            return if @selectedPlayer! != nil
+        error "MovePlayerCursor is spinning in circles"
 
-    selectedPlayer: () => return @players[@selectedPlayer]
+    selectedPlayer: () => return @players[@selectedSpace]
 
     update: =>
-        @objects\updateObjects!
-        @objects\checkDestroyed!
-        @movePlayerCursor(1)
+        @movePlayerCursor(-1) if input\pressed("left")
+        @movePlayerCursor(1)  if input\pressed("right")
+
+    drawMenu: (x,y) =>
+        lg.print
 
     draw: =>
         lg.setColor(0.28,0.81,0.81,1)
@@ -43,8 +49,8 @@ export class GameBattleState extends State
         lg.setColor(0,0,0,1)
         lg.rectangle("line",116,4,116,50) -- menubox line
         lg.setColor(1,1,1,1)
-        selectedX = @players[@selectedPlayer].pos.x
-        lg.polygon("fill", 
+        selectedX = @selectedPlayer!.pos.x
+        lg.polygon("fill",
             selectedX + 2,  53,
             selectedX + 12, 91,
             selectedX + 22, 53
@@ -55,5 +61,7 @@ export class GameBattleState extends State
             selectedX + 12, 91,
             selectedX + 22, 53
         ) -- player cursor line
-        @objects\drawObjects!
+        @drawMenu!
+        for player in *@players
+            player\draw! if player
         

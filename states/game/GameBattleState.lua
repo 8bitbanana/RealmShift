@@ -6,54 +6,53 @@ do
   local _base_0 = {
     init = function(self)
       self.players = {
-        BattlePlayer({
-          x = 120 + 28 * 0,
-          y = 95
-        }),
-        BattlePlayer({
-          x = 120 + 28 * 1,
-          y = 95
-        }),
-        BattlePlayer({
-          x = 120 + 28 * 2,
-          y = 95
-        }),
-        BattlePlayer({
-          x = 120 + 28 * 3,
-          y = 95
-        })
+        Paladin(),
+        Fighter(),
+        nil,
+        Mage()
       }
-      local _list_0 = self.players
-      for _index_0 = 1, #_list_0 do
-        local player = _list_0[_index_0]
-        self.objects:addObject(player)
+      for i, player in pairs(self.players) do
+        player.pos.x = 92 + 28 * i
+        player.pos.y = 95
       end
     end,
     movePlayerCursor = function(self, dir)
-      self.selectedPlayer = self.selectedPlayer + dir
-      if WRAP_PLAYER_CURSOR then
-        if self.selectedPlayer < 1 then
-          self.selectedPlayer = 4
+      for i = 0, 8 do
+        self.selectedSpace = self.selectedSpace + dir
+        if WRAP_PLAYER_CURSOR then
+          if self.selectedSpace < 1 then
+            self.selectedSpace = 4
+          end
+          if self.selectedSpace > 4 then
+            self.selectedSpace = 1
+          end
+        else
+          if self.selectedSpace < 1 then
+            self.selectedSpace = 1
+          end
+          if self.selectedSpace > 4 then
+            self.selectedSpace = 4
+          end
         end
-        if self.selectedPlayer > 4 then
-          self.selectedPlayer = 1
-        end
-      else
-        if self.selectedPlayer < 1 then
-          self.selectedPlayer = 1
-        end
-        if self.selectedPlayer > 4 then
-          self.selectedPlayer = 4
+        if self:selectedPlayer() ~= nil then
+          return 
         end
       end
+      return error("MovePlayerCursor is spinning in circles")
     end,
     selectedPlayer = function(self)
-      return self.players[self.selectedPlayer]
+      return self.players[self.selectedSpace]
     end,
     update = function(self)
-      self.objects:updateObjects()
-      self.objects:checkDestroyed()
-      return self:movePlayerCursor(1)
+      if input:pressed("left") then
+        self:movePlayerCursor(-1)
+      end
+      if input:pressed("right") then
+        return self:movePlayerCursor(1)
+      end
+    end,
+    drawMenu = function(self, x, y)
+      return lg.print
     end,
     draw = function(self)
       lg.setColor(0.28, 0.81, 0.81, 1)
@@ -65,11 +64,18 @@ do
       lg.setColor(0, 0, 0, 1)
       lg.rectangle("line", 116, 4, 116, 50)
       lg.setColor(1, 1, 1, 1)
-      local selectedX = self.players[self.selectedPlayer].pos.x
+      local selectedX = self:selectedPlayer().pos.x
       lg.polygon("fill", selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
       lg.setColor(0, 0, 0, 1)
       lg.line(selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
-      return self.objects:drawObjects()
+      self:drawMenu()
+      local _list_0 = self.players
+      for _index_0 = 1, #_list_0 do
+        local player = _list_0[_index_0]
+        if player then
+          player:draw()
+        end
+      end
     end
   }
   _base_0.__index = _base_0
@@ -77,8 +83,13 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent)
       self.parent = parent
-      self.objects = ObjectManager()
-      self.selectedPlayer = 1
+      self.players = {
+        nil,
+        nil,
+        nil,
+        nil
+      }
+      self.selectedSpace = 1
     end,
     __base = _base_0,
     __name = "GameBattleState",
