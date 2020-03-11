@@ -25,6 +25,6 @@ export class BattleMenuState extends State
             selectedX + 12, 91,
             selectedX + 22, 53
         ) -- player cursor line
-        drawMenu!
+        @drawMenu!
 
     

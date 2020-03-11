@@ -1,6 +1,6 @@
 require "objects/battle/BattlePlayer"
 
--- @pos is the bottom left - to accomadate different sizes
+-- @pos is the bottom left to accomadate different sizes
 
 export class BattleEnemy extends BattlePlayer
     new: () =>

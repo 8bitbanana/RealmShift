@@ -3,6 +3,7 @@ do
   local _class_0
   local _parent_0 = State
   local _base_0 = {
+    drawMenu = function(self) end,
     draw = function(self)
       lg.setColor(1, 1, 1, 1)
       lg.rectangle("fill", 116, 4, 116, 50)
@@ -12,7 +13,8 @@ do
       local selectedX = self.parent:selectedPlayer().pos.x
       lg.polygon("fill", selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
       lg.setColor(0, 0, 0, 1)
-      return lg.line(selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
+      lg.line(selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
+      return self:drawMenu()
     end
   }
   _base_0.__index = _base_0
