@@ -43,8 +43,9 @@ export class GameBattleState extends State
     selectedPlayer: () => return @players[@selectedSpace]
 
     update: =>
-        @movePlayerCursor(-1) if input\pressed("left")
-        @movePlayerCursor(1)  if input\pressed("right")
+        @state\update!
+        --@movePlayerCursor(-1) if input\pressed("left")
+        --@movePlayerCursor(1)  if input\pressed("right")
         @aniObjs\updateObjects!
         @aniObjs\checkDestroyed!
 

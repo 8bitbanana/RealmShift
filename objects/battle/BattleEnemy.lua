@@ -5,7 +5,9 @@ do
   local _base_0 = {
     draw = function(self)
       lg.setColor(RED)
-      _class_0.__parent.__base.draw(self, false)
+      lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
+      lg.setColor(BLACK)
+      lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
       return lg.print("EN", self.pos.x, self.pos.y)
     end
   }

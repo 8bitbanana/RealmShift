@@ -13,5 +13,7 @@ export class BattleEnemy extends BattlePlayer
 
     draw: () =>
         lg.setColor(RED)
-        super false
+        lg.rectangle("fill", @pos.x, @pos.y-48, 30, 48)
+        lg.setColor(BLACK)
+        lg.rectangle("line", @pos.x, @pos.y-48, 30, 48)
         lg.print("EN", @pos.x, @pos.y)

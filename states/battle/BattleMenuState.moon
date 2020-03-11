@@ -1,11 +1,61 @@
 require "states/state"
 
+WRAP_ITEM_CURSOR = false
+
 export class BattleMenuState extends State
     new: (@parent) =>
-        a=1
+        @items = {
+            {
+                x: 130,
+                y: 11,
+                text: "ATTACK",
+                valid: ()->true
+            },
+            {
+                x: 130,
+                y: 30,
+                text: "MOVE",                
+                valid: ()->true
+            },
+            {
+                x: 195,
+                y: 11,
+                text: "SKILL",
+                valid: ()->true
+            },
+            {
+                x: 195,
+                y: 30,
+                text: "ITEM",
+                valid: ()->true
+            }
+        }
+        @selectedIndex = 1
 
     drawMenu: () =>
+        for index, item in pairs @items
+            if index == @selectedIndex
+                sprites.battle.cursor\draw(item.x-15, item.y-4)
+            lg.setColor(BLACK) -- apparently sprite resets this
+            lg.print(item.text, item.x, item.y)
+            
 
+    selectedItem: () =>
+        return @items[@selectedIndex]
+
+    update: () =>
+        @moveItemCursor(-1) if input\pressed("up")
+        @moveItemCursor(1)  if input\pressed("down")
+        @moveItemCursor(-2) if input\pressed("left")
+        @moveItemCursor(2)  if input\pressed("right")
+
+    moveItemCursor: (dir) =>
+        newindex = @selectedIndex + dir
+        return if newindex < 1 -- menu boundary checking
+        return if newindex > 4
+        return if @selectedIndex == 2 and dir == 1
+        return if @selectedIndex == 3 and dir == -1
+        @selectedIndex = newindex
 
     draw: () =>
         lg.setColor(1,1,1,1)

@@ -47,12 +47,7 @@ do
       return self.players[self.selectedSpace]
     end,
     update = function(self)
-      if input:pressed("left") then
-        self:movePlayerCursor(-1)
-      end
-      if input:pressed("right") then
-        self:movePlayerCursor(1)
-      end
+      self.state:update()
       self.aniObjs:updateObjects()
       return self.aniObjs:checkDestroyed()
     end,

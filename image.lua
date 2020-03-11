@@ -6,6 +6,9 @@ function loadSprites()
 		},
 		dialog = {
 			cursor = Soda.newSprite(lg.newImage("images/sprites/dialog/cursor.png"), 12, 8)
+		},
+		battle = {
+			cursor = Soda.newSprite(lg.newImage("images/sprites/battle/cursor.png"), 8, 12)
 		}
 	}
 end
