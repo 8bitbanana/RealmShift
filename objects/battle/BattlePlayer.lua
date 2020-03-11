@@ -1,12 +1,41 @@
-local BattlePlayer
+local DAMAGE_FORMULA = {
+  aw = 1,
+  dw = 1.05,
+  bd = 15,
+  vm = 0.25,
+  va = 2
+}
 do
   local _class_0
   local _base_0 = {
-    draw = function(self)
-      lg.setColor(ORANGE)
-      lg.rectangle("fill", self.pos.x, self.pos.y, 24, 32)
+    init = function(self)
+      self.hp = self.stats.hp
+    end,
+    takeDamage = function(self, incomingattack)
+      local damage = math.floor((DAMAGE_FORMULA.va + (DAMAGE_FORMULA.vm * ((incomingattack * DAMAGE_FORMULA.aw) - (self.stats.defence * DAMAGE_FORMULA.dw)))) * DAMAGE_FORMULA.bd)
+      if damage < 1 then
+        damage = 1
+      end
+      self.hp = self.hp - damage
+      if self.hp < 0 then
+        self.hp = 0
+      end
+    end,
+    attack = function(self, target)
+      return target:takeDamage(self.stats.attack)
+    end,
+    skillPrimary = function(self, target) end,
+    skillSecondary = function(self, target) end,
+    draw = function(self, overwrite)
+      if overwrite == nil then
+        overwrite = true
+      end
+      if overwrite then
+        lg.setColor(ORANGE)
+      end
+      lg.rectangle("fill", self.pos.x, self.pos.y - 32, 24, 32)
       lg.setColor(BLACK)
-      return lg.rectangle("line", self.pos.x, self.pos.y, 24, 32)
+      return lg.rectangle("line", self.pos.x, self.pos.y - 32, 24, 32)
     end
   }
   _base_0.__index = _base_0
@@ -44,7 +73,7 @@ do
     draw = function(self)
       _class_0.__parent.__base.draw(self)
       lg.setColor(BLACK)
-      return lg.print("M", self.pos.x + 2, self.pos.y + 2)
+      return lg.print("M", self.pos.x, self.pos.y)
     end
   }
   _base_0.__index = _base_0
@@ -57,6 +86,7 @@ do
       self.stats.defence = 2
       self.stats.speed = 5
       self.stats.magic = 10
+      return self:init()
     end,
     __base = _base_0,
     __name = "Mage",
@@ -92,7 +122,7 @@ do
     draw = function(self)
       _class_0.__parent.__base.draw(self)
       lg.setColor(BLACK)
-      return lg.print("F", self.pos.x + 2, self.pos.y + 2)
+      return lg.print("F", self.pos.x, self.pos.y)
     end
   }
   _base_0.__index = _base_0
@@ -105,6 +135,7 @@ do
       self.stats.defence = 4
       self.stats.speed = 7
       self.stats.magic = 2
+      return self:init()
     end,
     __base = _base_0,
     __name = "Fighter",
@@ -140,7 +171,7 @@ do
     draw = function(self)
       _class_0.__parent.__base.draw(self)
       lg.setColor(BLACK)
-      return lg.print("P", self.pos.x + 2, self.pos.y + 2)
+      return lg.print("P", self.pos.x, self.pos.y)
     end
   }
   _base_0.__index = _base_0
@@ -153,6 +184,7 @@ do
       self.stats.defence = 8
       self.stats.speed = 3
       self.stats.magic = 6
+      return self:init()
     end,
     __base = _base_0,
     __name = "Paladin",
@@ -188,7 +220,7 @@ do
     draw = function(self)
       _class_0.__parent.__base.draw(self)
       lg.setColor(BLACK)
-      return lg.print("R", self.pos.x + 2, self.pos.y + 2)
+      return lg.print("R", self.pos.x, self.pos.y)
     end
   }
   _base_0.__index = _base_0
@@ -201,6 +233,7 @@ do
       self.stats.defence = 2
       self.stats.speed = 8
       self.stats.magic = 2
+      return self:init()
     end,
     __base = _base_0,
     __name = "Rogue",

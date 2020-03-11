@@ -1,0 +1,3 @@
+-- export class BattleCutsceneState extends State
+--     new: (@parent) =>
+--         a=1

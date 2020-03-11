@@ -11,10 +11,13 @@ do
         nil,
         Mage()
       }
+      self.enemy = BattleEnemy()
       for i, player in pairs(self.players) do
         player.pos.x = 92 + 28 * i
-        player.pos.y = 95
+        player.pos.y = 127
       end
+      self.enemy.pos.x = 10
+      self.enemy.pos.y = 127
     end,
     movePlayerCursor = function(self, dir)
       for i = 0, 8 do
@@ -48,27 +51,17 @@ do
         self:movePlayerCursor(-1)
       end
       if input:pressed("right") then
-        return self:movePlayerCursor(1)
+        self:movePlayerCursor(1)
       end
-    end,
-    drawMenu = function(self, x, y)
-      return lg.print
+      self.aniObjs:updateObjects()
+      return self.aniObjs:checkDestroyed()
     end,
     draw = function(self)
       lg.setColor(0.28, 0.81, 0.81, 1)
       lg.rectangle("fill", 0, 0, GAME_WIDTH, GAME_HEIGHT)
       lg.setColor(0.25, 0.63, 0.22, 1)
       lg.rectangle("fill", 0, 127, GAME_WIDTH, 53)
-      lg.setColor(1, 1, 1, 1)
-      lg.rectangle("fill", 116, 4, 116, 50)
-      lg.setColor(0, 0, 0, 1)
-      lg.rectangle("line", 116, 4, 116, 50)
-      lg.setColor(1, 1, 1, 1)
-      local selectedX = self:selectedPlayer().pos.x
-      lg.polygon("fill", selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
-      lg.setColor(0, 0, 0, 1)
-      lg.line(selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
-      self:drawMenu()
+      self.state:draw()
       local _list_0 = self.players
       for _index_0 = 1, #_list_0 do
         local player = _list_0[_index_0]
@@ -76,6 +69,8 @@ do
           player:draw()
         end
       end
+      self.enemy:draw()
+      return self.aniObjs:drawObjects()
     end
   }
   _base_0.__index = _base_0
@@ -89,7 +84,11 @@ do
         nil,
         nil
       }
+      self.enemies = { }
       self.selectedSpace = 1
+      self.state = BattleMenuState(self)
+      self.aniObjs = ObjectManager()
+      self.currentInitiative = 99
     end,
     __base = _base_0,
     __name = "GameBattleState",
