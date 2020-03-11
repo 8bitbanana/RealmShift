@@ -5,7 +5,7 @@ WRAP_PLAYER_CURSOR = false
 export class GameBattleState extends State
     new: (@parent) =>
         @players = {nil,nil,nil,nil}
-        @enemies = {}
+        @enemy = nil
         @selectedSpace = 1
 
         @state = BattleMenuState(@)
@@ -13,6 +13,7 @@ export class GameBattleState extends State
         @aniObjs = ObjectManager!
 
         @currentInitiative = 99
+
 
     init: =>
         @players = {
@@ -27,6 +28,9 @@ export class GameBattleState extends State
             player.pos.y = 127 -- position is bottom left of sprite
         @enemy.pos.x = 10
         @enemy.pos.y = 127
+
+    attackAction: () =>
+        @selectedPlayer!\attack(@enemy)
 
     movePlayerCursor: (dir) => -- this was resursive but I wanted it to error rather than hang
         for i=0, 8

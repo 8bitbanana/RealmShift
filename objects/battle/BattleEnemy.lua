@@ -3,12 +3,18 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    draw = function(self)
+    draw_alive = function(self)
       lg.setColor(RED)
       lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
       lg.setColor(BLACK)
       lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
       return lg.print("EN", self.pos.x, self.pos.y)
+    end,
+    draw_dead = function(self)
+      lg.setColor(GRAY)
+      lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
+      lg.setColor(BLACK)
+      return lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
     end
   }
   _base_0.__index = _base_0

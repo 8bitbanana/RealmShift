@@ -32,4 +32,9 @@ ORANGE = {
   0.45,
   0
 }
+GRAY = {
+  0.5,
+  0.5,
+  0.5
+}
 SHOW_COLLIDERS = false

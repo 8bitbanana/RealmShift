@@ -29,9 +29,9 @@ export class BattlePlayer
         )
         damage = 1 if damage < 1
         @hp -= damage
+        print("I took " .. damage .. " damage")
         if @hp < 0
             @hp = 0
-            -- we dead
         -- could spawn a floating number object here
 
     attack: (target) =>
@@ -42,11 +42,23 @@ export class BattlePlayer
     skillSecondary: (target) =>
 
 
-    draw: (overwrite=true) =>
-        lg.setColor(ORANGE) if overwrite
+    draw_alive: () =>
+        lg.setColor(ORANGE)
         lg.rectangle("fill", @pos.x, @pos.y-32, 24, 32)
         lg.setColor(BLACK)
         lg.rectangle("line", @pos.x, @pos.y-32, 24, 32)
+
+    draw_dead: () =>
+        lg.setColor(GRAY)
+        lg.rectangle("fill", @pos.x, @pos.y-32, 24, 32)
+        lg.setColor(BLACK)
+        lg.rectangle("line", @pos.x, @pos.y-32, 24, 32)
+
+    draw: () =>
+        if @hp == 0
+            @draw_dead!
+        else
+            @draw_alive!
 
 export class Mage extends BattlePlayer
     new: () =>

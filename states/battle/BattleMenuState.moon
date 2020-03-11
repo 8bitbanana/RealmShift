@@ -1,43 +1,36 @@
 require "states/state"
+Inspect = require "lib/inspect"
 
 WRAP_ITEM_CURSOR = false
+
+class MenuItem
+    new: (@parent, @text, @pos)=>
+    clicked: ()=>
+    valid: ()=>true
+    draw: ()=>
+        if @parent\selectedItem! == @
+            sprites.battle.cursor\draw(@pos.x-15, @pos.y-4)
+        if @valid!                
+            lg.setColor(BLACK)
+        else
+            lg.setColor(GRAY)
+        lg.print(@text, @pos.x, @pos.y)
 
 export class BattleMenuState extends State
     new: (@parent) =>
         @items = {
-            {
-                x: 130,
-                y: 11,
-                text: "ATTACK",
-                valid: ()->true
-            },
-            {
-                x: 130,
-                y: 30,
-                text: "MOVE",                
-                valid: ()->true
-            },
-            {
-                x: 195,
-                y: 11,
-                text: "SKILL",
-                valid: ()->true
-            },
-            {
-                x: 195,
-                y: 30,
-                text: "ITEM",
-                valid: ()->true
-            }
+            MenuItem(@, "ATTACK", {x:130,y:11}),
+            MenuItem(@, "MOVE",   {x:130,y:30}),
+            MenuItem(@, "SKILL",  {x:195,y:11}),
+            MenuItem(@, "ITEM",   {x:195,y:30})
         }
+        -- man I sure do hate this
+        @items[1].clicked = () => @parent.parent\attackAction!
         @selectedIndex = 1
 
     drawMenu: () =>
         for index, item in pairs @items
-            if index == @selectedIndex
-                sprites.battle.cursor\draw(item.x-15, item.y-4)
-            lg.setColor(BLACK) -- apparently sprite resets this
-            lg.print(item.text, item.x, item.y)
+            item\draw!
             
 
     selectedItem: () =>
@@ -48,6 +41,7 @@ export class BattleMenuState extends State
         @moveItemCursor(1)  if input\pressed("down")
         @moveItemCursor(-2) if input\pressed("left")
         @moveItemCursor(2)  if input\pressed("right")
+        @selectedItem!\clicked! if input\pressed("confirm")
 
     moveItemCursor: (dir) =>
         newindex = @selectedIndex + dir

@@ -22,5 +22,6 @@ BLACK  = {0, 0, 0}
 WHITE  = {1, 1, 1}
 RED    = {1, 0, 0}
 ORANGE = {1, 0.45, 0}
+GRAY   = {0.5, 0.5, 0.5}
 
 SHOW_COLLIDERS = false

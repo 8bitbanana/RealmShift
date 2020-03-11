@@ -17,6 +17,7 @@ do
         damage = 1
       end
       self.hp = self.hp - damage
+      print("I took " .. damage .. " damage")
       if self.hp < 0 then
         self.hp = 0
       end
@@ -26,16 +27,24 @@ do
     end,
     skillPrimary = function(self, target) end,
     skillSecondary = function(self, target) end,
-    draw = function(self, overwrite)
-      if overwrite == nil then
-        overwrite = true
-      end
-      if overwrite then
-        lg.setColor(ORANGE)
-      end
+    draw_alive = function(self)
+      lg.setColor(ORANGE)
       lg.rectangle("fill", self.pos.x, self.pos.y - 32, 24, 32)
       lg.setColor(BLACK)
       return lg.rectangle("line", self.pos.x, self.pos.y - 32, 24, 32)
+    end,
+    draw_dead = function(self)
+      lg.setColor(GRAY)
+      lg.rectangle("fill", self.pos.x, self.pos.y - 32, 24, 32)
+      lg.setColor(BLACK)
+      return lg.rectangle("line", self.pos.x, self.pos.y - 32, 24, 32)
+    end,
+    draw = function(self)
+      if self.hp == 0 then
+        return self:draw_dead()
+      else
+        return self:draw_alive()
+      end
     end
   }
   _base_0.__index = _base_0

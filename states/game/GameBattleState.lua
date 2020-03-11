@@ -19,6 +19,9 @@ do
       self.enemy.pos.x = 10
       self.enemy.pos.y = 127
     end,
+    attackAction = function(self)
+      return self:selectedPlayer():attack(self.enemy)
+    end,
     movePlayerCursor = function(self, dir)
       for i = 0, 8 do
         self.selectedSpace = self.selectedSpace + dir
@@ -79,7 +82,7 @@ do
         nil,
         nil
       }
-      self.enemies = { }
+      self.enemy = nil
       self.selectedSpace = 1
       self.state = BattleMenuState(self)
       self.aniObjs = ObjectManager()

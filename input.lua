@@ -9,6 +9,10 @@ function setupInput()
 	input:bind("s", "down")
 	
 	input:bind("z", "open_door")
+
+	-- -- MENU
+	input:bind("z", "confirm")
+	input:bind("z", "back")
 	
 	-- -- ARROW KEYS
 	input:bind("left", "left")

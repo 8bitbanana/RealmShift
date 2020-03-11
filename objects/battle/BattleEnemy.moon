@@ -11,9 +11,15 @@ export class BattleEnemy extends BattlePlayer
         @stats.speed = 1
         @init!
 
-    draw: () =>
+    draw_alive: () =>
         lg.setColor(RED)
         lg.rectangle("fill", @pos.x, @pos.y-48, 30, 48)
         lg.setColor(BLACK)
         lg.rectangle("line", @pos.x, @pos.y-48, 30, 48)
         lg.print("EN", @pos.x, @pos.y)
+
+    draw_dead: () =>
+        lg.setColor(GRAY)
+        lg.rectangle("fill", @pos.x, @pos.y-48, 30, 48)
+        lg.setColor(BLACK)
+        lg.rectangle("line", @pos.x, @pos.y-48, 30, 48)
