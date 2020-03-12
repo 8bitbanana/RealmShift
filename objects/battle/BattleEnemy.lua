@@ -20,9 +20,9 @@ do
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self)
-      _class_0.__parent.__init(self)
-      self.stats.hp = 20
+    __init = function(self, ...)
+      _class_0.__parent.__init(self, ...)
+      self.stats.hp = 100
       self.stats.attack = 1
       self.stats.defence = 1
       self.stats.speed = 1

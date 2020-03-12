@@ -1,6 +1,6 @@
 local DAMAGE_FORMULA = {
   aw = 1,
-  dw = 1.05,
+  dw = 1.2,
   bd = 15,
   vm = 0.25,
   va = 2
@@ -17,7 +17,7 @@ do
         damage = 1
       end
       self.hp = self.hp - damage
-      print("I took " .. damage .. " damage")
+      print("I took " .. damage .. " damage (" .. incomingattack .. "ATK " .. self.stats.defence .. "DEF)")
       if self.hp < 0 then
         self.hp = 0
       end
@@ -27,8 +27,20 @@ do
     end,
     skillPrimary = function(self, target) end,
     skillSecondary = function(self, target) end,
-    draw_alive = function(self)
-      lg.setColor(ORANGE)
+    draw = function(self)
+      if self.hp == 0 then
+        return self:draw_dead()
+      else
+        return self:draw_alive()
+      end
+    end,
+    draw_alive = function(self, overwrite)
+      if overwrite == nil then
+        overwrite = false
+      end
+      if overwrite then
+        lg.setColor(ORANGE)
+      end
       lg.rectangle("fill", self.pos.x, self.pos.y - 32, 24, 32)
       lg.setColor(BLACK)
       return lg.rectangle("line", self.pos.x, self.pos.y - 32, 24, 32)
@@ -38,28 +50,18 @@ do
       lg.rectangle("fill", self.pos.x, self.pos.y - 32, 24, 32)
       lg.setColor(BLACK)
       return lg.rectangle("line", self.pos.x, self.pos.y - 32, 24, 32)
-    end,
-    draw = function(self)
-      if self.hp == 0 then
-        return self:draw_dead()
-      else
-        return self:draw_alive()
-      end
     end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self)
+    __init = function(self, parent, pos)
+      self.parent, self.pos = parent, pos
       self.stats = {
         hp = 0,
         attack = 0,
         defence = 0,
         speed = 0,
         magic = 0
-      }
-      self.pos = {
-        x = 0,
-        y = 0
       }
     end,
     __base = _base_0,
@@ -79,17 +81,16 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    draw = function(self)
-      _class_0.__parent.__base.draw(self)
-      lg.setColor(BLACK)
-      return lg.print("M", self.pos.x, self.pos.y)
+    draw_alive = function(self)
+      lg.setColor(MAGE_COL)
+      return _class_0.__parent.__base.draw_alive(self, false)
     end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self)
-      _class_0.__parent.__init(self)
+    __init = function(self, ...)
+      _class_0.__parent.__init(self, ...)
       self.stats.hp = 50
       self.stats.attack = 3
       self.stats.defence = 2
@@ -128,17 +129,16 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    draw = function(self)
-      _class_0.__parent.__base.draw(self)
-      lg.setColor(BLACK)
-      return lg.print("F", self.pos.x, self.pos.y)
+    draw_alive = function(self)
+      lg.setColor(FIGHTER_COL)
+      return _class_0.__parent.__base.draw_alive(self, false)
     end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self)
-      _class_0.__parent.__init(self)
+    __init = function(self, ...)
+      _class_0.__parent.__init(self, ...)
       self.stats.hp = 50
       self.stats.attack = 8
       self.stats.defence = 4
@@ -177,17 +177,16 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    draw = function(self)
-      _class_0.__parent.__base.draw(self)
-      lg.setColor(BLACK)
-      return lg.print("P", self.pos.x, self.pos.y)
+    draw_alive = function(self)
+      lg.setColor(PALADIN_COL)
+      return _class_0.__parent.__base.draw_alive(self, false)
     end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self)
-      _class_0.__parent.__init(self)
+    __init = function(self, ...)
+      _class_0.__parent.__init(self, ...)
       self.stats.hp = 50
       self.stats.attack = 5
       self.stats.defence = 8
@@ -226,17 +225,16 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    draw = function(self)
-      _class_0.__parent.__base.draw(self)
-      lg.setColor(BLACK)
-      return lg.print("R", self.pos.x, self.pos.y)
+    draw_alive = function(self)
+      lg.setColor(ROGUE_COL)
+      return _class_0.__parent.__base.draw_alive(self, false)
     end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self)
-      _class_0.__parent.__init(self)
+    __init = function(self, ...)
+      _class_0.__parent.__init(self, ...)
       self.stats.hp = 50
       self.stats.attack = 9
       self.stats.defence = 2

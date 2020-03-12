@@ -1,50 +1,107 @@
 require("states/state")
+local Inspect = require("lib/inspect")
 local WRAP_PLAYER_CURSOR = false
 do
   local _class_0
   local _parent_0 = State
   local _base_0 = {
     init = function(self)
+      self.state = BattleMenuState(self)
       self.players = {
-        Paladin(),
-        Fighter(),
+        Paladin(self, {
+          x = 120,
+          y = 127
+        }),
+        Fighter(self, {
+          x = 148,
+          y = 127
+        }),
         nil,
-        Mage()
+        Mage(self, {
+          x = 204,
+          y = 127
+        })
       }
-      self.enemy = BattleEnemy()
-      for i, player in pairs(self.players) do
-        player.pos.x = 92 + 28 * i
-        player.pos.y = 127
+      self.enemies = {
+        BattleEnemy(self, {
+          x = 10,
+          y = 127
+        })
+      }
+      return self:getNextInitiative(true)
+    end,
+    getNextInitiative = function(self, apply)
+      if apply == nil then
+        apply = false
       end
-      self.enemy.pos.x = 10
-      self.enemy.pos.y = 127
+      local nextup = nil
+      local nextupSpeed = -999
+      local nextup_all = nil
+      local nextup_allSpeed = -999
+      local currentTurnSpeed = 999
+      if self.currentTurn ~= nil then
+        currentTurnSpeed = self.currentTurn.stats.speed
+      end
+      local _list_0 = self.players
+      for _index_0 = 1, #_list_0 do
+        local _continue_0 = false
+        repeat
+          local player = _list_0[_index_0]
+          if player == nil then
+            _continue_0 = true
+            break
+          end
+          if player.stats.speed > nextupSpeed and player.stats.speed < currentTurnSpeed then
+            nextup = player
+            nextupSpeed = player.stats.speed
+          end
+          if player.stats.speed > nextup_allSpeed then
+            nextup_all = player
+            nextup_allSpeed = player.stats.speed
+          end
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
+        end
+      end
+      local _list_1 = self.enemies
+      for _index_0 = 1, #_list_1 do
+        local _continue_0 = false
+        repeat
+          local enemy = _list_1[_index_0]
+          if enemy == nil then
+            _continue_0 = true
+            break
+          end
+          if enemy.stats.speed > nextupSpeed and enemy.stats.speed < currentTurnSpeed then
+            nextup = enemy
+            nextupSpeed = enemy.stats.speed
+          end
+          if enemy.stats.speed > nextup_allSpeed then
+            nextup_all = enemy
+            nextup_allSpeed = enemy.stats.speed
+          end
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
+        end
+      end
+      if nextup == nil then
+        if apply then
+          self.currentTurn = nextup_all
+        end
+        return nextup_all
+      else
+        if apply then
+          self.currentTurn = nextup
+        end
+        return nextup
+      end
     end,
     attackAction = function(self)
-      return self:selectedPlayer():attack(self.enemy)
-    end,
-    movePlayerCursor = function(self, dir)
-      for i = 0, 8 do
-        self.selectedSpace = self.selectedSpace + dir
-        if WRAP_PLAYER_CURSOR then
-          if self.selectedSpace < 1 then
-            self.selectedSpace = 4
-          end
-          if self.selectedSpace > 4 then
-            self.selectedSpace = 1
-          end
-        else
-          if self.selectedSpace < 1 then
-            self.selectedSpace = 1
-          end
-          if self.selectedSpace > 4 then
-            self.selectedSpace = 4
-          end
-        end
-        if self:selectedPlayer() ~= nil then
-          return 
-        end
-      end
-      return error("MovePlayerCursor is spinning in circles")
+      return self.currentTurn:attack(self.enemies[1])
     end,
     selectedPlayer = function(self)
       return self.players[self.selectedSpace]
@@ -67,7 +124,13 @@ do
           player:draw()
         end
       end
-      self.enemy:draw()
+      local _list_1 = self.enemies
+      for _index_0 = 1, #_list_1 do
+        local enemy = _list_1[_index_0]
+        if enemy then
+          enemy:draw()
+        end
+      end
       return self.aniObjs:drawObjects()
     end
   }
@@ -82,11 +145,13 @@ do
         nil,
         nil
       }
-      self.enemy = nil
+      self.enemies = {
+        nil
+      }
       self.selectedSpace = 1
-      self.state = BattleMenuState(self)
+      self.state = nil
       self.aniObjs = ObjectManager()
-      self.currentInitiative = 99
+      self.currentTurn = nil
     end,
     __base = _base_0,
     __name = "GameBattleState",

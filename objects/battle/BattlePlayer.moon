@@ -1,23 +1,19 @@
 DAMAGE_FORMULA = {
     aw: 1 -- attack weight
-    dw: 1.05 -- defence weight
+    dw: 1.2 -- defence weight
     bd: 15, -- base damage
     vm: 0.25 -- variance multiply
     va: 2 -- variance addition
 }
 
 export class BattlePlayer
-    new: ()=>
+    new: (@parent, @pos)=>
         @stats = {
             hp: 0,
             attack: 0,
             defence: 0,
             speed: 0,
             magic: 0
-        }
-        @pos = {  -- This position will be the bottom-left of the sprite
-            x: 0, -- This is to accommadate for sprites of different sizes
-            y: 0  -- e.g. enemies so that the position doesn't have to change
         }
 
     init: () =>
@@ -29,7 +25,7 @@ export class BattlePlayer
         )
         damage = 1 if damage < 1
         @hp -= damage
-        print("I took " .. damage .. " damage")
+        print("I took " .. damage .. " damage ("..incomingattack.."ATK "..@stats.defence.."DEF)")
         if @hp < 0
             @hp = 0
         -- could spawn a floating number object here
@@ -41,9 +37,14 @@ export class BattlePlayer
 
     skillSecondary: (target) =>
 
+    draw: () =>
+        if @hp == 0
+            @draw_dead!
+        else
+            @draw_alive!
 
-    draw_alive: () =>
-        lg.setColor(ORANGE)
+    draw_alive: (overwrite=false) =>
+        lg.setColor(ORANGE) if overwrite
         lg.rectangle("fill", @pos.x, @pos.y-32, 24, 32)
         lg.setColor(BLACK)
         lg.rectangle("line", @pos.x, @pos.y-32, 24, 32)
@@ -54,15 +55,10 @@ export class BattlePlayer
         lg.setColor(BLACK)
         lg.rectangle("line", @pos.x, @pos.y-32, 24, 32)
 
-    draw: () =>
-        if @hp == 0
-            @draw_dead!
-        else
-            @draw_alive!
 
 export class Mage extends BattlePlayer
-    new: () =>
-        super!
+    new: (...) =>
+        super ...
         @stats.hp = 50
         @stats.attack = 3
         @stats.defence = 2
@@ -70,14 +66,13 @@ export class Mage extends BattlePlayer
         @stats.magic = 10
         @init!
 
-    draw: () =>
-        super!
-        lg.setColor(BLACK)
-        lg.print("M", @pos.x, @pos.y)
+    draw_alive: () =>
+        lg.setColor(MAGE_COL)
+        super false
 
 export class Fighter extends BattlePlayer
-    new: () =>
-        super!
+    new: (...) =>
+        super ...
         @stats.hp = 50
         @stats.attack = 8
         @stats.defence = 4
@@ -85,14 +80,13 @@ export class Fighter extends BattlePlayer
         @stats.magic = 2
         @init!
 
-    draw: () =>
-        super!
-        lg.setColor(BLACK)
-        lg.print("F", @pos.x, @pos.y)
+    draw_alive: () =>
+        lg.setColor(FIGHTER_COL)
+        super false
 
 export class Paladin extends BattlePlayer
-    new: () =>
-        super!
+    new: (...) =>
+        super ...
         @stats.hp = 50
         @stats.attack = 5
         @stats.defence = 8
@@ -100,14 +94,13 @@ export class Paladin extends BattlePlayer
         @stats.magic = 6
         @init!
 
-    draw: () =>
-        super!
-        lg.setColor(BLACK)
-        lg.print("P", @pos.x, @pos.y)
+    draw_alive: () =>
+        lg.setColor(PALADIN_COL)
+        super false
 
 export class Rogue extends BattlePlayer
-    new: () =>
-        super!
+    new: (...) =>
+        super ...
         @stats.hp = 50
         @stats.attack = 9
         @stats.defence = 2
@@ -115,7 +108,6 @@ export class Rogue extends BattlePlayer
         @stats.magic = 2
         @init!
 
-    draw: () =>
-        super!
-        lg.setColor(BLACK)
-        lg.print("R", @pos.x, @pos.y)
+    draw_alive: () =>
+        lg.setColor(ROGUE_COL)
+        super false

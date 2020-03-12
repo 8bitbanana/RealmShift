@@ -37,4 +37,24 @@ GRAY = {
   0.5,
   0.5
 }
+PALADIN_COL = {
+  0.78,
+  0.74,
+  0.46
+}
+FIGHTER_COL = {
+  0.83,
+  0.18,
+  0.01
+}
+MAGE_COL = {
+  0.47,
+  0.34,
+  0.87
+}
+ROGUE_COL = {
+  0.45,
+  0.29,
+  0.25
+}
 SHOW_COLLIDERS = false
