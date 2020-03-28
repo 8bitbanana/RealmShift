@@ -94,7 +94,7 @@ export class BattleSpaceSelectState extends BattleEntitySelectState
         STEPS = 8
         for i=0, STEPS
             progress = i/STEPS
-            point = vector.bezier4(
+            point = vector.bezier3(
                 startpos, control1, control2, endpos, progress
             )
             table.insert(points, point.x)

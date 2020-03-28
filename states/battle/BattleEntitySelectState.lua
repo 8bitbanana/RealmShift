@@ -212,7 +212,7 @@ do
       local STEPS = 8
       for i = 0, STEPS do
         local progress = i / STEPS
-        local point = vector.bezier4(startpos, control1, control2, endpos, progress)
+        local point = vector.bezier3(startpos, control1, control2, endpos, progress)
         table.insert(points, point.x)
         table.insert(points, point.y)
       end

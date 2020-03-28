@@ -5,12 +5,12 @@ vector.down = {x:0,y:1}
 vector.left = {x:-1,y:0}
 vector.right = {x:1,y:0}
 
-vector.bezier3 = (start, control, finish, progress) ->
+vector.bezier2 = (start, control, finish, progress) ->
     -- heard you like lerps so I added more lerps to your lerps
     sc_mid = vector.lerp(start, control, progress)
     cf_mid = vector.lerp(control, finish, progress)
     return vector.lerp(sc_mid, cf_mid, progress)
-vector.bezier4 = (start, control1, control2, finish, progress) ->
+vector.bezier3 = (start, control1, control2, finish, progress) ->
     -- heard you like lerp-lerps so I added more lerp-lerps to your lerp-lerps
     sc_mid = vector.lerp(start, control1, progress)
     cd_mid = vector.lerp(control1, control2, progress)

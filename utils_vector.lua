@@ -15,12 +15,12 @@ vector.right = {
   x = 1,
   y = 0
 }
-vector.bezier3 = function(start, control, finish, progress)
+vector.bezier2 = function(start, control, finish, progress)
   local sc_mid = vector.lerp(start, control, progress)
   local cf_mid = vector.lerp(control, finish, progress)
   return vector.lerp(sc_mid, cf_mid, progress)
 end
-vector.bezier4 = function(start, control1, control2, finish, progress)
+vector.bezier3 = function(start, control1, control2, finish, progress)
   local sc_mid = vector.lerp(start, control1, progress)
   local cd_mid = vector.lerp(control1, control2, progress)
   local df_mid = vector.lerp(control2, finish, progress)
