@@ -63,7 +63,7 @@ export class BattlePlayer
 
     draw_health: () =>
         lg.printf(@hp, @pos.x+2, @pos.y, 20, "left")
-        lg.printf(@hp, @pos.x+2, @pos.y+12, 20, "right")
+        lg.printf(@stats.hp, @pos.x+2, @pos.y+12, 20, "right")
 
     draw_alive: (overwrite=false) =>
         lg.setColor(ORANGE) if overwrite

@@ -55,7 +55,7 @@ do
     end,
     draw_health = function(self)
       lg.printf(self.hp, self.pos.x + 2, self.pos.y, 20, "left")
-      return lg.printf(self.hp, self.pos.x + 2, self.pos.y + 12, 20, "right")
+      return lg.printf(self.stats.hp, self.pos.x + 2, self.pos.y + 12, 20, "right")
     end,
     draw_alive = function(self, overwrite)
       if overwrite == nil then
