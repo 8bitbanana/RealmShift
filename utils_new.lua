@@ -39,6 +39,14 @@ math.sign = function(x)
     return 0
   end
 end
+table.contains = function(t, element)
+  for _, value in pairs(table) do
+    if value == element then
+      return true
+    end
+  end
+  return false
+end
 setupRandom = function()
   math.randomseed(os.time())
   return math.random()(math.random()(math.random()))

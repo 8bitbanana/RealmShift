@@ -8,7 +8,8 @@ function loadSprites()
 			cursor = Soda.newSprite(lg.newImage("images/sprites/dialog/cursor.png"), 12, 8)
 		},
 		battle = {
-			cursor = Soda.newSprite(lg.newImage("images/sprites/battle/cursor.png"), 8, 12)
+			cursor_right = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_right.png"), 8, 12),
+			cursor_down = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_down.png"), 12, 8)
 		}
 	}
 end

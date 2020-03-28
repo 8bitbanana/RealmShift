@@ -5,15 +5,15 @@ WRAP_ITEM_CURSOR = false
 
 class MenuItem
     new: (@parent, @text, @pos)=>
+        @cursor = Cursor({x:@pos.x-15,y:@pos.y-4}, "right")
     clicked: ()=>
-        if @valid!
-            @activate!
-            @parent.parent\getNextInitiative true
+        @activate! if @valid!
+            
     activate: ()=>
     valid: ()=>false
     draw: ()=>
-        if @parent\selectedItem! == @
-            sprites.battle.cursor\draw(@pos.x-15, @pos.y-4)
+        --if @parent\selectedItem! == @
+            --@cursor\draw!
         if @valid!                
             lg.setColor(BLACK)
         else
@@ -22,16 +22,29 @@ class MenuItem
 
 class AttackMenuItem extends MenuItem
     activate: () => @parent.parent\attackAction!
-    valid: () => true
+    valid: () =>
+        validtargets = 0
+        for enemy in *@parent.parent.enemies
+            if enemy\isValidTarget "attack"
+                validtargets += 1
+        return validtargets > 0
+
 
 class MoveMenuItem extends MenuItem
-    valid: () => false
+    activate: () => @parent.parent\moveAction!
+    valid: () =>
+        validtargets = 0
+        for enemy in *@parent.parent.enemies
+            if enemy\isValidTarget "move"
+                validtargets += 1
+        return validtargets > 0
 
 class SkillMenuItem extends MenuItem
     valid: () => false
 
 class ItemMenuItem extends MenuItem
     valid: () => false
+
 
 export class BattleMenuState extends State
     new: (@parent) =>
@@ -42,6 +55,8 @@ export class BattleMenuState extends State
             ItemMenuItem(@, "ITEM",   {x:195,y:30})
         }
         @selectedIndex = 1
+        @cursor = Cursor({x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}, "right")
+        
 
     drawMenu: () =>
         for index, item in pairs @items
@@ -51,6 +66,7 @@ export class BattleMenuState extends State
         return @items[@selectedIndex]
 
     update: () =>
+        @cursor\update!
         @moveItemCursor(-1) if input\pressed("up")
         @moveItemCursor(1)  if input\pressed("down")
         @moveItemCursor(-2) if input\pressed("left")
@@ -64,6 +80,7 @@ export class BattleMenuState extends State
         return if @selectedIndex == 2 and dir == 1
         return if @selectedIndex == 3 and dir == -1
         @selectedIndex = newindex
+        @cursor.pos = {x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}
 
     draw: () =>
         lg.setColor(1,1,1,1)
@@ -84,5 +101,6 @@ export class BattleMenuState extends State
             selectedX + 22, 53
         ) -- player cursor line
         @drawMenu!
+        @cursor\draw!
 
     

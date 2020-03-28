@@ -25,7 +25,12 @@ table.shallow_copy = (t) ->
 math.sign = (x) ->
     if x < 0 return -1
     elseif x > 0 return 1
-    else return 0
+	else return 0
+	
+table.contains = (t, element) ->
+	for _, value in pairs table
+		return true if value == element
+	return false
 
 --------------------------------
 

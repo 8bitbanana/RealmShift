@@ -22,13 +22,41 @@ do
           y = 127
         })
       }
+      self:calculatePlayerPos()
       self.enemies = {
         BattleEnemy(self, {
           x = 10,
           y = 127
+        }),
+        BattleEnemy(self, {
+          x = 50,
+          y = 127
         })
       }
       return self:getNextInitiative(true)
+    end,
+    calculatePlayerPos = function(self)
+      for i, player in pairs(self.players) do
+        player.pos = {
+          x = 92 + 28 * i,
+          y = 127
+        }
+      end
+    end,
+    turnEnd = function(self)
+      self:getNextInitiative(true)
+      local _exp_0 = self.currentTurnIndex.type
+      if "player" == _exp_0 then
+        return self.state:changeState(BattleMenuState)
+      elseif "enemy" == _exp_0 then
+        return self:enemyTurn()
+      else
+        if self.currentTurnIndex.type == nil then
+          return error("currentTurnIndex.type is nil")
+        else
+          return error("Invalid currentTurnIndex.type " .. self.currentTurnIndex.type)
+        end
+      end
     end,
     getNextInitiative = function(self, apply)
       if apply == nil then
@@ -36,17 +64,23 @@ do
       end
       local nextup = nil
       local nextupSpeed = -999
+      local nextupIndex = {
+        type = nil,
+        index = 0
+      }
       local nextup_all = nil
       local nextup_allSpeed = -999
+      local nextup_allIndex = {
+        type = nil,
+        index = 0
+      }
       local currentTurnSpeed = 999
       if self.currentTurn ~= nil then
         currentTurnSpeed = self.currentTurn.stats.speed
       end
-      local _list_0 = self.players
-      for _index_0 = 1, #_list_0 do
+      for index, player in pairs(self.players) do
         local _continue_0 = false
         repeat
-          local player = _list_0[_index_0]
           if player == nil then
             _continue_0 = true
             break
@@ -54,10 +88,18 @@ do
           if player.stats.speed > nextupSpeed and player.stats.speed < currentTurnSpeed then
             nextup = player
             nextupSpeed = player.stats.speed
+            nextupIndex = {
+              type = "player",
+              index = index
+            }
           end
           if player.stats.speed > nextup_allSpeed then
             nextup_all = player
             nextup_allSpeed = player.stats.speed
+            nextup_allIndex = {
+              type = "player",
+              index = index
+            }
           end
           _continue_0 = true
         until true
@@ -65,11 +107,9 @@ do
           break
         end
       end
-      local _list_1 = self.enemies
-      for _index_0 = 1, #_list_1 do
+      for index, enemy in pairs(self.enemies) do
         local _continue_0 = false
         repeat
-          local enemy = _list_1[_index_0]
           if enemy == nil then
             _continue_0 = true
             break
@@ -77,10 +117,18 @@ do
           if enemy.stats.speed > nextupSpeed and enemy.stats.speed < currentTurnSpeed then
             nextup = enemy
             nextupSpeed = enemy.stats.speed
+            nextupIndex = {
+              type = "enemy",
+              index = index
+            }
           end
           if enemy.stats.speed > nextup_allSpeed then
             nextup_all = enemy
             nextup_allSpeed = enemy.stats.speed
+            nextup_allIndex = {
+              type = "enemy",
+              index = index
+            }
           end
           _continue_0 = true
         until true
@@ -92,16 +140,46 @@ do
         if apply then
           self.currentTurn = nextup_all
         end
+        if apply then
+          self.currentTurnIndex = nextup_allIndex
+        end
         return nextup_all
       else
         if apply then
           self.currentTurn = nextup
         end
+        if apply then
+          self.currentTurnIndex = nextupIndex
+        end
         return nextup
       end
     end,
     attackAction = function(self)
-      return self.currentTurn:attack(self.enemies[1])
+      self.selectionCallback = function(self, index)
+        self.currentTurn:attack(self.enemies[index])
+        return self:turnEnd()
+      end
+      return self.state:changeState(BattleEnemySelectState)
+    end,
+    enemyTurn = function(self)
+      print("Enemy turn unimplimented - skip")
+      return self:turnEnd()
+    end,
+    moveAction = function(self)
+      self.selectionCallback = function(self, index)
+        local currentSpace = nil
+        for i, player in pairs(self.players) do
+          if player == self.currentTurn then
+            currentSpace = i
+          end
+        end
+        assert(currentSpace ~= nil)
+        assert(index <= 4)
+        self.players[currentSpace], self.players[index] = self.players[index], self.players[currentSpace]
+        self:calculatePlayerPos()
+        return self:turnEnd()
+      end
+      return self.state:changeState(BattleSpaceSelectState)
     end,
     selectedPlayer = function(self)
       return self.players[self.selectedSpace]
@@ -116,7 +194,6 @@ do
       lg.rectangle("fill", 0, 0, GAME_WIDTH, GAME_HEIGHT)
       lg.setColor(0.25, 0.63, 0.22, 1)
       lg.rectangle("fill", 0, 127, GAME_WIDTH, 53)
-      self.state:draw()
       local _list_0 = self.players
       for _index_0 = 1, #_list_0 do
         local player = _list_0[_index_0]
@@ -131,6 +208,7 @@ do
           enemy:draw()
         end
       end
+      self.state:draw()
       return self.aniObjs:drawObjects()
     end
   }
@@ -152,6 +230,12 @@ do
       self.state = nil
       self.aniObjs = ObjectManager()
       self.currentTurn = nil
+      self.currentTurnIndex = {
+        type = nil,
+        index = 0
+      }
+      self.selectionCallback = function() end
+      self.unselectable = { }
     end,
     __base = _base_0,
     __name = "GameBattleState",

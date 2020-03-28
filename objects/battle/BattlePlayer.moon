@@ -37,11 +37,33 @@ export class BattlePlayer
 
     skillSecondary: (target) =>
 
+    isValidTarget: (targetType) =>
+        switch targetType
+            when "attack"
+                return @hp > 0
+            when "move"
+                return @parent.currentTurn != @
+            when "always"
+                return true
+            else
+                error("isValidTarget - Invalid target type - " .. targetType)
+
+    getCursorPos: () =>
+        return {
+            x:@pos.x+0
+            y:@pos.y-49
+        }
+
     draw: () =>
         if @hp == 0
             @draw_dead!
         else
             @draw_alive!
+            @draw_health!
+
+    draw_health: () =>
+        lg.printf(@hp, @pos.x+2, @pos.y, 20, "left")
+        lg.printf(@hp, @pos.x+2, @pos.y+12, 20, "right")
 
     draw_alive: (overwrite=false) =>
         lg.setColor(ORANGE) if overwrite

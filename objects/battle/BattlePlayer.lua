@@ -27,12 +27,35 @@ do
     end,
     skillPrimary = function(self, target) end,
     skillSecondary = function(self, target) end,
+    isValidTarget = function(self, targetType)
+      local _exp_0 = targetType
+      if "attack" == _exp_0 then
+        return self.hp > 0
+      elseif "move" == _exp_0 then
+        return self.parent.currentTurn ~= self
+      elseif "always" == _exp_0 then
+        return true
+      else
+        return error("isValidTarget - Invalid target type - " .. targetType)
+      end
+    end,
+    getCursorPos = function(self)
+      return {
+        x = self.pos.x + 0,
+        y = self.pos.y - 49
+      }
+    end,
     draw = function(self)
       if self.hp == 0 then
         return self:draw_dead()
       else
-        return self:draw_alive()
+        self:draw_alive()
+        return self:draw_health()
       end
+    end,
+    draw_health = function(self)
+      lg.printf(self.hp, self.pos.x + 2, self.pos.y, 20, "left")
+      return lg.printf(self.hp, self.pos.x + 2, self.pos.y + 12, 20, "right")
     end,
     draw_alive = function(self, overwrite)
       if overwrite == nil then

@@ -7,8 +7,7 @@ do
   local _base_0 = {
     clicked = function(self)
       if self:valid() then
-        self:activate()
-        return self.parent.parent:getNextInitiative(true)
+        return self:activate()
       end
     end,
     activate = function(self) end,
@@ -16,9 +15,6 @@ do
       return false
     end,
     draw = function(self)
-      if self.parent:selectedItem() == self then
-        sprites.battle.cursor:draw(self.pos.x - 15, self.pos.y - 4)
-      end
       if self:valid() then
         lg.setColor(BLACK)
       else
@@ -31,6 +27,10 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent, text, pos)
       self.parent, self.text, self.pos = parent, text, pos
+      self.cursor = Cursor({
+        x = self.pos.x - 15,
+        y = self.pos.y - 4
+      }, "right")
     end,
     __base = _base_0,
     __name = "MenuItem"
@@ -54,7 +54,15 @@ do
       return self.parent.parent:attackAction()
     end,
     valid = function(self)
-      return true
+      local validtargets = 0
+      local _list_0 = self.parent.parent.enemies
+      for _index_0 = 1, #_list_0 do
+        local enemy = _list_0[_index_0]
+        if enemy:isValidTarget("attack") then
+          validtargets = validtargets + 1
+        end
+      end
+      return validtargets > 0
     end
   }
   _base_0.__index = _base_0
@@ -95,8 +103,19 @@ do
   local _class_0
   local _parent_0 = MenuItem
   local _base_0 = {
+    activate = function(self)
+      return self.parent.parent:moveAction()
+    end,
     valid = function(self)
-      return false
+      local validtargets = 0
+      local _list_0 = self.parent.parent.enemies
+      for _index_0 = 1, #_list_0 do
+        local enemy = _list_0[_index_0]
+        if enemy:isValidTarget("move") then
+          validtargets = validtargets + 1
+        end
+      end
+      return validtargets > 0
     end
   }
   _base_0.__index = _base_0
@@ -229,6 +248,7 @@ do
       return self.items[self.selectedIndex]
     end,
     update = function(self)
+      self.cursor:update()
       if input:pressed("up") then
         self:moveItemCursor(-1)
       end
@@ -260,6 +280,10 @@ do
         return 
       end
       self.selectedIndex = newindex
+      self.cursor.pos = {
+        x = self:selectedItem().pos.x - 15,
+        y = self:selectedItem().pos.y - 4
+      }
     end,
     draw = function(self)
       lg.setColor(1, 1, 1, 1)
@@ -271,7 +295,8 @@ do
       lg.polygon("fill", selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
       lg.setColor(0, 0, 0, 1)
       lg.line(selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
-      return self:drawMenu()
+      self:drawMenu()
+      return self.cursor:draw()
     end
   }
   _base_0.__index = _base_0
@@ -298,6 +323,10 @@ do
         })
       }
       self.selectedIndex = 1
+      self.cursor = Cursor({
+        x = self:selectedItem().pos.x - 15,
+        y = self:selectedItem().pos.y - 4
+      }, "right")
     end,
     __base = _base_0,
     __name = "BattleMenuState",
