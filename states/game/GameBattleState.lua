@@ -37,11 +37,14 @@ do
     end,
     calculatePlayerPos = function(self)
       for i, player in pairs(self.players) do
-        player.pos = {
-          x = 92 + 28 * i,
-          y = 127
-        }
+        player.pos = self:getPlayerIndexPos(i)
       end
+    end,
+    getPlayerIndexPos = function(self, i)
+      return {
+        x = 92 + 28 * i,
+        y = 127
+      }
     end,
     turnEnd = function(self)
       self:getNextInitiative(true)
@@ -156,8 +159,13 @@ do
     end,
     attackAction = function(self)
       self.selectionCallback = function(self, index)
-        self.currentTurn:attack(self.enemies[index])
-        return self:turnEnd()
+        self.cutsceneAttackCallback = function(self)
+          return self.currentTurn:attack(self.enemies[index])
+        end
+        self.cutsceneCallback = function(self)
+          return self:turnEnd()
+        end
+        return self.state:changeState(BCPlayerAttackState)
       end
       return self.state:changeState(BattleEnemySelectState)
     end,
@@ -167,17 +175,17 @@ do
     end,
     moveAction = function(self)
       self.selectionCallback = function(self, index)
-        local currentSpace = nil
-        for i, player in pairs(self.players) do
-          if player == self.currentTurn then
-            currentSpace = i
-          end
-        end
+        local currentSpace = self.currentTurnIndex.index
         assert(currentSpace ~= nil)
         assert(index <= 4)
-        self.players[currentSpace], self.players[index] = self.players[index], self.players[currentSpace]
-        self:calculatePlayerPos()
-        return self:turnEnd()
+        self.cutsceneCallback = function(self)
+          self.players[self.currentTurnIndex.index], self.players[index] = self.players[index], self.players[self.currentTurnIndex.index]
+          self:calculatePlayerPos()
+          return self:turnEnd()
+        end
+        return self.state:changeState(BCMoveState, {
+          index = index
+        })
       end
       return self.state:changeState(BattleSpaceSelectState)
     end,
@@ -235,6 +243,7 @@ do
         index = 0
       }
       self.selectionCallback = function() end
+      self.cutsceneCallback = function() end
       self.unselectable = { }
     end,
     __base = _base_0,

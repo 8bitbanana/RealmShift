@@ -43,6 +43,6 @@ vector.midpoint = (a,b) ->
     return {x:(a.x+b.x)/2,y:(a.y+b.y)/2}
 vector.lerp = (a, b, progress) ->
     return {
-        x:a.x*progress + b.x*(1-progress)
-        y:a.y*progress + b.y*(1-progress)
+        x:b.x*progress + a.x*(1-progress)
+        y:b.y*progress + a.y*(1-progress)
     }

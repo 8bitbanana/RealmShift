@@ -13,7 +13,6 @@ export class BattleEntitySelectState extends State
     init: =>
         assert @entities != nil
         assert #@entities > 0
-        pos = @entities[@selectedIndex]\getCursorPos!
         @cursor = Cursor({x:0,y:0}, "down")
         for i, entity in pairs @entities
             if @isValidTarget i

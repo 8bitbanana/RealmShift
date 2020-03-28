@@ -16,6 +16,7 @@ export class GameBattleState extends State
         @currentTurnIndex = {type:nil,index:0}
 
         @selectionCallback = ()->
+        @cutsceneCallback = ()->
         @unselectable = {}
 
 
@@ -39,10 +40,13 @@ export class GameBattleState extends State
     
     calculatePlayerPos: =>
         for i, player in pairs @players
-            player.pos = {
-                x: 92+28*i,
-                y: 127
-            }
+            player.pos = @getPlayerIndexPos i
+
+    getPlayerIndexPos: (i) =>
+        return {
+            x: 92+28*i
+            y: 127
+        }
 
     turnEnd: () =>
         @getNextInitiative true
@@ -100,8 +104,11 @@ export class GameBattleState extends State
     
     attackAction: () =>
         @selectionCallback = (index) =>
-            @currentTurn\attack(@enemies[index])
-            @turnEnd!
+            @cutsceneAttackCallback = () =>
+                @currentTurn\attack(@enemies[index])
+            @cutsceneCallback = () =>
+                @turnEnd!
+            @state\changeState(BCPlayerAttackState)
         @state\changeState(BattleEnemySelectState)
 
     enemyTurn: () =>
@@ -113,14 +120,14 @@ export class GameBattleState extends State
 
     moveAction: () =>
         @selectionCallback = (index) =>
-            currentSpace = nil
-            for i, player in pairs @players
-                currentSpace = i if player == @currentTurn
+            currentSpace = @currentTurnIndex.index
             assert currentSpace != nil
             assert index <= 4
-            @players[currentSpace], @players[index] = @players[index], @players[currentSpace]
-            @calculatePlayerPos!
-            @turnEnd!
+            @cutsceneCallback = () =>
+                @players[@currentTurnIndex.index], @players[index] = @players[index], @players[@currentTurnIndex.index]
+                @calculatePlayerPos!
+                @turnEnd!
+            @state\changeState(BCMoveState, {index:index})
         @state\changeState(BattleSpaceSelectState)
 
     selectedPlayer: () => return @players[@selectedSpace]

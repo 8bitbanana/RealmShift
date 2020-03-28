@@ -8,7 +8,6 @@ do
     init = function(self)
       assert(self.entities ~= nil)
       assert(#self.entities > 0)
-      local pos = self.entities[self.selectedIndex]:getCursorPos()
       self.cursor = Cursor({
         x = 0,
         y = 0

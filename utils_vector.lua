@@ -80,7 +80,7 @@ vector.midpoint = function(a, b)
 end
 vector.lerp = function(a, b, progress)
   return {
-    x = a.x * progress + b.x * (1 - progress),
-    y = a.y * progress + b.y * (1 - progress)
+    x = b.x * progress + a.x * (1 - progress),
+    y = b.y * progress + a.y * (1 - progress)
   }
 end
