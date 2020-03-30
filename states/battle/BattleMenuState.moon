@@ -31,7 +31,7 @@ class AttackMenuItem extends MenuItem
 
 
 class MoveMenuItem extends MenuItem
-    activate: () => @parent.parent\moveAction!
+    activate: () => @parent.parent\swapAction!
     valid: () =>
         validtargets = 0
         for enemy in *@parent.parent.enemies
@@ -44,7 +44,8 @@ class SkillMenuItem extends MenuItem
 
 class ItemMenuItem extends MenuItem
     valid: () => false
-
+class EmptyMenuItem extends MenuItem
+    valid: () => false
 
 export class BattleMenuState extends State
     new: (@parent) =>

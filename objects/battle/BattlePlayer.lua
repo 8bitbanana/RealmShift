@@ -152,6 +152,18 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
+    skillPrimary = function(self, target)
+      local myindex = nil
+      for i, player in pairs(self.parent.players) do
+        if player == self then
+          myindex = i
+        end
+      end
+      assert(myindex ~= nil)
+      local damage = self.stats.attack * myindex / 2
+      target:takeDamage(self.stats.attack)
+      local newindex = self.parent.shovePlayer(myindex, -4)
+    end,
     draw_alive = function(self)
       lg.setColor(FIGHTER_COL)
       return _class_0.__parent.__base.draw_alive(self, false)

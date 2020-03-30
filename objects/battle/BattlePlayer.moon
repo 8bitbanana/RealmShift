@@ -101,6 +101,17 @@ export class Fighter extends BattlePlayer
         @stats.speed = 7
         @stats.magic = 2
         @init!
+    
+    -- Lunge, shoves forwards as far as you can, 
+    -- dealing more damage with a bigger lunge
+    skillPrimary: (target) =>
+        myindex = nil
+        for i, player in pairs @parent.players
+            myindex = i if player == @
+        assert myindex != nil
+        damage = @stats.attack * myindex / 2
+        target\takeDamage(@stats.attack)
+        newindex = @parent.shovePlayer(myindex, -4)
 
     draw_alive: () =>
         lg.setColor(FIGHTER_COL)

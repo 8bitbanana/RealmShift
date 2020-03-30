@@ -159,13 +159,14 @@ do
     end,
     attackAction = function(self)
       self.selectionCallback = function(self, index)
-        self.cutsceneAttackCallback = function(self)
-          return self.currentTurn:attack(self.enemies[index])
-        end
-        self.cutsceneCallback = function(self)
-          return self:turnEnd()
-        end
-        return self.state:changeState(BCPlayerAttackState)
+        local attackscene = CutsceneAttack({
+          tts = 6,
+          index = index
+        })
+        self.cutscenes:addCutscene(attackscene)
+        return self.state:changeState(BattleTurnState, {
+          ttl = 20
+        })
       end
       return self.state:changeState(BattleEnemySelectState)
     end,
@@ -173,18 +174,28 @@ do
       print("Enemy turn unimplimented - skip")
       return self:turnEnd()
     end,
-    moveAction = function(self)
+    shovePlayer = function(self, index, dir)
+      local oldindex = index
+      local newindex = index + dir
+      if newindex < 1 then
+        newindex = 1
+      end
+      if newindex > 4 then
+        newindex = 4
+      end
+    end,
+    swapAction = function(self)
       self.selectionCallback = function(self, index)
         local currentSpace = self.currentTurnIndex.index
         assert(currentSpace ~= nil)
         assert(index <= 4)
-        self.cutsceneCallback = function(self)
-          self.players[self.currentTurnIndex.index], self.players[index] = self.players[index], self.players[self.currentTurnIndex.index]
-          self:calculatePlayerPos()
-          return self:turnEnd()
-        end
-        return self.state:changeState(BCMoveState, {
+        local swapscene = CutsceneSwap({
+          tts = 2,
           index = index
+        })
+        self.cutscenes:addCutscene(swapscene)
+        return self.state:changeState(BattleTurnState, {
+          ttl = 30
         })
       end
       return self.state:changeState(BattleSpaceSelectState)
@@ -194,6 +205,7 @@ do
     end,
     update = function(self)
       self.state:update()
+      self.cutscenes:update()
       self.aniObjs:updateObjects()
       return self.aniObjs:checkDestroyed()
     end,
@@ -237,6 +249,7 @@ do
       self.selectedSpace = 1
       self.state = nil
       self.aniObjs = ObjectManager()
+      self.cutscenes = BattleCutsceneManager(self)
       self.currentTurn = nil
       self.currentTurnIndex = {
         type = nil,

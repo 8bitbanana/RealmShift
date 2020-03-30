@@ -12,6 +12,7 @@ export class GameBattleState extends State
         @state = nil
 
         @aniObjs = ObjectManager!
+        @cutscenes = BattleCutsceneManager(@)
         @currentTurn = nil
         @currentTurnIndex = {type:nil,index:0}
 
@@ -104,36 +105,37 @@ export class GameBattleState extends State
     
     attackAction: () =>
         @selectionCallback = (index) =>
-            @cutsceneAttackCallback = () =>
-                @currentTurn\attack(@enemies[index])
-            @cutsceneCallback = () =>
-                @turnEnd!
-            @state\changeState(BCPlayerAttackState)
+            attackscene = CutsceneAttack({tts:6, index:index})
+            @cutscenes\addCutscene(attackscene)
+            @state\changeState(BattleTurnState, {ttl:20})
         @state\changeState(BattleEnemySelectState)
 
     enemyTurn: () =>
-        -- Pick what the enemy is going to do and set up a
-        -- BattleCutsceneState to show animations
-        -- For now just skip the turn
         print "Enemy turn unimplimented - skip"
         @turnEnd!
 
-    moveAction: () =>
+    shovePlayer: (index, dir) =>
+        oldindex = index
+        newindex = index + dir
+        newindex = 1 if newindex < 1
+        newindex = 4 if newindex > 4
+        
+
+    swapAction: () =>
         @selectionCallback = (index) =>
             currentSpace = @currentTurnIndex.index
             assert currentSpace != nil
             assert index <= 4
-            @cutsceneCallback = () =>
-                @players[@currentTurnIndex.index], @players[index] = @players[index], @players[@currentTurnIndex.index]
-                @calculatePlayerPos!
-                @turnEnd!
-            @state\changeState(BCMoveState, {index:index})
+            swapscene = CutsceneSwap({tts:2, index:index})
+            @cutscenes\addCutscene(swapscene)
+            @state\changeState(BattleTurnState, {ttl:30})
         @state\changeState(BattleSpaceSelectState)
 
     selectedPlayer: () => return @players[@selectedSpace]
 
     update: =>
         @state\update!
+        @cutscenes\update!
         @aniObjs\updateObjects!
         @aniObjs\checkDestroyed!
 
