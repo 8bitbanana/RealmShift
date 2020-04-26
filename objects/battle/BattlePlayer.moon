@@ -15,6 +15,10 @@ export class BattlePlayer
             speed: 0,
             magic: 0
         }
+        @buffs = {
+            rally: false,
+            poison: false
+        }
 
     init: () =>
         @hp = @stats.hp
@@ -30,12 +34,25 @@ export class BattlePlayer
             @hp = 0
         -- could spawn a floating number object here
 
-    attack: (target) =>
-        target\takeDamage(@stats.attack)
+    attack: (target, damageOverride) =>
+        if damageOverride
+            damage = damageOverride
+        else
+            damage = @stats.attack
+        damage *= 
+        target\takeDamage(damage)
         
-    skillPrimary: (target) =>
+    skillPrimaryInfo: () => return {
+        name: "SKILLPRIMARY"
+    }
 
-    skillSecondary: (target) =>
+    skillSecondaryInfo: () => return {
+        name: "SKILLSECONDARY"
+    }
+
+    skillPrimary: () =>
+
+    skillSecondary: () =>
 
     isValidTarget: (targetType) =>
         switch targetType
@@ -102,16 +119,28 @@ export class Fighter extends BattlePlayer
         @stats.magic = 2
         @init!
     
-    -- Lunge, shoves forwards as far as you can, 
+    -- Lunge - shoves forwards as far as you can, 
     -- dealing more damage with a bigger lunge
-    skillPrimary: (target) =>
+    skillPrimaryInfo: () => return {name:"LUNGE"}
+    skillPrimary: () =>
         myindex = nil
         for i, player in pairs @parent.players
             myindex = i if player == @
         assert myindex != nil
         damage = @stats.attack * myindex / 2
-        target\takeDamage(@stats.attack)
-        newindex = @parent.shovePlayer(myindex, -4)
+
+        @parent.selectionCallback = (index) =>
+            shovescene = CutsceneShove({tts:0, dir:-4})
+            attackscene = CutsceneAttack({tts:6, index:index, damage:damage})
+            @cutscenes\addCutscene(shovescene)
+            @cutscenes\addCutscene(attackscene)
+            @state\changeState(BattleTurnState, {ttl:30})
+        @parent.state\changeState(BattleEnemySelectState)
+
+    -- Rally - Gives all allies a minor speed and damage buff
+    skillSecondaryInfo: () => return {name:"RALLY"}
+    skillSecondary: () =>
+
 
     draw_alive: () =>
         lg.setColor(FIGHTER_COL)

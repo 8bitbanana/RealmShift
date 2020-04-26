@@ -174,15 +174,8 @@ do
       print("Enemy turn unimplimented - skip")
       return self:turnEnd()
     end,
-    shovePlayer = function(self, index, dir)
-      local oldindex = index
-      local newindex = index + dir
-      if newindex < 1 then
-        newindex = 1
-      end
-      if newindex > 4 then
-        newindex = 4
-      end
+    skillAction = function(self)
+      return self.state:changeState(BattleSkillSelectState)
     end,
     swapAction = function(self)
       self.selectionCallback = function(self, index)

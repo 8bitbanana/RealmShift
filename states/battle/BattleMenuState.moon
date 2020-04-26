@@ -3,7 +3,7 @@ Inspect = require "lib/inspect"
 
 WRAP_ITEM_CURSOR = false
 
-class MenuItem
+export class MenuItem
     new: (@parent, @text, @pos)=>
         @cursor = Cursor({x:@pos.x-15,y:@pos.y-4}, "right")
     clicked: ()=>
@@ -29,7 +29,6 @@ class AttackMenuItem extends MenuItem
                 validtargets += 1
         return validtargets > 0
 
-
 class MoveMenuItem extends MenuItem
     activate: () => @parent.parent\swapAction!
     valid: () =>
@@ -40,7 +39,8 @@ class MoveMenuItem extends MenuItem
         return validtargets > 0
 
 class SkillMenuItem extends MenuItem
-    valid: () => false
+    activate: () => @parent.parent\skillAction!
+    valid: () => @parent.parent.currentTurn.__class == Fighter
 
 class ItemMenuItem extends MenuItem
     valid: () => false

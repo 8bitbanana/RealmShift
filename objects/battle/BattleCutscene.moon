@@ -78,7 +78,64 @@ export class CutsceneAttack extends BattleCutscene
         -- Fancy slash graphics to go here
 
     sceneFinish: =>
-        @root.currentTurn\attack(@root.enemies[@args.index])
+        @root.currentTurn\attack(@root.enemies[@args.index], @args.damage)
+
+export class CutsceneShove extends BattleCutscene
+    new: (...) =>
+        super ...
+        @ttl = 25
+        @moves = {}
+
+    sceneStart: =>
+        oldindex = @root.currentTurnIndex.index
+        newindex = oldindex + @args.dir
+        newindex = 1 if newindex < 1
+        newindex = 4 if newindex > 4
+        shovestart = newindex
+        shoveend = nil
+        shovedir = nil
+        if @args.dir < 0 -- shove forwards
+            for i=shovestart, 4
+                if @root.players[i] == nil or i == oldindex
+                    shoveend = i
+                    break
+            shovedir = 1
+        else       -- shove backwards
+            for i=shovestart, 1, -1
+                if @root.players[i] == nil or i == oldindex
+                    shoveend = i
+                    break
+            shovedir = -1
+        assert shovestart != nil
+        assert shoveend != nil
+        @moves = {{oldindex, newindex}}
+        for i=shovestart, shoveend-shovedir, shovedir
+            if @root.players[i] != nil
+                table.insert(@moves, {i, i+shovedir})
+    
+    sceneUpdate: =>
+        for move in *@moves
+            oldindex, newindex = move[1], move[2]
+            oldpos = @root\getPlayerIndexPos(oldindex)
+            newpos = @root\getPlayerIndexPos(newindex)
+            @root.players[oldindex].pos = vector.lerp(oldpos, newpos, @progress!)
+    
+    sceneFinish: =>
+        print(Inspect(@moves))
+        newPlayers = {nil,nil,nil,nil}
+        for index=1, 4
+            continue if @root.players[index] == nil
+            newindex = index
+            for move in *@moves
+                if move[1] == index
+                    newindex = move[2]
+                    break
+            newPlayers[newindex] = @root.players[index]
+        @root.players = newPlayers
+        @root\calculatePlayerPos!
+        for i,p in pairs @root.players
+            print("#{i}-#{p.__class.__name}")
+        
 
 export class CutsceneSwap extends BattleCutscene
     new: (...) =>

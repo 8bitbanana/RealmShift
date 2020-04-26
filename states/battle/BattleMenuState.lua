@@ -1,7 +1,6 @@
 require("states/state")
 local Inspect = require("lib/inspect")
 local WRAP_ITEM_CURSOR = false
-local MenuItem
 do
   local _class_0
   local _base_0 = {
@@ -156,8 +155,11 @@ do
   local _class_0
   local _parent_0 = MenuItem
   local _base_0 = {
+    activate = function(self)
+      return self.parent.parent:skillAction()
+    end,
     valid = function(self)
-      return false
+      return self.parent.parent.currentTurn.__class == Fighter
     end
   }
   _base_0.__index = _base_0

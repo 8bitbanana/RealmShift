@@ -114,12 +114,8 @@ export class GameBattleState extends State
         print "Enemy turn unimplimented - skip"
         @turnEnd!
 
-    shovePlayer: (index, dir) =>
-        oldindex = index
-        newindex = index + dir
-        newindex = 1 if newindex < 1
-        newindex = 4 if newindex > 4
-        
+    skillAction: () =>
+        @state\changeState(BattleSkillSelectState)
 
     swapAction: () =>
         @selectionCallback = (index) =>

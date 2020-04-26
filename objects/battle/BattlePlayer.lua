@@ -22,11 +22,25 @@ do
         self.hp = 0
       end
     end,
-    attack = function(self, target)
-      return target:takeDamage(self.stats.attack)
+    attack = function(self, target, damageOverride)
+      if damageOverride then
+        return target:takeDamage(damageOverride)
+      else
+        return target:takeDamage(self.stats.attack)
+      end
     end,
-    skillPrimary = function(self, target) end,
-    skillSecondary = function(self, target) end,
+    skillPrimaryInfo = function(self)
+      return {
+        name = "SKILLPRIMARY"
+      }
+    end,
+    skillSecondaryInfo = function(self)
+      return {
+        name = "SKILLSECONDARY"
+      }
+    end,
+    skillPrimary = function(self) end,
+    skillSecondary = function(self) end,
     isValidTarget = function(self, targetType)
       local _exp_0 = targetType
       if "attack" == _exp_0 then
@@ -152,7 +166,12 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    skillPrimary = function(self, target)
+    skillPrimaryInfo = function(self)
+      return {
+        name = "LUNGE"
+      }
+    end,
+    skillPrimary = function(self)
       local myindex = nil
       for i, player in pairs(self.parent.players) do
         if player == self then
@@ -161,8 +180,23 @@ do
       end
       assert(myindex ~= nil)
       local damage = self.stats.attack * myindex / 2
-      target:takeDamage(self.stats.attack)
-      local newindex = self.parent.shovePlayer(myindex, -4)
+      self.parent.selectionCallback = function(self, index)
+        local shovescene = CutsceneShove({
+          tts = 0,
+          dir = -4
+        })
+        local attackscene = CutsceneAttack({
+          tts = 6,
+          index = index,
+          damage = damage
+        })
+        self.cutscenes:addCutscene(shovescene)
+        self.cutscenes:addCutscene(attackscene)
+        return self.state:changeState(BattleTurnState, {
+          ttl = 30
+        })
+      end
+      return self.parent.state:changeState(BattleEnemySelectState)
     end,
     draw_alive = function(self)
       lg.setColor(FIGHTER_COL)
