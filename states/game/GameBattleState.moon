@@ -116,6 +116,9 @@ export class GameBattleState extends State
 
     skillAction: () =>
         @state\changeState(BattleSkillSelectState)
+    
+    waitAction: () =>
+        @state\changeState(BattleTurnState, {ttl:30})
 
     swapAction: () =>
         @selectionCallback = (index) =>
@@ -125,7 +128,7 @@ export class GameBattleState extends State
             swapscene = CutsceneSwap({tts:2, firstindex:@currentTurnIndex.index,secondindex:index})
             @cutscenes\addCutscene(swapscene)
             @state\changeState(BattleTurnState, {ttl:30})
-        @state\changeState(BattleSpaceSelectState)
+        @state\changeState(BattleSpaceSelectState, {selectedspace:@currentTurnIndex.index})
 
     selectedPlayer: () => return @players[@selectedSpace]
 

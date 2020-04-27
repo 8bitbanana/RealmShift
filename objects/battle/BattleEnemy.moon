@@ -6,9 +6,9 @@ export class BattleEnemy extends BattlePlayer
     new: (...) =>
         super ...
         @basestats.hp = 100
-        @basestats.attack = 1
-        @basestats.defence = 1
-        @basestats.speed = 1
+        @basestats.attack = 3
+        @basestats.defence = 4
+        @basestats.speed = 2
         @init!
 
     getCursorPos: () =>

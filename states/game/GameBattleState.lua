@@ -177,6 +177,11 @@ do
     skillAction = function(self)
       return self.state:changeState(BattleSkillSelectState)
     end,
+    waitAction = function(self)
+      return self.state:changeState(BattleTurnState, {
+        ttl = 30
+      })
+    end,
     swapAction = function(self)
       self.selectionCallback = function(self, index)
         local currentSpace = self.currentTurnIndex.index
@@ -192,7 +197,9 @@ do
           ttl = 30
         })
       end
-      return self.state:changeState(BattleSpaceSelectState)
+      return self.state:changeState(BattleSpaceSelectState, {
+        selectedspace = self.currentTurnIndex.index
+      })
     end,
     selectedPlayer = function(self)
       return self.players[self.selectedSpace]

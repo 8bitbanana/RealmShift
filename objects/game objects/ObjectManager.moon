@@ -1,4 +1,3 @@
-
 export class ObjectManager
 	new: =>
 		@objects = {}

@@ -139,7 +139,7 @@ do
       self.root = nil
       self.started = false
       self.done = false
-      self.tts_max = 10
+      self.tts_max = 0
       self.ttl_max = 10
     end,
     __base = _base_0,
@@ -159,17 +159,22 @@ do
   local _class_0
   local _parent_0 = BattleCutscene
   local _base_0 = {
-    sceneUpdate = function(self) end,
-    sceneFinish = function(self)
-      return self.root.currentTurn:attack(self.root.enemies[self.args.index], self.args.damage)
-    end
+    sceneUpdate = function(self)
+      if self.ttl == 5 then
+        local damage = self.root.currentTurn:attack(self.root.enemies[self.args.index], self.args.damage)
+        local pos = self.root.enemies[self.args.index]:getCursorPos()
+        local particle = BattleDamageNumber(pos, damage)
+        return self.root.aniObjs:addObject(particle)
+      end
+    end,
+    sceneFinish = function(self) end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.ttl = 8
+      self.ttl_max = 10
     end,
     __base = _base_0,
     __name = "CutsceneAttack",

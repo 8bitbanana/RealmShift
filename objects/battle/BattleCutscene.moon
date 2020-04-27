@@ -34,7 +34,7 @@ export class BattleCutscene
         @root = nil
         @started = false
         @done = false
-        @tts_max = 10
+        @tts_max = 0
         @ttl_max = 10
 
     init: =>
@@ -72,13 +72,17 @@ export class BattleCutscene
 export class CutsceneAttack extends BattleCutscene
     new: (...) =>
         super ...
-        @ttl = 8
+        @ttl_max = 10
 
     sceneUpdate: =>
+        if @ttl == 5
+            damage = @root.currentTurn\attack(@root.enemies[@args.index], @args.damage)
+            pos = @root.enemies[@args.index]\getCursorPos!
+            particle = BattleDamageNumber(pos, damage)
+            @root.aniObjs\addObject(particle)
         -- Fancy slash graphics to go here
 
     sceneFinish: =>
-        @root.currentTurn\attack(@root.enemies[@args.index], @args.damage)
 
 export class CutsceneShove extends BattleCutscene
     new: (...) =>

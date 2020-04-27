@@ -12,10 +12,15 @@ do
         x = 0,
         y = 0
       }, "down")
-      for i, entity in pairs(self.entities) do
-        if self:isValidTarget(i) then
-          self.selectedIndex = i
-          break
+      if self.params.selectedIndex then
+        self.selectedIndex = self.params.selectedIndex
+        assert(self:isValidTarget(self.selectedIndex))
+      else
+        for i, entity in pairs(self.entities) do
+          if self:isValidTarget(i) then
+            self.selectedIndex = i
+            break
+          end
         end
       end
       return self:moveCursor(0)
@@ -156,18 +161,13 @@ do
   local _base_0 = {
     init = function(self)
       self.entities = self.parent.players
+      self.startindex = nil
       if self.params.selectedspace ~= nil then
         self.startindex = self.params.selectedspace
         self.startpos = {
           x = 104 + 28 * self.params.selectedspace,
           y = 94
         }
-      else
-        self.startindex = self.parent.currentTurnIndex.index
-        self.startpos = vector.add(self.parent.currentTurn:getCursorPos(), {
-          x = 12,
-          y = 16
-        })
       end
       return _class_0.__parent.__base.init(self)
     end,
@@ -229,7 +229,9 @@ do
       return lg.line(points)
     end,
     draw = function(self)
-      self:drawarc()
+      if self.startindex ~= nil then
+        self:drawarc()
+      end
       return self.cursor:draw()
     end
   }

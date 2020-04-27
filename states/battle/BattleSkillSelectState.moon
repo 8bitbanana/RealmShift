@@ -2,22 +2,26 @@ require "states/state"
 Inspect = require "lib/inspect"
 
 class PrimaryMenuItem extends MenuItem
+    new: (...) =>
+        super ...
+        @text = @parent.parent.currentTurn\skillPrimaryInfo!.name
+        
     activate: () => @parent.parent.currentTurn\skillPrimary!
     valid: () => return true
 
 class SecondaryMenuItem extends MenuItem
+    new: (...) =>
+        super ...
+        @text = @parent.parent.currentTurn\skillSecondaryInfo!.name
+
     activate: () => @parent.parent.currentTurn\skillSecondary!
     valid: () => return true
 
 export class BattleSkillSelectState extends State
     new: (@parent) =>
         @items = {
-            PrimaryMenuItem(
-                @, @parent.currentTurn\skillPrimaryInfo!.name, {x:130, y:11}
-            ),
-            SecondaryMenuItem(
-                @, @parent.currentTurn\skillSecondaryInfo!.name, {x:130, y:30}
-            )
+            PrimaryMenuItem(@, {x:130, y:11}),
+            SecondaryMenuItem(@, {x:130, y:30})
         }
         @selectedIndex = 1
         @cursor = Cursor({x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}, "right")

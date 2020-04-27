@@ -4,11 +4,12 @@ Inspect = require "lib/inspect"
 WRAP_ITEM_CURSOR = false
 
 export class MenuItem
-    new: (@parent, @text, @pos)=>
+    text: "NULL"
+    new: (@parent, @pos)=>
         @cursor = Cursor({x:@pos.x-15,y:@pos.y-4}, "right")
     clicked: ()=>
         @activate! if @valid!
-            
+    
     activate: ()=>
     valid: ()=>false
     draw: ()=>
@@ -21,6 +22,7 @@ export class MenuItem
         lg.print(@text, @pos.x, @pos.y)
 
 class AttackMenuItem extends MenuItem
+    text: "ATTACK"
     activate: () => @parent.parent\attackAction!
     valid: () =>
         validtargets = 0
@@ -30,6 +32,7 @@ class AttackMenuItem extends MenuItem
         return validtargets > 0
 
 class MoveMenuItem extends MenuItem
+    text: "dbgmove"
     activate: () => @parent.parent\swapAction!
     valid: () =>
         validtargets = 0
@@ -38,22 +41,30 @@ class MoveMenuItem extends MenuItem
                 validtargets += 1
         return validtargets > 0
 
+class WaitMenuItem extends MenuItem
+    text: "WAIT"
+    activate: () => @parent.parent\waitAction!
+    valid: () => true
+
 class SkillMenuItem extends MenuItem
+    text: "SKILL"
     activate: () => @parent.parent\skillAction!
     valid: () => @parent.parent.currentTurn.__class == Fighter
 
 class ItemMenuItem extends MenuItem
+    text: "ITEM"
     valid: () => false
 class EmptyMenuItem extends MenuItem
+    text: ""
     valid: () => false
 
 export class BattleMenuState extends State
     new: (@parent) =>
         @items = {
-            AttackMenuItem(@, "ATTACK", {x:130,y:11}),
-            MoveMenuItem(@, "MOVE",   {x:130,y:30}),
-            SkillMenuItem(@, "SKILL",  {x:195,y:11}),
-            ItemMenuItem(@, "ITEM",   {x:195,y:30})
+            AttackMenuItem(@, {x:130,y:11}),
+            WaitMenuItem(@,   {x:130,y:30}),
+            SkillMenuItem(@,  {x:195,y:11}),
+            MoveMenuItem(@,   {x:195,y:30})
         }
         @selectedIndex = 1
         @cursor = Cursor({x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}, "right")

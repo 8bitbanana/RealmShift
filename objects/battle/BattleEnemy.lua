@@ -28,9 +28,9 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.basestats.hp = 100
-      self.basestats.attack = 1
-      self.basestats.defence = 1
-      self.basestats.speed = 1
+      self.basestats.attack = 3
+      self.basestats.defence = 4
+      self.basestats.speed = 2
       return self:init()
     end,
     __base = _base_0,

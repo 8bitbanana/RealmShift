@@ -1,7 +1,7 @@
 DAMAGE_FORMULA = {
     aw: 1 -- attack weight
     dw: 1.2 -- defence weight
-    bd: 15, -- base damage
+    bd: 5, -- base damage
     vm: 0.25 -- variance multiply
     va: 2 -- variance addition
 }
@@ -35,7 +35,7 @@ export class BattlePlayer
         print("I took " .. damage .. " damage ("..incomingattack.."ATK "..@stats.defence.."DEF)")
         if @hp < 0
             @hp = 0
-        -- could spawn a floating number object here
+        return damage
 
     attack: (target, damageOverride) =>
         damage = nil
@@ -148,6 +148,10 @@ export class Fighter extends BattlePlayer
     -- Reposition - swap two allies places
     skillSecondaryInfo: () => return {name:"REPOSITION"}
     skillSecondary: () =>
+        myindex = nil
+        for i, player in pairs @parent.players
+            myindex = i if player == @
+        assert myindex != nil
         @parent.selectionCallback = (firstindex) =>
             @selectionCallback = (secondindex) =>
                 currentSpace = firstindex
@@ -157,7 +161,7 @@ export class Fighter extends BattlePlayer
                 @cutscenes\addCutscene(swapscene)
                 @state\changeState(BattleTurnState, {ttl:30})
             @state\changeState(BattleSpaceSelectState, {selectedspace:firstindex})
-        @parent.state\changeState(BattlePlayerSelectState)
+        @parent.state\changeState(BattlePlayerSelectState, {selectedIndex:myindex})
 
     draw_alive: () =>
         lg.setColor(FIGHTER_COL)

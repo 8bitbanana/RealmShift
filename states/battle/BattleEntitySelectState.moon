@@ -13,10 +13,14 @@ export class BattleEntitySelectState extends State
         assert @entities != nil
         assert #@entities > 0
         @cursor = Cursor({x:0,y:0}, "down")
-        for i, entity in pairs @entities
-            if @isValidTarget i
-                @selectedIndex = i
-                break
+        if @params.selectedIndex
+            @selectedIndex = @params.selectedIndex
+            assert @isValidTarget(@selectedIndex)
+        else
+            for i, entity in pairs @entities
+                if @isValidTarget i
+                    @selectedIndex = i
+                    break
         @moveCursor 0
 
     isValidTarget: (index) =>
@@ -62,15 +66,13 @@ export class BattleEnemySelectState extends BattleEntitySelectState
 export class BattleSpaceSelectState extends BattleEntitySelectState
     init: =>
         @entities = @parent.players
+        @startindex = nil
         if @params.selectedspace != nil
             @startindex = @params.selectedspace
             @startpos = {
                 x: 104+28*@params.selectedspace
                 y: 94
             }
-        else
-            @startindex = @parent.currentTurnIndex.index
-            @startpos = vector.add(@parent.currentTurn\getCursorPos!, {x:12,y:16})
         super!
 
     setCursor: (index) =>
@@ -110,7 +112,7 @@ export class BattleSpaceSelectState extends BattleEntitySelectState
         lg.line(points)
     
     draw: =>
-        @drawarc!
+        @drawarc! if @startindex != nil
         @cursor\draw!
 
 

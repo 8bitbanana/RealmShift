@@ -1,7 +1,7 @@
 local DAMAGE_FORMULA = {
   aw = 1,
   dw = 1.2,
-  bd = 15,
+  bd = 5,
   vm = 0.25,
   va = 2
 }
@@ -23,6 +23,7 @@ do
       if self.hp < 0 then
         self.hp = 0
       end
+      return damage
     end,
     attack = function(self, target, damageOverride)
       local damage = nil
@@ -221,6 +222,13 @@ do
       }
     end,
     skillSecondary = function(self)
+      local myindex = nil
+      for i, player in pairs(self.parent.players) do
+        if player == self then
+          myindex = i
+        end
+      end
+      assert(myindex ~= nil)
       self.parent.selectionCallback = function(self, firstindex)
         self.selectionCallback = function(self, secondindex)
           local currentSpace = firstindex
@@ -240,7 +248,9 @@ do
           selectedspace = firstindex
         })
       end
-      return self.parent.state:changeState(BattlePlayerSelectState)
+      return self.parent.state:changeState(BattlePlayerSelectState, {
+        selectedIndex = myindex
+      })
     end,
     draw_alive = function(self)
       lg.setColor(FIGHTER_COL)

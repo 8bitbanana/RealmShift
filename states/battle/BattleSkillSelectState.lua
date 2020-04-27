@@ -16,7 +16,8 @@ do
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
     __init = function(self, ...)
-      return _class_0.__parent.__init(self, ...)
+      _class_0.__parent.__init(self, ...)
+      self.text = self.parent.parent.currentTurn:skillPrimaryInfo().name
     end,
     __base = _base_0,
     __name = "PrimaryMenuItem",
@@ -61,7 +62,8 @@ do
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
     __init = function(self, ...)
-      return _class_0.__parent.__init(self, ...)
+      _class_0.__parent.__init(self, ...)
+      self.text = self.parent.parent.currentTurn:skillSecondaryInfo().name
     end,
     __base = _base_0,
     __name = "SecondaryMenuItem",
@@ -144,11 +146,11 @@ do
     __init = function(self, parent)
       self.parent = parent
       self.items = {
-        PrimaryMenuItem(self, self.parent.currentTurn:skillPrimaryInfo().name, {
+        PrimaryMenuItem(self, {
           x = 130,
           y = 11
         }),
-        SecondaryMenuItem(self, self.parent.currentTurn:skillSecondaryInfo().name, {
+        SecondaryMenuItem(self, {
           x = 130,
           y = 30
         })

@@ -1,5 +1,7 @@
 export vector = {}
 
+-- Lua copies tables by reference
+-- Please make sure to not accidentally write to these values
 vector.up = {x:0,y:-1}
 vector.down = {x:0,y:1}
 vector.left = {x:-1,y:0}

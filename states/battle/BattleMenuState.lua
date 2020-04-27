@@ -4,6 +4,7 @@ local WRAP_ITEM_CURSOR = false
 do
   local _class_0
   local _base_0 = {
+    text = "NULL",
     clicked = function(self)
       if self:valid() then
         return self:activate()
@@ -24,8 +25,8 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, parent, text, pos)
-      self.parent, self.text, self.pos = parent, text, pos
+    __init = function(self, parent, pos)
+      self.parent, self.pos = parent, pos
       self.cursor = Cursor({
         x = self.pos.x - 15,
         y = self.pos.y - 4
@@ -49,6 +50,7 @@ do
   local _class_0
   local _parent_0 = MenuItem
   local _base_0 = {
+    text = "ATTACK",
     activate = function(self)
       return self.parent.parent:attackAction()
     end,
@@ -102,6 +104,7 @@ do
   local _class_0
   local _parent_0 = MenuItem
   local _base_0 = {
+    text = "dbgmove",
     activate = function(self)
       return self.parent.parent:swapAction()
     end,
@@ -150,11 +153,58 @@ do
   end
   MoveMenuItem = _class_0
 end
+local WaitMenuItem
+do
+  local _class_0
+  local _parent_0 = MenuItem
+  local _base_0 = {
+    text = "WAIT",
+    activate = function(self)
+      return self.parent.parent:waitAction()
+    end,
+    valid = function(self)
+      return true
+    end
+  }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self, ...)
+      return _class_0.__parent.__init(self, ...)
+    end,
+    __base = _base_0,
+    __name = "WaitMenuItem",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  WaitMenuItem = _class_0
+end
 local SkillMenuItem
 do
   local _class_0
   local _parent_0 = MenuItem
   local _base_0 = {
+    text = "SKILL",
     activate = function(self)
       return self.parent.parent:skillAction()
     end,
@@ -200,6 +250,7 @@ do
   local _class_0
   local _parent_0 = MenuItem
   local _base_0 = {
+    text = "ITEM",
     valid = function(self)
       return false
     end
@@ -242,6 +293,7 @@ do
   local _class_0
   local _parent_0 = MenuItem
   local _base_0 = {
+    text = "",
     valid = function(self)
       return false
     end
@@ -349,19 +401,19 @@ do
     __init = function(self, parent)
       self.parent = parent
       self.items = {
-        AttackMenuItem(self, "ATTACK", {
+        AttackMenuItem(self, {
           x = 130,
           y = 11
         }),
-        MoveMenuItem(self, "MOVE", {
+        WaitMenuItem(self, {
           x = 130,
           y = 30
         }),
-        SkillMenuItem(self, "SKILL", {
+        SkillMenuItem(self, {
           x = 195,
           y = 11
         }),
-        ItemMenuItem(self, "ITEM", {
+        MoveMenuItem(self, {
           x = 195,
           y = 30
         })
