@@ -54,7 +54,7 @@ do
       return self.parent.parent.currentTurn:skillSecondary()
     end,
     valid = function(self)
-      return false
+      return true
     end
   }
   _base_0.__index = _base_0

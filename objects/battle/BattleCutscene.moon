@@ -143,21 +143,25 @@ export class CutsceneSwap extends BattleCutscene
         @ttl = 25
 
     sceneStart: =>
-        @playerA = @root.currentTurn
-        @playerB = @root.players[@args.index]
-        assert @playerA != @playerB
-        @posA = @playerA.pos
+        @playerA = @root.players[@args.firstindex]
+        @playerB = @root.players[@args.secondindex]
+        assert @args.firstindex != @args.secondindex
+        if @playerA
+            @posA = @playerA.pos
+        else
+            @posA = @root\getPlayerIndexPos(@args.firstindex)
         if @playerB
             @posB = @playerB.pos
         else
-            @posB = @root\getPlayerIndexPos(@args.index)
+            @posB = @root\getPlayerIndexPos(@args.secondindex)
 
     sceneUpdate: =>
-        @playerA.pos = vector.lerp(@posA, @posB, @progress!)
+        if @playerA != nil
+            @playerA.pos = vector.lerp(@posA, @posB, @progress!)
         if @playerB != nil
             @playerB.pos = vector.lerp(@posB, @posA, @progress!)
 
     sceneFinish: =>
-        @root.players[@root.currentTurnIndex.index], @root.players[@args.index] = @root.players[@args.index], @root.players[@root.currentTurnIndex.index]
+        @root.players[@args.firstindex], @root.players[@args.secondindex] = @root.players[@args.secondindex], @root.players[@args.firstindex]
         @root.currentTurnIndex.index = index
         @root\calculatePlayerPos!

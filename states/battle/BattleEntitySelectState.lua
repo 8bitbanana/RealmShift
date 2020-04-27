@@ -73,8 +73,8 @@ do
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self, parent)
-      self.parent = parent
+    __init = function(self, parent, params)
+      self.parent, self.params = parent, params
       self.selectedIndex = 1
       self.cursor = nil
       self.entities = nil
@@ -156,6 +156,19 @@ do
   local _base_0 = {
     init = function(self)
       self.entities = self.parent.players
+      if self.params.selectedspace ~= nil then
+        self.startindex = self.params.selectedspace
+        self.startpos = {
+          x = 104 + 28 * self.params.selectedspace,
+          y = 94
+        }
+      else
+        self.startindex = self.parent.currentTurnIndex.index
+        self.startpos = vector.add(self.parent.currentTurn:getCursorPos(), {
+          x = 12,
+          y = 16
+        })
+      end
       return _class_0.__parent.__base.init(self)
     end,
     setCursor = function(self, index)
@@ -171,16 +184,13 @@ do
       if index > 4 then
         return false
       end
-      if self.entities[index] == self.parent.currentTurn then
+      if index == self.startindex then
         return false
       end
       return true
     end,
     drawarc = function(self)
-      local startpos = vector.add(self.parent.currentTurn:getCursorPos(), {
-        x = 12,
-        y = 16
-      })
+      local startpos = self.startpos
       local endpos = vector.add(self.cursor.pos, {
         x = 12,
         y = 6

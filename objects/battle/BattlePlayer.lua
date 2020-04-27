@@ -5,10 +5,12 @@ local DAMAGE_FORMULA = {
   vm = 0.25,
   va = 2
 }
+local Inspect = require("lib/inspect")
 do
   local _class_0
   local _base_0 = {
     init = function(self)
+      self.stats = table.shallow_copy(self.basestats)
       self.hp = self.stats.hp
     end,
     takeDamage = function(self, incomingattack)
@@ -23,20 +25,31 @@ do
       end
     end,
     attack = function(self, target, damageOverride)
+      local damage = nil
       if damageOverride then
-        return target:takeDamage(damageOverride)
+        damage = damageOverride
       else
-        return target:takeDamage(self.stats.attack)
+        damage = self.stats.attack
       end
+      if self.buffs.rally then
+        damage = damage * 1.1
+      end
+      return target:takeDamage(damage)
     end,
     skillPrimaryInfo = function(self)
       return {
-        name = "SKILLPRIMARY"
+        name = "SKILLPRIMARY",
+        valid = function(self)
+          return false
+        end
       }
     end,
     skillSecondaryInfo = function(self)
       return {
-        name = "SKILLSECONDARY"
+        name = "SKILLSECONDARY",
+        valid = function(self)
+          return false
+        end
       }
     end,
     skillPrimary = function(self) end,
@@ -46,7 +59,7 @@ do
       if "attack" == _exp_0 then
         return self.hp > 0
       elseif "move" == _exp_0 then
-        return self.parent.currentTurn ~= self
+        return self.hp > 0
       elseif "always" == _exp_0 then
         return true
       else
@@ -93,12 +106,16 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent, pos)
       self.parent, self.pos = parent, pos
-      self.stats = {
+      self.basestats = {
         hp = 0,
         attack = 0,
         defence = 0,
         speed = 0,
         magic = 0
+      }
+      self.buffs = {
+        rally = false,
+        poison = false
       }
     end,
     __base = _base_0,
@@ -128,11 +145,11 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.stats.hp = 50
-      self.stats.attack = 3
-      self.stats.defence = 2
-      self.stats.speed = 5
-      self.stats.magic = 10
+      self.basestats.hp = 50
+      self.basestats.attack = 3
+      self.basestats.defence = 2
+      self.basestats.speed = 5
+      self.basestats.magic = 10
       return self:init()
     end,
     __base = _base_0,
@@ -198,6 +215,33 @@ do
       end
       return self.parent.state:changeState(BattleEnemySelectState)
     end,
+    skillSecondaryInfo = function(self)
+      return {
+        name = "REPOSITION"
+      }
+    end,
+    skillSecondary = function(self)
+      self.parent.selectionCallback = function(self, firstindex)
+        self.selectionCallback = function(self, secondindex)
+          local currentSpace = firstindex
+          assert(currentSpace ~= nil)
+          assert(secondindex <= 4)
+          local swapscene = CutsceneSwap({
+            tts = 2,
+            firstindex = firstindex,
+            secondindex = secondindex
+          })
+          self.cutscenes:addCutscene(swapscene)
+          return self.state:changeState(BattleTurnState, {
+            ttl = 30
+          })
+        end
+        return self.state:changeState(BattleSpaceSelectState, {
+          selectedspace = firstindex
+        })
+      end
+      return self.parent.state:changeState(BattlePlayerSelectState)
+    end,
     draw_alive = function(self)
       lg.setColor(FIGHTER_COL)
       return _class_0.__parent.__base.draw_alive(self, false)
@@ -208,11 +252,11 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.stats.hp = 50
-      self.stats.attack = 8
-      self.stats.defence = 4
-      self.stats.speed = 7
-      self.stats.magic = 2
+      self.basestats.hp = 50
+      self.basestats.attack = 8
+      self.basestats.defence = 4
+      self.basestats.speed = 7
+      self.basestats.magic = 2
       return self:init()
     end,
     __base = _base_0,
@@ -246,6 +290,12 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
+    skillPrimaryInfo = function(self)
+      return {
+        name = "RALLY"
+      }
+    end,
+    skillPrimary = function(self) end,
     draw_alive = function(self)
       lg.setColor(PALADIN_COL)
       return _class_0.__parent.__base.draw_alive(self, false)
@@ -256,11 +306,11 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.stats.hp = 50
-      self.stats.attack = 5
-      self.stats.defence = 8
-      self.stats.speed = 3
-      self.stats.magic = 6
+      self.basestats.hp = 50
+      self.basestats.attack = 5
+      self.basestats.defence = 8
+      self.basestats.speed = 3
+      self.basestats.magic = 6
       return self:init()
     end,
     __base = _base_0,
@@ -304,11 +354,11 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.stats.hp = 50
-      self.stats.attack = 9
-      self.stats.defence = 2
-      self.stats.speed = 8
-      self.stats.magic = 2
+      self.basestats.hp = 50
+      self.basestats.attack = 9
+      self.basestats.defence = 2
+      self.basestats.speed = 8
+      self.basestats.magic = 2
       return self:init()
     end,
     __base = _base_0,

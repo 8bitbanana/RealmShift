@@ -3,12 +3,11 @@ require "utils_vector"
 Inspect = require "lib/inspect"
 
 export class BattleEntitySelectState extends State
-    new: (@parent) =>
+    new: (@parent, @params) =>
         @selectedIndex = 1
         @cursor = nil
         @entities = nil
-        @targetType = nil -- if targetType is nil it is unchecked
-                          -- such as for selecting spaces
+        @targetType = nil
 
     init: =>
         assert @entities != nil
@@ -63,6 +62,15 @@ export class BattleEnemySelectState extends BattleEntitySelectState
 export class BattleSpaceSelectState extends BattleEntitySelectState
     init: =>
         @entities = @parent.players
+        if @params.selectedspace != nil
+            @startindex = @params.selectedspace
+            @startpos = {
+                x: 104+28*@params.selectedspace
+                y: 94
+            }
+        else
+            @startindex = @parent.currentTurnIndex.index
+            @startpos = vector.add(@parent.currentTurn\getCursorPos!, {x:12,y:16})
         super!
 
     setCursor: (index) =>
@@ -74,11 +82,11 @@ export class BattleSpaceSelectState extends BattleEntitySelectState
     isValidTarget: (index) =>
         return false if index < 1
         return false if index > 4
-        return false if @entities[index] == @parent.currentTurn
+        return false if index == @startindex
         return true
 
     drawarc: () =>
-        startpos = vector.add(@parent.currentTurn\getCursorPos!, {x:12,y:16})
+        startpos = @startpos
         endpos = vector.add(@cursor.pos, {x:12,y:6})
         endpos.y += math.floor(@cursor.posoffset.y)
         control1 = startpos

@@ -27,10 +27,10 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.stats.hp = 100
-      self.stats.attack = 1
-      self.stats.defence = 1
-      self.stats.speed = 1
+      self.basestats.hp = 100
+      self.basestats.attack = 1
+      self.basestats.defence = 1
+      self.basestats.speed = 1
       return self:init()
     end,
     __base = _base_0,

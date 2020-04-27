@@ -184,7 +184,8 @@ do
         assert(index <= 4)
         local swapscene = CutsceneSwap({
           tts = 2,
-          index = index
+          firstindex = self.currentTurnIndex.index,
+          secondindex = index
         })
         self.cutscenes:addCutscene(swapscene)
         return self.state:changeState(BattleTurnState, {

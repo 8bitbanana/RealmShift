@@ -6,9 +6,11 @@ DAMAGE_FORMULA = {
     va: 2 -- variance addition
 }
 
+Inspect = require("lib/inspect")
+
 export class BattlePlayer
     new: (@parent, @pos)=>
-        @stats = {
+        @basestats = {
             hp: 0,
             attack: 0,
             defence: 0,
@@ -21,6 +23,7 @@ export class BattlePlayer
         }
 
     init: () =>
+        @stats = table.shallow_copy(@basestats)
         @hp = @stats.hp
 
     takeDamage: (incomingattack) =>
@@ -35,19 +38,23 @@ export class BattlePlayer
         -- could spawn a floating number object here
 
     attack: (target, damageOverride) =>
+        damage = nil
         if damageOverride
             damage = damageOverride
         else
             damage = @stats.attack
-        damage *= 
+        damage *= 1.1 if @buffs.rally
+        
         target\takeDamage(damage)
         
     skillPrimaryInfo: () => return {
         name: "SKILLPRIMARY"
+        valid: () => return false
     }
 
     skillSecondaryInfo: () => return {
         name: "SKILLSECONDARY"
+        valid: () => return false
     }
 
     skillPrimary: () =>
@@ -59,7 +66,8 @@ export class BattlePlayer
             when "attack"
                 return @hp > 0
             when "move"
-                return @parent.currentTurn != @
+                return @hp > 0
+                -- return @parent.currentTurn != @
             when "always"
                 return true
             else
@@ -98,11 +106,11 @@ export class BattlePlayer
 export class Mage extends BattlePlayer
     new: (...) =>
         super ...
-        @stats.hp = 50
-        @stats.attack = 3
-        @stats.defence = 2
-        @stats.speed = 5
-        @stats.magic = 10
+        @basestats.hp = 50
+        @basestats.attack = 3
+        @basestats.defence = 2
+        @basestats.speed = 5
+        @basestats.magic = 10
         @init!
 
     draw_alive: () =>
@@ -112,16 +120,16 @@ export class Mage extends BattlePlayer
 export class Fighter extends BattlePlayer
     new: (...) =>
         super ...
-        @stats.hp = 50
-        @stats.attack = 8
-        @stats.defence = 4
-        @stats.speed = 7
-        @stats.magic = 2
+        @basestats.hp = 50
+        @basestats.attack = 8
+        @basestats.defence = 4
+        @basestats.speed = 7
+        @basestats.magic = 2
         @init!
     
     -- Lunge - shoves forwards as far as you can, 
     -- dealing more damage with a bigger lunge
-    skillPrimaryInfo: () => return {name:"LUNGE"}
+    skillPrimaryInfo: => return {name:"LUNGE"}
     skillPrimary: () =>
         myindex = nil
         for i, player in pairs @parent.players
@@ -137,10 +145,19 @@ export class Fighter extends BattlePlayer
             @state\changeState(BattleTurnState, {ttl:30})
         @parent.state\changeState(BattleEnemySelectState)
 
-    -- Rally - Gives all allies a minor speed and damage buff
-    skillSecondaryInfo: () => return {name:"RALLY"}
+    -- Reposition - swap two allies places
+    skillSecondaryInfo: () => return {name:"REPOSITION"}
     skillSecondary: () =>
-
+        @parent.selectionCallback = (firstindex) =>
+            @selectionCallback = (secondindex) =>
+                currentSpace = firstindex
+                assert currentSpace != nil
+                assert secondindex <= 4
+                swapscene = CutsceneSwap({tts:2, firstindex:firstindex, secondindex:secondindex})
+                @cutscenes\addCutscene(swapscene)
+                @state\changeState(BattleTurnState, {ttl:30})
+            @state\changeState(BattleSpaceSelectState, {selectedspace:firstindex})
+        @parent.state\changeState(BattlePlayerSelectState)
 
     draw_alive: () =>
         lg.setColor(FIGHTER_COL)
@@ -149,12 +166,18 @@ export class Fighter extends BattlePlayer
 export class Paladin extends BattlePlayer
     new: (...) =>
         super ...
-        @stats.hp = 50
-        @stats.attack = 5
-        @stats.defence = 8
-        @stats.speed = 3
-        @stats.magic = 6
+        @basestats.hp = 50
+        @basestats.attack = 5
+        @basestats.defence = 8
+        @basestats.speed = 3
+        @basestats.magic = 6
         @init!
+
+    -- Rally - apply a small damage and speed buff
+    -- to all allies
+    skillPrimaryInfo: () => return {name:"RALLY"}
+    skillPrimary: () =>
+
 
     draw_alive: () =>
         lg.setColor(PALADIN_COL)
@@ -163,11 +186,11 @@ export class Paladin extends BattlePlayer
 export class Rogue extends BattlePlayer
     new: (...) =>
         super ...
-        @stats.hp = 50
-        @stats.attack = 9
-        @stats.defence = 2
-        @stats.speed = 8
-        @stats.magic = 2
+        @basestats.hp = 50
+        @basestats.attack = 9
+        @basestats.defence = 2
+        @basestats.speed = 8
+        @basestats.magic = 2
         @init!
 
     draw_alive: () =>

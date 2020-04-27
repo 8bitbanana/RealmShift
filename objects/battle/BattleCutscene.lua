@@ -336,24 +336,30 @@ do
   local _parent_0 = BattleCutscene
   local _base_0 = {
     sceneStart = function(self)
-      self.playerA = self.root.currentTurn
-      self.playerB = self.root.players[self.args.index]
-      assert(self.playerA ~= self.playerB)
-      self.posA = self.playerA.pos
+      self.playerA = self.root.players[self.args.firstindex]
+      self.playerB = self.root.players[self.args.secondindex]
+      assert(self.args.firstindex ~= self.args.secondindex)
+      if self.playerA then
+        self.posA = self.playerA.pos
+      else
+        self.posA = self.root:getPlayerIndexPos(self.args.firstindex)
+      end
       if self.playerB then
         self.posB = self.playerB.pos
       else
-        self.posB = self.root:getPlayerIndexPos(self.args.index)
+        self.posB = self.root:getPlayerIndexPos(self.args.secondindex)
       end
     end,
     sceneUpdate = function(self)
-      self.playerA.pos = vector.lerp(self.posA, self.posB, self:progress())
+      if self.playerA ~= nil then
+        self.playerA.pos = vector.lerp(self.posA, self.posB, self:progress())
+      end
       if self.playerB ~= nil then
         self.playerB.pos = vector.lerp(self.posB, self.posA, self:progress())
       end
     end,
     sceneFinish = function(self)
-      self.root.players[self.root.currentTurnIndex.index], self.root.players[self.args.index] = self.root.players[self.args.index], self.root.players[self.root.currentTurnIndex.index]
+      self.root.players[self.args.firstindex], self.root.players[self.args.secondindex] = self.root.players[self.args.secondindex], self.root.players[self.args.firstindex]
       self.root.currentTurnIndex.index = index
       return self.root:calculatePlayerPos()
     end

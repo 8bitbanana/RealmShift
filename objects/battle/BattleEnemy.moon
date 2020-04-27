@@ -5,10 +5,10 @@ require "objects/battle/BattlePlayer"
 export class BattleEnemy extends BattlePlayer
     new: (...) =>
         super ...
-        @stats.hp = 100
-        @stats.attack = 1
-        @stats.defence = 1
-        @stats.speed = 1
+        @basestats.hp = 100
+        @basestats.attack = 1
+        @basestats.defence = 1
+        @basestats.speed = 1
         @init!
 
     getCursorPos: () =>
