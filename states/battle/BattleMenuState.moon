@@ -64,11 +64,10 @@ export class BattleMenuState extends State
             AttackMenuItem(@, {x:130,y:11}),
             WaitMenuItem(@,   {x:130,y:30}),
             SkillMenuItem(@,  {x:195,y:11}),
-            MoveMenuItem(@,   {x:195,y:30})
+            ItemMenuItem(@,   {x:195,y:30})
         }
         @selectedIndex = 1
-        @cursor = Cursor({x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}, "right")
-        
+        @cursor = Cursor({x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}, "right")   
 
     drawMenu: () =>
         for index, item in pairs @items

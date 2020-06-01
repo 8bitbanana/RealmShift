@@ -413,7 +413,7 @@ do
           x = 195,
           y = 11
         }),
-        MoveMenuItem(self, {
+        ItemMenuItem(self, {
           x = 195,
           y = 30
         })

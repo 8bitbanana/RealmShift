@@ -75,7 +75,7 @@ export class CutsceneAttack extends BattleCutscene
         @ttl_max = 10
 
     sceneUpdate: =>
-        if @ttl == 5
+        if @ttl == 8
             damage = @root.currentTurn\attack(@root.enemies[@args.index], @args.damage)
             pos = @root.enemies[@args.index]\getCursorPos!
             particle = BattleDamageNumber(pos, damage)

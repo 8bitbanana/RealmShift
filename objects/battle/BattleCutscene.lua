@@ -160,7 +160,7 @@ do
   local _parent_0 = BattleCutscene
   local _base_0 = {
     sceneUpdate = function(self)
-      if self.ttl == 5 then
+      if self.ttl == 8 then
         local damage = self.root.currentTurn:attack(self.root.enemies[self.args.index], self.args.damage)
         local pos = self.root.enemies[self.args.index]:getCursorPos()
         local particle = BattleDamageNumber(pos, damage)

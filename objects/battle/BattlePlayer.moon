@@ -129,7 +129,10 @@ export class Fighter extends BattlePlayer
     
     -- Lunge - shoves forwards as far as you can, 
     -- dealing more damage with a bigger lunge
-    skillPrimaryInfo: => return {name:"LUNGE"}
+    skillPrimaryInfo: => return {
+        name:"LUNGE",
+        desc:"Lunge forward as far as you can, dealing more damage with a bigger lunge."
+    }
     skillPrimary: () =>
         myindex = nil
         for i, player in pairs @parent.players

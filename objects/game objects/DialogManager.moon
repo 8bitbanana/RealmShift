@@ -24,6 +24,9 @@ export class DialogManager
             @awaitinginput = @queue[1].awaitinginput
             if @queue[1].done
                 table.remove(@queue, 1)
+                Push\setCanvas("dialogbox")
+                lg.clear()
+                Push\setCanvas("main")
                 if @queue[1] == nil
                     @running = false
                 else

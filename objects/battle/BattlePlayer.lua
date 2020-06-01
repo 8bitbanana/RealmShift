@@ -186,7 +186,8 @@ do
   local _base_0 = {
     skillPrimaryInfo = function(self)
       return {
-        name = "LUNGE"
+        name = "LUNGE",
+        desc = "Lunge forward as far as you can, dealing more damage with a bigger lunge."
       }
     end,
     skillPrimary = function(self)

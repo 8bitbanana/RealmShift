@@ -44,14 +44,14 @@ do
       else
         if self.state then
           self.state:update()
-          self.dialogmanager:update()
+          self.dialog:update()
         end
       end
       if input:pressed("dialogdebug") then
-        if self.dialogmanager.running then
-          self.dialogmanager:advanceInput()
+        if self.dialog.running then
+          self.dialog:advanceInput()
         else
-          self.dialogmanager:push(DialogBox("This is a test of the {color,1,0,0,1,6}{wave,6}dialog box{pause,30}\nIt seems to work fairly well so far,\nalthough I did have to edit {colour,0,0,1,1,8}Push.lua.\n3\n4 test input{input}wow\n5\n6\n{wave,4}Wow!"))
+          self.dialog:push(DialogBox("This is a {color,4,1,0,0}{wave,4}test!\nHoly{pause,25} crap!"))
         end
       end
       if input:pressed("battledebug") then
@@ -85,9 +85,7 @@ do
         if self.state then
           self.state:draw()
         end
-        if self.dialogmanager.running then
-          return self.dialogmanager:draw()
-        end
+        return self.dialog:draw()
       end
     end
   }
@@ -97,7 +95,7 @@ do
       self.timer = Timer()
       self.state = GameExploreState(self)
       self.next_state = nil
-      self.dialogmanager = DialogManager()
+      self.dialog = DialogManager()
       self.transitioning = false
       self.transition_progress = 0.0
       self.transition_length = 0.25

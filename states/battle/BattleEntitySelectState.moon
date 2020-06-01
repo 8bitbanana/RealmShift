@@ -2,6 +2,15 @@ require "states/state"
 require "utils_vector"
 Inspect = require "lib/inspect"
 
+-- NOTE
+-- To make a back out function - just make
+-- pressing B restart the turn entirely
+-- Don't bother with stacks and stuff
+-- Keep everything the same - make a function
+-- in GameBattleState that resets the turn
+-- and make BattleEntitySelectState and friends
+-- and call it when B is pressed 
+
 export class BattleEntitySelectState extends State
     new: (@parent, @params) =>
         @selectedIndex = 1

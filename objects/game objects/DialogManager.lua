@@ -24,6 +24,9 @@ do
         self.awaitinginput = self.queue[1].awaitinginput
         if self.queue[1].done then
           table.remove(self.queue, 1)
+          Push:setCanvas("dialogbox")
+          lg.clear()
+          Push:setCanvas("main")
           if self.queue[1] == nil then
             self.running = false
           else
