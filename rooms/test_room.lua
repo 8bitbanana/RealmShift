@@ -353,8 +353,9 @@ return {
           properties = {
             ["dest_room"] = "towns/test_town",
             ["is_door"] = true,
+            ["is_room"] = true,
             ["tx"] = 112,
-            ["ty"] = 164
+            ["ty"] = 152
           }
         }
       }

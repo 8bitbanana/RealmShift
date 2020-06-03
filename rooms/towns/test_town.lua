@@ -393,6 +393,7 @@ return {
           properties = {
             ["dest_room"] = "overworld",
             ["is_door"] = false,
+            ["is_room"] = true,
             ["tx"] = 32,
             ["ty"] = 32
           }
@@ -411,8 +412,9 @@ return {
           properties = {
             ["dest_room"] = "test_room",
             ["is_door"] = true,
+            ["is_room"] = true,
             ["tx"] = 152,
-            ["ty"] = 96
+            ["ty"] = 80
           }
         }
       }

@@ -14,7 +14,7 @@ do
       self.camera:limitPos(self.current_room)
       self.objects:addObject(self.player)
       self.objects:addObject(self.camera)
-      return self.current_room.world:add(self.player, self.player.pos.x, self.player.pos.y, self.player.width, self.player.height)
+      return self.current_room.world:add(self.player, self.player.pos.x, self.player.pos.y + (self.player.height / 2), self.player.width, self.player.height / 2)
     end,
     update = function(self)
       self.objects:updateObjects()

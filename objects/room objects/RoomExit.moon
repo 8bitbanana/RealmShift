@@ -42,8 +42,8 @@ export class RoomExit
 		@\checkPlayerEntered!
 
 	draw: =>
-		lg.setColor(ORANGE)
-		lg.rectangle("line", @pos.x, @pos.y, @width, @height)
-		lg.print({BLACK, "Dest: #{@dest_room}"}, @pos.x+1, @pos.y-15)
-		lg.setColor(WHITE)
-		lg.print("Dest: #{@dest_room}", @pos.x, @pos.y-16)
+-- 		lg.setColor(ORANGE)
+-- 		lg.rectangle("line", @pos.x, @pos.y, @width, @height)
+-- 		lg.print({BLACK, "Dest: #{@dest_room}"}, @pos.x+1, @pos.y-15)
+-- 		lg.setColor(WHITE)
+-- 		lg.print("Dest: #{@dest_room}", @pos.x, @pos.y-16)

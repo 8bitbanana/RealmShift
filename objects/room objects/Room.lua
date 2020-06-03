@@ -61,7 +61,13 @@ do
       self.map:drawTileLayer(self.map.layers[1])
       if SHOW_COLLIDERS then
         lg.setColor(RED)
-        return self.map:bump_draw(self.world, -pos.x, -pos.y)
+        local items = self.world:getItems()
+        for _index_0 = 1, #items do
+          local i = items[_index_0]
+          local x, y, w, h = self.world:getRect(i)
+          local c = game.state.camera
+          lg.rectangle("line", x - c.pos.x, y - c.pos.y, w, h)
+        end
       end
     end
   }
