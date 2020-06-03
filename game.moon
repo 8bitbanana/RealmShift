@@ -108,4 +108,5 @@ export class Game
 				@state\draw!
 
 			@dialog\draw!
-			@drawButtonPrompts!
+			if @state.__class.__name ~= "GameBattleState"
+				@drawButtonPrompts!

@@ -96,7 +96,9 @@ do
           self.state:draw()
         end
         self.dialog:draw()
-        return self:drawButtonPrompts()
+        if self.state.__class.__name ~= "GameBattleState" then
+          return self:drawButtonPrompts()
+        end
       end
     end
   }
