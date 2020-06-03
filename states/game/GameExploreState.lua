@@ -24,7 +24,6 @@ do
       lg.push()
       lg.translate(-self.camera.pos.x, -self.camera.pos.y)
       self.objects:drawObjects()
-      shadowPrint("This is a test town area!\nIn here you will be able to talk to NPCs,\nvisit shops etc.")
       return lg.pop()
     end
   }

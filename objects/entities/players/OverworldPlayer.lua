@@ -1,18 +1,8 @@
 do
   local _class_0
   local _base_0 = {
-    move = function(self, dx, dy)
-      if dx == nil then
-        dx = 0
-      end
-      if dy == nil then
-        dy = 0
-      end
-      self.pos.x = self.pos.x + dx
-      self.pos.y = self.pos.y + dy
-    end,
-    update = function(self)
-      local interval = 0.5
+    checkMove = function(self)
+      local interval = 0.25
       if input:down("left", interval) then
         self:move(-1, 0)
       end
@@ -26,19 +16,43 @@ do
         return self:move(0, 1)
       end
     end,
+    move = function(self, dx, dy)
+      if dx == nil then
+        dx = 0
+      end
+      if dy == nil then
+        dy = 0
+      end
+      local world = game.state.current_room.world
+      local d = 8
+      self.pos.x, self.pos.y = world:move(self, self.pos.x + (dx * d), self.pos.y + (dy * d))
+    end,
+    update = function(self)
+      self:checkMove()
+      return limitPosToCurrentRoom(self)
+    end,
+    destroy = function(self)
+      self.destroyed = true
+      local world = game.state.current_room.world
+      if world then
+        return world:remove(self)
+      end
+    end,
     draw = function(self)
+      local x = self.pos.x
+      local y = self.pos.y
       lg.setColor(ORANGE)
-      lg.circle("fill", self.pos.x * 8 + 3, self.pos.y * 8 + 8, 8)
+      lg.circle("fill", x + 7, y + 8, 8)
       lg.setColor(WHITE)
-      lg.circle("line", self.pos.x * 8 + 3, self.pos.y * 8 + 8, 8)
+      lg.circle("line", x + 7, y + 8, 8)
       lg.print({
         BLACK,
         "P"
-      }, self.pos.x * 8 + 1, self.pos.y * 8 + 1)
+      }, x + 5, y + 1)
       return lg.print({
         WHITE,
         "P"
-      }, self.pos.x * 8, self.pos.y * 8)
+      }, x + 4, y)
     end
   }
   _base_0.__index = _base_0
@@ -46,11 +60,13 @@ do
     __init = function(self, pos)
       if pos == nil then
         pos = {
-          x = 12,
-          y = 7
+          x = 48,
+          y = 48
         }
       end
       self.pos = pos
+      self.width = 16
+      self.height = 16
     end,
     __base = _base_0,
     __name = "OverworldPlayer"

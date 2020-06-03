@@ -8,7 +8,8 @@ do
       self.player = OverworldPlayer()
       self.camera = Camera()
       self.objects:addObject(self.camera)
-      return self.objects:addObject(self.player)
+      self.objects:addObject(self.player)
+      return self.current_room.world:add(self.player, self.player.pos.x, self.player.pos.y, self.player.width, self.player.height)
     end,
     update = function(self)
       self.objects:updateObjects()
@@ -20,7 +21,6 @@ do
       lg.push()
       lg.translate(-self.camera.pos.x, -self.camera.pos.y)
       self.objects:drawObjects()
-      shadowPrint("This is the overworld!\nThis is where the player will explore the\nworld and enter new areas such as towns &\ndungeons etc.\n\n\n\n\n\nCurrently all you can do is move.")
       return lg.pop()
     end
   }

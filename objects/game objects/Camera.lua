@@ -21,6 +21,17 @@ do
         self.pos.y = obj.pos.y - GAME_HEIGHT / 2
       end
     end,
+    followObjectLerp = function(self, obj, p)
+      if p == nil then
+        p = 0.005
+      end
+      if obj then
+        local tx = obj.pos.x - GAME_WIDTH / 2
+        local ty = obj.pos.y - GAME_HEIGHT / 2
+        self.pos.x = lerp(self.pos.x, tx, p)
+        self.pos.y = lerp(self.pos.y, ty, p)
+      end
+    end,
     limitPos = function(self, room)
       local width = (room.map.width * room.map.tilewidth) - GAME_WIDTH
       local height = (room.map.height * room.map.tileheight) - GAME_HEIGHT
@@ -29,7 +40,7 @@ do
     end,
     update = function(self)
       if game.state.player then
-        self:followObject(game.state.player)
+        self:followObjectLerp(game.state.player)
       end
       if game.state.current_room then
         return self:limitPos(game.state.current_room)

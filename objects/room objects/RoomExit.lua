@@ -41,6 +41,7 @@ do
         }
         if AABB(box1, box2) then
           if self.is_door then
+            game.button_prompts.z = "Enter"
             if input:pressed("open_door") then
               return self:changeRoom()
             end

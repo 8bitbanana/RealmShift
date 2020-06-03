@@ -39,6 +39,10 @@ do
     end,
     update = function(self)
       self.timer:update(dt)
+      self.button_prompts = {
+        z = "",
+        x = ""
+      }
       if self.transitioning then
         local _ = nil
       else
@@ -64,6 +68,12 @@ do
         return self:startStateTransitionIn()
       end
     end,
+    drawButtonPrompts = function(self)
+      sprites.gui.z_button:draw(GAME_WIDTH - 64, 0)
+      sprites.gui.x_button:draw(GAME_WIDTH - 56, 16)
+      shadowPrint(self.button_prompts.z, GAME_WIDTH - 40, 4)
+      return shadowPrint(self.button_prompts.x, GAME_WIDTH - 32, 16)
+    end,
     drawStateTransition = function(self)
       if self.state then
         self.state:draw()
@@ -85,7 +95,8 @@ do
         if self.state then
           self.state:draw()
         end
-        return self.dialog:draw()
+        self.dialog:draw()
+        return self:drawButtonPrompts()
       end
     end
   }
@@ -95,6 +106,10 @@ do
       self.timer = Timer()
       self.state = GameExploreState(self)
       self.next_state = nil
+      self.button_prompts = {
+        z = "",
+        x = ""
+      }
       self.dialog = DialogManager()
       self.transitioning = false
       self.transition_progress = 0.0

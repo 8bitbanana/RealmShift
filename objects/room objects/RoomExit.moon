@@ -1,41 +1,42 @@
 
 export class RoomExit
 	new: (@pos={x: 0, y: 0}, @width=16, @height=16, @dest="test_town", @is_door=false, @tx=0, @ty=0) =>
-		
-	
+
+
 	gotoOverworld: =>
 		-- game.next_state = {state: GameOverworldState, params: {}}
 		-- game.next_state = {state: GameTransitionState, params: {GameOverworldState}}
 		game.next_state = {state: GameOverworldState, params: {}}
-	
+
 	gotoRoom: =>
 		-- game.next_state = {state: GameExploreState, params: {@dest, @tx, @ty}}
 		-- game.next_state = {state: GameTransitionState, params: {GameExploreState, @dest}}
 		game.next_state = {state: GameExploreState, params: {@dest, @tx, @ty}}
-	
+
 	changeRoom: =>
 		if @dest == "overworld"
 			@\gotoOverworld!
 		else
 			@\gotoRoom!
-	
+
 	checkPlayerEntered: =>
 		p = game.state.player
-		if p			
+		if p
 			box1 = {x: p.pos.x, y: p.pos.y, width: p.width, height: p.height}
 			box2 = {x: @pos.x, y: @pos.y, width: @width, height: @height}
-			
+
 			if AABB(box1, box2)
 				if @is_door
+					game.button_prompts.z = "Enter"
 					if input\pressed("open_door")
 						@\changeRoom!
 				else
 					@\changeRoom!
-			
-	
+
+
 	update: =>
 		@\checkPlayerEntered!
-	
+
 	draw: =>
 		lg.setColor(ORANGE)
 		lg.rectangle("line", @pos.x, @pos.y, @width, @height)
