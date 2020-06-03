@@ -52,6 +52,65 @@ do
 end
 do
   local _class_0
+  local _parent_0 = State
+  local _base_0 = {
+    init = function(self)
+      self.ttl = 60
+      if self.args.ttl then
+        self.ttl = self.args.ttl
+      end
+    end,
+    update = function(self)
+      if not self.done then
+        self.ttl = self.ttl - 1
+      end
+      if self.ttl <= 0 and not self.done then
+        self.done = true
+        return self.parent:turnStart()
+      end
+    end,
+    draw = function(self)
+      return lg.print("TurnIntro", 10, 10)
+    end
+  }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self, parent, args)
+      if args == nil then
+        args = { }
+      end
+      self.parent, self.args = parent, args
+    end,
+    __base = _base_0,
+    __name = "TurnIntroState",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  TurnIntroState = _class_0
+end
+do
+  local _class_0
   local _base_0 = {
     addCutscene = function(self, cutscene)
       cutscene.root = self.parent
@@ -161,8 +220,8 @@ do
   local _base_0 = {
     sceneUpdate = function(self)
       if self.ttl == 8 then
-        local damage = self.root.currentTurn:attack(self.root.enemies[self.args.index], self.args.damage)
-        local pos = self.root.enemies[self.args.index]:getCursorPos()
+        local damage = self.root:currentTurn():attack(self.root:inactiveEntities()[self.args.index], self.args.damage)
+        local pos = self.root:inactiveEntities()[self.args.index]:getCursorPos()
         local particle = BattleDamageNumber(pos, damage)
         return self.root.aniObjs:addObject(particle)
       end
@@ -208,7 +267,8 @@ do
   local _parent_0 = BattleCutscene
   local _base_0 = {
     sceneStart = function(self)
-      local oldindex = self.root.currentTurnIndex.index
+      assert(self.root.turndata.type == "player")
+      local oldindex = self.root.turndata.index
       local newindex = oldindex + self.args.dir
       if newindex < 1 then
         newindex = 1
@@ -264,7 +324,6 @@ do
       end
     end,
     sceneFinish = function(self)
-      print(Inspect(self.moves))
       local newPlayers = {
         nil,
         nil,
@@ -287,6 +346,9 @@ do
               break
             end
           end
+          if index == self.root.turndata.index then
+            self.root.turndata.index = newindex
+          end
           newPlayers[newindex] = self.root.players[index]
           _continue_0 = true
         until true
@@ -295,10 +357,7 @@ do
         end
       end
       self.root.players = newPlayers
-      self.root:calculatePlayerPos()
-      for i, p in pairs(self.root.players) do
-        print(tostring(i) .. "-" .. tostring(p.__class.__name))
-      end
+      return self.root:calculatePlayerPos()
     end
   }
   _base_0.__index = _base_0
@@ -365,7 +424,12 @@ do
     end,
     sceneFinish = function(self)
       self.root.players[self.args.firstindex], self.root.players[self.args.secondindex] = self.root.players[self.args.secondindex], self.root.players[self.args.firstindex]
-      self.root.currentTurnIndex.index = index
+      if self.root.turndata.index == self.args.firstindex then
+        self.root.turndata.index = self.args.secondindex
+      end
+      if self.root.turndata.index == self.args.secondindex then
+        self.root.turndata.index = self.args.firstindex
+      end
       return self.root:calculatePlayerPos()
     end
   }

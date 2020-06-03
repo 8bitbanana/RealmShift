@@ -49,7 +49,7 @@ class WaitMenuItem extends MenuItem
 class SkillMenuItem extends MenuItem
     text: "SKILL"
     activate: () => @parent.parent\skillAction!
-    valid: () => @parent.parent.currentTurn.__class == Fighter
+    valid: () => @parent.parent\currentTurn!.__class == Fighter
 
 class ItemMenuItem extends MenuItem
     text: "ITEM"
@@ -99,7 +99,7 @@ export class BattleMenuState extends State
         lg.setColor(0,0,0,1)
         lg.rectangle("line",116,4,116,50) -- menubox line
         lg.setColor(1,1,1,1)
-        selectedX = @parent.currentTurn.pos.x
+        selectedX = @parent\currentTurn!.pos.x
         lg.polygon("fill",
             selectedX + 2,  53,
             selectedX + 12, 91,

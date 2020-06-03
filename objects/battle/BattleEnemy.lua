@@ -20,6 +20,37 @@ do
       lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
       lg.setColor(BLACK)
       return lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
+    end,
+    enemyTurn = function(self)
+      local indexes = { }
+      for i, target in pairs(self.parent:inactiveEntities()) do
+        local _continue_0 = false
+        repeat
+          if target == nil then
+            _continue_0 = true
+            break
+          end
+          if not target:isValidTarget("attack") then
+            _continue_0 = true
+            break
+          end
+          table.insert(indexes, i)
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
+        end
+      end
+      local targetindex = indexes[love.math.random(#indexes)]
+      print("Attacking target " .. targetindex)
+      local attackScene = CutsceneAttack({
+        tts = 20,
+        index = targetindex
+      })
+      self.parent.cutscenes:addCutscene(attackScene)
+      return self.parent.state:changeState(BattleTurnState, {
+        ttl = 40
+      })
     end
   }
   _base_0.__index = _base_0

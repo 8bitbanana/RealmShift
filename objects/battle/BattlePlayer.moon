@@ -67,7 +67,7 @@ export class BattlePlayer
                 return @hp > 0
             when "move"
                 return @hp > 0
-                -- return @parent.currentTurn != @
+                -- return @parent\currentTurn! != @
             when "always"
                 return true
             else
@@ -149,7 +149,10 @@ export class Fighter extends BattlePlayer
         @parent.state\changeState(BattleEnemySelectState)
 
     -- Reposition - swap two allies places
-    skillSecondaryInfo: () => return {name:"REPOSITION"}
+    skillSecondaryInfo: () => return {
+        name:"REPOSITION",
+        desc:"Swap the position of two allies, or move an ally to an empty space."
+    }
     skillSecondary: () =>
         myindex = nil
         for i, player in pairs @parent.players

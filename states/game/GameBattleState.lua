@@ -5,8 +5,35 @@ do
   local _class_0
   local _parent_0 = State
   local _base_0 = {
+    activeEntities = function(self)
+      local _exp_0 = self.turndata.type
+      if "player" == _exp_0 then
+        return self.players
+      elseif "enemy" == _exp_0 then
+        return self.enemies
+      else
+        return nil
+      end
+    end,
+    inactiveEntities = function(self)
+      local _exp_0 = self.turndata.type
+      if "enemy" == _exp_0 then
+        return self.players
+      elseif "player" == _exp_0 then
+        return self.enemies
+      else
+        return nil
+      end
+    end,
+    currentTurn = function(self)
+      local entities = self:activeEntities()
+      if entities == nil then
+        return nil
+      end
+      return self:activeEntities()[self.turndata.index]
+    end,
     init = function(self)
-      self.state = BattleMenuState(self)
+      self.state = State(self)
       self.players = {
         Paladin(self, {
           x = 120,
@@ -33,7 +60,8 @@ do
           y = 127
         })
       }
-      return self:getNextInitiative(true)
+      self:getNextInitiative(true)
+      return self.state:changeState(TurnIntroState)
     end,
     calculatePlayerPos = function(self)
       for i, player in pairs(self.players) do
@@ -48,17 +76,14 @@ do
     end,
     turnEnd = function(self)
       self:getNextInitiative(true)
-      local _exp_0 = self.currentTurnIndex.type
+      return self.state:changeState(TurnIntroState)
+    end,
+    turnStart = function(self)
+      local _exp_0 = self.turndata.type
       if "player" == _exp_0 then
         return self.state:changeState(BattleMenuState)
       elseif "enemy" == _exp_0 then
         return self:enemyTurn()
-      else
-        if self.currentTurnIndex.type == nil then
-          return error("currentTurnIndex.type is nil")
-        else
-          return error("Invalid currentTurnIndex.type " .. self.currentTurnIndex.type)
-        end
       end
     end,
     getNextInitiative = function(self, apply)
@@ -67,19 +92,19 @@ do
       end
       local nextup = nil
       local nextupSpeed = -999
-      local nextupIndex = {
+      local nextupData = {
         type = nil,
         index = 0
       }
       local nextup_all = nil
       local nextup_allSpeed = -999
-      local nextup_allIndex = {
+      local nextup_allData = {
         type = nil,
         index = 0
       }
       local currentTurnSpeed = 999
-      if self.currentTurn ~= nil then
-        currentTurnSpeed = self.currentTurn.stats.speed
+      if self:currentTurn() ~= nil then
+        currentTurnSpeed = self:currentTurn().stats.speed
       end
       for index, player in pairs(self.players) do
         local _continue_0 = false
@@ -91,7 +116,7 @@ do
           if player.stats.speed > nextupSpeed and player.stats.speed < currentTurnSpeed then
             nextup = player
             nextupSpeed = player.stats.speed
-            nextupIndex = {
+            nextupData = {
               type = "player",
               index = index
             }
@@ -99,7 +124,7 @@ do
           if player.stats.speed > nextup_allSpeed then
             nextup_all = player
             nextup_allSpeed = player.stats.speed
-            nextup_allIndex = {
+            nextup_allData = {
               type = "player",
               index = index
             }
@@ -120,7 +145,7 @@ do
           if enemy.stats.speed > nextupSpeed and enemy.stats.speed < currentTurnSpeed then
             nextup = enemy
             nextupSpeed = enemy.stats.speed
-            nextupIndex = {
+            nextupData = {
               type = "enemy",
               index = index
             }
@@ -128,7 +153,7 @@ do
           if enemy.stats.speed > nextup_allSpeed then
             nextup_all = enemy
             nextup_allSpeed = enemy.stats.speed
-            nextup_allIndex = {
+            nextup_allData = {
               type = "enemy",
               index = index
             }
@@ -141,18 +166,12 @@ do
       end
       if nextup == nil then
         if apply then
-          self.currentTurn = nextup_all
-        end
-        if apply then
-          self.currentTurnIndex = nextup_allIndex
+          self.turndata = nextup_allData
         end
         return nextup_all
       else
         if apply then
-          self.currentTurn = nextup
-        end
-        if apply then
-          self.currentTurnIndex = nextupIndex
+          self.turndata = nextupData
         end
         return nextup
       end
@@ -171,8 +190,7 @@ do
       return self.state:changeState(BattleEnemySelectState)
     end,
     enemyTurn = function(self)
-      print("Enemy turn unimplimented - skip")
-      return self:turnEnd()
+      return self:currentTurn():enemyTurn()
     end,
     skillAction = function(self)
       return self.state:changeState(BattleSkillSelectState)
@@ -251,14 +269,12 @@ do
       self.state = nil
       self.aniObjs = ObjectManager()
       self.cutscenes = BattleCutsceneManager(self)
-      self.currentTurn = nil
-      self.currentTurnIndex = {
+      self.turndata = {
         type = nil,
         index = 0
       }
       self.selectionCallback = function() end
       self.cutsceneCallback = function() end
-      self.unselectable = { }
     end,
     __base = _base_0,
     __name = "GameBattleState",

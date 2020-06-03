@@ -6,7 +6,7 @@ do
   local _parent_0 = MenuItem
   local _base_0 = {
     activate = function(self)
-      return self.parent.parent.currentTurn:skillPrimary()
+      return self.parent.parent:currentTurn():skillPrimary()
     end,
     valid = function(self)
       return true
@@ -17,7 +17,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.text = self.parent.parent.currentTurn:skillPrimaryInfo().name
+      self.text = self.parent.parent:currentTurn():skillPrimaryInfo().name
     end,
     __base = _base_0,
     __name = "PrimaryMenuItem",
@@ -52,7 +52,7 @@ do
   local _parent_0 = MenuItem
   local _base_0 = {
     activate = function(self)
-      return self.parent.parent.currentTurn:skillSecondary()
+      return self.parent.parent:currentTurn():skillSecondary()
     end,
     valid = function(self)
       return true
@@ -63,7 +63,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.text = self.parent.parent.currentTurn:skillSecondaryInfo().name
+      self.text = self.parent.parent:currentTurn():skillSecondaryInfo().name
     end,
     __base = _base_0,
     __name = "SecondaryMenuItem",

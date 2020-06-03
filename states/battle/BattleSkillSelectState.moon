@@ -4,17 +4,17 @@ Inspect = require "lib/inspect"
 class PrimaryMenuItem extends MenuItem
     new: (...) =>
         super ...
-        @text = @parent.parent.currentTurn\skillPrimaryInfo!.name
+        @text = @parent.parent\currentTurn!\skillPrimaryInfo!.name
         
-    activate: () => @parent.parent.currentTurn\skillPrimary!
+    activate: () => @parent.parent\currentTurn!\skillPrimary!
     valid: () => return true
 
 class SecondaryMenuItem extends MenuItem
     new: (...) =>
         super ...
-        @text = @parent.parent.currentTurn\skillSecondaryInfo!.name
+        @text = @parent.parent\currentTurn!\skillSecondaryInfo!.name
 
-    activate: () => @parent.parent.currentTurn\skillSecondary!
+    activate: () => @parent.parent\currentTurn!\skillSecondary!
     valid: () => return true
 
 export class BattleSkillSelectState extends State
