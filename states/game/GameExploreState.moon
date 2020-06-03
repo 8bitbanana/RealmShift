@@ -19,7 +19,7 @@ export class GameExploreState extends State
 		@objects\addObject(@camera)
 
 		-- Add player to physics world so they can collide with tiles
-		@current_room.world\add(@player, @player.pos.x, @player.pos.y, @player.width, @player.height)
+		@current_room.world\add(@player, @player.pos.x, @player.pos.y + (@player.height/2), @player.width, @player.height/2)
 
 	update: =>
 		@objects\updateObjects!

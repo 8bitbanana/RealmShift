@@ -54,16 +54,7 @@ do
     update = function(self)
       return self:checkPlayerEntered()
     end,
-    draw = function(self)
-      lg.setColor(ORANGE)
-      lg.rectangle("line", self.pos.x, self.pos.y, self.width, self.height)
-      lg.print({
-        BLACK,
-        "Dest: " .. tostring(self.dest_room)
-      }, self.pos.x + 1, self.pos.y - 15)
-      lg.setColor(WHITE)
-      return lg.print("Dest: " .. tostring(self.dest_room), self.pos.x, self.pos.y - 16)
-    end
+    draw = function(self) end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({

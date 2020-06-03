@@ -35,7 +35,7 @@
     <property name="dest_room" value="towns/test_town"/>
     <property name="is_door" type="bool" value="true"/>
     <property name="tx" type="int" value="112"/>
-    <property name="ty" type="int" value="164"/>
+    <property name="ty" type="int" value="152"/>
    </properties>
   </object>
  </objectgroup>

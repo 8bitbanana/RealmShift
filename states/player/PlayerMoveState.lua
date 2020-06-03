@@ -47,7 +47,8 @@ do
     applyVel = function(self)
       local world = game.state.current_room.world
       local p = self.parent
-      p.pos.x, p.pos.y = world:move(p, p.pos.x + p.vel.x, p.pos.y + p.vel.y)
+      p.pos.x, p.pos.y = world:move(p, p.pos.x + p.vel.x, p.pos.y + (p.height / 2) + p.vel.y)
+      p.pos.y = p.pos.y - (p.height / 2)
     end,
     update = function(self)
       self:updateVel()

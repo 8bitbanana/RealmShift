@@ -67,4 +67,11 @@ export class Room
 
 		if SHOW_COLLIDERS
 			lg.setColor(RED)
-			@map\bump_draw(@world, -pos.x, -pos.y)
+
+			items = @world\getItems()
+			for i in *items
+				x,y,w,h = @world\getRect(i)
+				c = game.state.camera
+				lg.rectangle("line",x-c.pos.x,y-c.pos.y,w,h)
+
+			--@map\bump_draw(@world, -pos.x, -pos.y)
