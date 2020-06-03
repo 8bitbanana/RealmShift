@@ -8,14 +8,14 @@ return {
   height = 32,
   tilewidth = 8,
   tileheight = 8,
-  nextlayerid = 3,
-  nextobjectid = 1,
+  nextlayerid = 4,
+  nextobjectid = 4,
   properties = {},
   tilesets = {
     {
       name = "Overworld 1",
       firstgid = 1,
-      filename = "Overworld 1.tsx",
+      filename = "../../tilemaps/Overworld 1.tsx",
       tilewidth = 8,
       tileheight = 8,
       spacing = 0,
@@ -352,6 +352,37 @@ return {
         52, 52, 52, 68, 68, 68, 68, 68, 52, 52, 68, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
         52, 52, 52, 52, 52, 68, 68, 68, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
         52, 52, 52, 52, 52, 68, 68, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52
+      }
+    },
+    {
+      type = "objectgroup",
+      id = 3,
+      name = "Locations",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 3,
+          name = "Town",
+          type = "RoomExit",
+          shape = "rectangle",
+          x = 96,
+          y = 48,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dest_room"] = "towns/test_town",
+            ["is_door"] = true,
+            ["tx"] = 24,
+            ["ty"] = 72
+          }
+        }
       }
     }
   }

@@ -4,6 +4,8 @@ export class OverworldPlayer
 		@width  = 16
 		@height = 16
 
+		-- print("x:#{@pos.x}, y:#{@pos.y}")
+
 	checkMove: =>
 		interval = 0.25
 

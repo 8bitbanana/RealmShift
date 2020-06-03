@@ -2,14 +2,14 @@
 require "states/state"
 
 export class GameOverworldState extends State
-	new: =>
+	new: (@parent, @tx=0, @ty=0) =>
 		@objects = ObjectManager!
 		@current_room = Room("overworld/overworld_1")
 
 	init: =>
 		@current_room\init!
 
-		@player = OverworldPlayer!
+		@player = OverworldPlayer({x: @tx, y: @ty})
 		@camera = Camera!
 		@camera\setPos(@player.pos)
 		@camera\limitPos(@current_room)

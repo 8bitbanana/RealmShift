@@ -4,7 +4,10 @@ do
     gotoOverworld = function(self)
       game.next_state = {
         state = GameOverworldState,
-        params = { }
+        params = {
+          self.tx,
+          self.ty
+        }
       }
     end,
     gotoRoom = function(self)
@@ -52,9 +55,30 @@ do
       end
     end,
     update = function(self)
-      return self:checkPlayerEntered()
+      self:checkPlayerEntered()
+      self.icon_timer = self.icon_timer + dt
+      self.icon_timer = self.icon_timer % 0.3
     end,
-    draw = function(self) end
+    drawDebug = function(self)
+      lg.setColor(ORANGE)
+      lg.rectangle("line", self.pos.x, self.pos.y, self.width, self.height)
+      lg.print({
+        BLACK,
+        "Dest: " .. tostring(self.dest_room)
+      }, self.pos.x + 1, self.pos.y - 15)
+      lg.setColor(WHITE)
+      return lg.print("Dest: " .. tostring(self.dest_room), self.pos.x, self.pos.y - 16)
+    end,
+    drawIcon = function(self)
+      lg.setColor(BLACK)
+      sprites.gui.cursor:draw(self.pos.x - 4, self.pos.y - (self.height) + (self.icon_timer * 16))
+      return lg.setColor(WHITE)
+    end,
+    draw = function(self)
+      if not self.is_door then
+        return self:drawIcon()
+      end
+    end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
@@ -84,6 +108,7 @@ do
         ty = 0
       end
       self.pos, self.width, self.height, self.dest_room, self.is_door, self.tx, self.ty = pos, width, height, dest_room, is_door, tx, ty
+      self.icon_timer = 0
     end,
     __base = _base_0,
     __name = "RoomExit"

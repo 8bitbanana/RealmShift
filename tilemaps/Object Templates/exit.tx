@@ -3,7 +3,7 @@
  <object name="test exit" type="RoomExit" width="16" height="16">
   <properties>
    <property name="dest_room" value="test_room_1"/>
-   <property name="is_room" type="bool" value="true"/>
+   <property name="is_door" type="bool" value="true"/>
    <property name="tx" type="int" value="32"/>
    <property name="ty" type="int" value="32"/>
   </properties>

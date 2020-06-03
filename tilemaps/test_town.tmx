@@ -74,6 +74,8 @@
    <properties>
     <property name="dest_room" value="overworld"/>
     <property name="is_door" type="bool" value="false"/>
+    <property name="tx" type="int" value="96"/>
+    <property name="ty" type="int" value="48"/>
    </properties>
   </object>
   <object id="9" template="Object Templates/exit.tx" name="test exit 2" type="RoomExit" x="112" y="152">

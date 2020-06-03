@@ -30,6 +30,8 @@ export class Game
 	startStateTransitionOut: =>
 		-- Create, set and initiate the new game state
 		@state = @next_state.state(@, unpack(@next_state.params))
+		-- ^^^^ unpack() could cause issues again here and may need to be changed
+		-- to a key, value loop like when loading map objects
 		@state\init!
 
 		@next_state = nil

@@ -4,13 +4,14 @@ export class RoomExit
 		-- RoomExits are created when the current Room calls loadObjects.
 		-- RoomExits are created with default values shown above and then
 		-- have their custom values assigned in createMapObject in Room.moon
+		-- print("RoomExit: #{@dest_room}, #{@is_door}, #{@tx}, #{@ty}")
 
-		--print("RoomExit: #{@dest_room}, #{@is_door}, #{@tx}, #{@ty}")
+		@icon_timer = 0
 
 	gotoOverworld: =>
 		-- game.next_state = {state: GameOverworldState, params: {}}
 		-- game.next_state = {state: GameTransitionState, params: {GameOverworldState}}
-		game.next_state = {state: GameOverworldState, params: {}}
+		game.next_state = {state: GameOverworldState, params: {@tx, @ty}}
 
 	gotoRoom: =>
 		-- game.next_state = {state: GameExploreState, params: {@dest_room, @tx, @ty}}
@@ -41,9 +42,24 @@ export class RoomExit
 	update: =>
 		@\checkPlayerEntered!
 
+		@icon_timer += dt
+		@icon_timer %= 0.3
+
+	drawDebug: =>
+		lg.setColor(ORANGE)
+		lg.rectangle("line", @pos.x, @pos.y, @width, @height)
+		lg.print({BLACK, "Dest: #{@dest_room}"}, @pos.x+1, @pos.y-15)
+		lg.setColor(WHITE)
+		lg.print("Dest: #{@dest_room}", @pos.x, @pos.y-16)
+
+	drawIcon: =>
+		lg.setColor(BLACK)
+		-- lg.rectangle("fill", @pos.x+margin, @pos.y+margin + (@icon_timer * 4), @width-margin, @height-margin)
+		sprites.gui.cursor\draw(@pos.x-4, @pos.y-(@height) + (@icon_timer * 16))
+		lg.setColor(WHITE)
+
 	draw: =>
--- 		lg.setColor(ORANGE)
--- 		lg.rectangle("line", @pos.x, @pos.y, @width, @height)
--- 		lg.print({BLACK, "Dest: #{@dest_room}"}, @pos.x+1, @pos.y-15)
--- 		lg.setColor(WHITE)
--- 		lg.print("Dest: #{@dest_room}", @pos.x, @pos.y-16)
+		if not @is_door
+			@\drawIcon!
+
+		-- @\drawDebug!

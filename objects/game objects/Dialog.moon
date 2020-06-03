@@ -81,7 +81,7 @@ export class DialogBox
                 @tokens[charIndex+i] = {} if @tokens[charIndex+i] == nil
                 token = {code:code, index:i+1, args:args}
                 table.insert(@tokens[charIndex+i], token)
-            
+
     incText: () =>
         return if @waitingForInput
         if @currentIndex < #@chars
@@ -143,4 +143,4 @@ export class DialogBox
                     width += dialogfont\getWidth(@chars[index]) + X_SPACING
             Push\setCanvas("main")
             if @waitingForInput and (@framecount - @cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2
-                sprites.dialog.cursor\draw(219, 146)
+                sprites.gui.cursor\draw(219, 146)

@@ -211,7 +211,7 @@ do
         end
         Push:setCanvas("main")
         if self.waitingForInput and (self.framecount - self.cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2 then
-          return sprites.dialog.cursor:draw(219, 146)
+          return sprites.gui.cursor:draw(219, 146)
         end
       end
     end

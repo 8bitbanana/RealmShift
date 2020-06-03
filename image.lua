@@ -2,18 +2,16 @@
 function loadSprites()
 	sprites = {
 		player = {
-			idle = Soda.newSprite(lg.newImage("images/sprites/characters/test_char.png"), 8, 8)
-		},
-		dialog = {
-			cursor = Soda.newSprite(lg.newImage("images/sprites/dialog/cursor.png"), 12, 8)
+			idle = Soda.newSprite(lg.newImage("images/sprites/characters/test_char.png"), 8, 8),
 		},
 		battle = {
 			cursor_right = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_right.png"), 8, 12),
-			cursor_down = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_down.png"), 12, 8)
+			cursor_down = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_down.png"), 12, 8),
 		},
 		gui = {
 		  z_button = Soda.newSprite(lg.newImage("images/sprites/gui/z_button.png"), 13, 13),
 		  x_button = Soda.newSprite(lg.newImage("images/sprites/gui/x_button.png"), 13, 13),
+		  cursor = Soda.newSprite(lg.newImage("images/sprites/gui/cursor.png"), 12, 8),
 		},
 	}
 end

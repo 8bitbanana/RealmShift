@@ -5,7 +5,10 @@ do
   local _base_0 = {
     init = function(self)
       self.current_room:init()
-      self.player = OverworldPlayer()
+      self.player = OverworldPlayer({
+        x = self.tx,
+        y = self.ty
+      })
       self.camera = Camera()
       self.camera:setPos(self.player.pos)
       self.camera:limitPos(self.current_room)
@@ -29,7 +32,14 @@ do
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self)
+    __init = function(self, parent, tx, ty)
+      if tx == nil then
+        tx = 0
+      end
+      if ty == nil then
+        ty = 0
+      end
+      self.parent, self.tx, self.ty = parent, tx, ty
       self.objects = ObjectManager()
       self.current_room = Room("overworld/overworld_1")
     end,
