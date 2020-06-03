@@ -26,6 +26,9 @@ export class BattlePlayer
         @stats = table.shallow_copy(@basestats)
         @hp = @stats.hp
 
+    -- Using incomingattack, run the damage formula and
+    -- reduce @hp by that amount.
+    -- Return the amount of hp lost
     takeDamage: (incomingattack) =>
         damage = math.floor(
             (DAMAGE_FORMULA.va+(DAMAGE_FORMULA.vm*((incomingattack*DAMAGE_FORMULA.aw)-(@stats.defence*DAMAGE_FORMULA.dw)))) * DAMAGE_FORMULA.bd
@@ -37,6 +40,9 @@ export class BattlePlayer
             @hp = 0
         return damage
 
+    -- Run @takedamage on target, according to attack
+    -- Override the damage if needed for a skill
+    -- Apply any damage increasing/reducing buffs
     attack: (target, damageOverride) =>
         damage = nil
         if damageOverride
@@ -46,33 +52,37 @@ export class BattlePlayer
         damage *= 1.1 if @buffs.rally
         
         target\takeDamage(damage)
-        
+    
+    -- Skill metadata, to be overridden
     skillPrimaryInfo: () => return {
         name: "SKILLPRIMARY"
+        desc: "Base primary skill"
         valid: () => return false
     }
-
     skillSecondaryInfo: () => return {
         name: "SKILLSECONDARY"
+        desc: "Base secondary skill"
         valid: () => return false
     }
 
+    -- Do primary/secondary skills, to be overridden
     skillPrimary: () =>
-
     skillSecondary: () =>
 
+    -- Return if I am a valid target for stuff
     isValidTarget: (targetType) =>
         switch targetType
             when "attack"
                 return @hp > 0
             when "move"
                 return @hp > 0
-                -- return @parent\currentTurn! != @
             when "always"
                 return true
             else
                 error("isValidTarget - Invalid target type - " .. targetType)
 
+    -- Return x,y pos of where the cursor should be
+    -- (usually above my head)
     getCursorPos: () =>
         return {
             x:@pos.x+0
@@ -86,16 +96,19 @@ export class BattlePlayer
             @draw_alive!
             @draw_health!
 
+    -- Draw a health tracker below me
     draw_health: () =>
         lg.printf(@hp, @pos.x+2, @pos.y, 20, "left")
         lg.printf(@stats.hp, @pos.x+2, @pos.y+12, 20, "right")
 
+    -- Draw call if alive
     draw_alive: (overwrite=false) =>
         lg.setColor(ORANGE) if overwrite
         lg.rectangle("fill", @pos.x, @pos.y-32, 24, 32)
         lg.setColor(BLACK)
         lg.rectangle("line", @pos.x, @pos.y-32, 24, 32)
 
+    -- Draw call if dead
     draw_dead: () =>
         lg.setColor(GRAY)
         lg.rectangle("fill", @pos.x, @pos.y-32, 24, 32)
