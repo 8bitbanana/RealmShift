@@ -161,8 +161,8 @@ do
   local _base_0 = {
     sceneUpdate = function(self)
       if self.ttl == 8 then
-        local damage = self.root.currentTurn:attack(self.root.enemies[self.args.index], self.args.damage)
-        local pos = self.root.enemies[self.args.index]:getCursorPos()
+        local damage = self.root:currentTurn():attack(self.root:inactiveEntities()[self.args.index], self.args.damage)
+        local pos = self.root:inactiveEntities()[self.args.index]:getCursorPos()
         local particle = BattleDamageNumber(pos, damage)
         return self.root.aniObjs:addObject(particle)
       end
@@ -208,7 +208,8 @@ do
   local _parent_0 = BattleCutscene
   local _base_0 = {
     sceneStart = function(self)
-      local oldindex = self.root.currentTurnIndex.index
+      assert(self.root.turndata.type == "player")
+      local oldindex = self.root.turndata.index
       local newindex = oldindex + self.args.dir
       if newindex < 1 then
         newindex = 1
@@ -264,7 +265,6 @@ do
       end
     end,
     sceneFinish = function(self)
-      print(Inspect(self.moves))
       local newPlayers = {
         nil,
         nil,
@@ -287,6 +287,9 @@ do
               break
             end
           end
+          if index == self.root.turndata.index then
+            self.root.turndata.index = newindex
+          end
           newPlayers[newindex] = self.root.players[index]
           _continue_0 = true
         until true
@@ -295,10 +298,7 @@ do
         end
       end
       self.root.players = newPlayers
-      self.root:calculatePlayerPos()
-      for i, p in pairs(self.root.players) do
-        print(tostring(i) .. "-" .. tostring(p.__class.__name))
-      end
+      return self.root:calculatePlayerPos()
     end
   }
   _base_0.__index = _base_0
@@ -365,7 +365,12 @@ do
     end,
     sceneFinish = function(self)
       self.root.players[self.args.firstindex], self.root.players[self.args.secondindex] = self.root.players[self.args.secondindex], self.root.players[self.args.firstindex]
-      self.root.currentTurnIndex.index = index
+      if self.root.turndata.index == self.args.firstindex then
+        self.root.turndata.index = self.args.secondindex
+      end
+      if self.root.turndata.index == self.args.secondindex then
+        self.root.turndata.index = self.args.firstindex
+      end
       return self.root:calculatePlayerPos()
     end
   }

@@ -13,13 +13,35 @@ export class GameBattleState extends State
 
         @aniObjs = ObjectManager!
         @cutscenes = BattleCutsceneManager(@)
-        @currentTurn = nil
-        @currentTurnIndex = {type:nil,index:0}
+        
+        -- type is player or enemy
+        @turndata = {type:nil, index:0}
 
         @selectionCallback = ()->
         @cutsceneCallback = ()->
-        @unselectable = {}
 
+    activeEntities: =>
+        switch @turndata.type
+            when "player"
+                return @players
+            when "enemy"
+                return @enemies
+            else
+                return nil
+
+    inactiveEntities: =>
+        switch @turndata.type
+            when "enemy"
+                return @players
+            when "player"
+                return @enemies
+            else
+                return nil
+
+    currentTurn: =>
+        entities = @activeEntities!
+        return nil if entities == nil
+        return @activeEntities![@turndata.index]
 
     init: =>
         -- BattlePlayer position is the bottom-left of the sprite
@@ -51,55 +73,48 @@ export class GameBattleState extends State
 
     turnEnd: () =>
         @getNextInitiative true
-        switch @currentTurnIndex.type
+        switch @turndata.type
             when "player"
                 @state\changeState(BattleMenuState)
             when "enemy"
                 @enemyTurn!
-            else
-                if @currentTurnIndex.type == nil
-                    error "currentTurnIndex.type is nil"
-                else
-                    error "Invalid currentTurnIndex.type " .. @currentTurnIndex.type
 
     getNextInitiative: (apply=false)=>
         nextup = nil
         nextupSpeed = -999
-        nextupIndex = {type:nil, index:0}
+        nextupData = {type:nil, index:0}
         nextup_all = nil
         nextup_allSpeed = -999
-        nextup_allIndex = {type:nil, index:0}
+        nextup_allData = {type:nil, index:0}
 
         currentTurnSpeed = 999
-        currentTurnSpeed = @currentTurn.stats.speed if @currentTurn != nil
+        currentTurnSpeed = @currentTurn!.stats.speed if @currentTurn! != nil
 
         for index, player in pairs @players
             continue if player == nil
             if player.stats.speed > nextupSpeed and player.stats.speed < currentTurnSpeed
                 nextup = player
                 nextupSpeed = player.stats.speed
-                nextupIndex = {type:"player", index:index}
+                nextupData = {type:"player", index:index}
             if player.stats.speed > nextup_allSpeed
                 nextup_all = player
                 nextup_allSpeed = player.stats.speed
-                nextup_allIndex = {type:"player", index:index}
+                nextup_allData = {type:"player", index:index}
         for index, enemy in pairs @enemies
             continue if enemy == nil
             if enemy.stats.speed > nextupSpeed and enemy.stats.speed < currentTurnSpeed
                 nextup = enemy
                 nextupSpeed = enemy.stats.speed
-                nextupIndex = {type:"enemy", index:index}
+                nextupData = {type:"enemy", index:index}
             if enemy.stats.speed > nextup_allSpeed
                 nextup_all = enemy
                 nextup_allSpeed = enemy.stats.speed
-                nextup_allIndex = {type:"enemy", index:index}
+                nextup_allData = {type:"enemy", index:index}
         if nextup == nil
-            @currentTurn = nextup_all if apply
-            @currentTurnIndex = nextup_allIndex if apply
+            @turndata = nextup_allData if apply
             return nextup_all
         else
-            @currentTurn = nextup if apply
-            @currentTurnIndex = nextupIndex if apply
+            @turndata = nextupData if apply
             return nextup
 
     

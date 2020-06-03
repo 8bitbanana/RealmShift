@@ -67,7 +67,7 @@ export class BattlePlayer
                 return @hp > 0
             when "move"
                 return @hp > 0
-                -- return @parent.currentTurn != @
+                -- return @parent\currentTurn! != @
             when "always"
                 return true
             else

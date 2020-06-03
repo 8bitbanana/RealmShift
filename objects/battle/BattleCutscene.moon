@@ -69,6 +69,7 @@ export class BattleCutscene
                 @started = true 
                 @sceneStart!
 
+-- currentTurn attacks player/enemy at @args.index
 export class CutsceneAttack extends BattleCutscene
     new: (...) =>
         super ...
@@ -76,14 +77,17 @@ export class CutsceneAttack extends BattleCutscene
 
     sceneUpdate: =>
         if @ttl == 8
-            damage = @root.currentTurn\attack(@root.enemies[@args.index], @args.damage)
-            pos = @root.enemies[@args.index]\getCursorPos!
+            damage = @root\currentTurn!\attack(@root\inactiveEntities![@args.index], @args.damage)
+            pos = @root\inactiveEntities![@args.index]\getCursorPos!
             particle = BattleDamageNumber(pos, damage)
             @root.aniObjs\addObject(particle)
         -- Fancy slash graphics to go here
 
     sceneFinish: =>
 
+-- currentTurn (player) shoves forwards as far as it can in @args.dir direction
+-- Other players are shoved in the opposite direction to make room
+-- Todo - convert to work on enemies
 export class CutsceneShove extends BattleCutscene
     new: (...) =>
         super ...
@@ -91,7 +95,8 @@ export class CutsceneShove extends BattleCutscene
         @moves = {}
 
     sceneStart: =>
-        oldindex = @root.currentTurnIndex.index
+        assert(@root.turndata.type == "player")
+        oldindex = @root.turndata.index
         newindex = oldindex + @args.dir
         newindex = 1 if newindex < 1
         newindex = 4 if newindex > 4
@@ -125,7 +130,6 @@ export class CutsceneShove extends BattleCutscene
             @root.players[oldindex].pos = vector.lerp(oldpos, newpos, @progress!)
     
     sceneFinish: =>
-        print(Inspect(@moves))
         newPlayers = {nil,nil,nil,nil}
         for index=1, 4
             continue if @root.players[index] == nil
@@ -134,13 +138,13 @@ export class CutsceneShove extends BattleCutscene
                 if move[1] == index
                     newindex = move[2]
                     break
+            if index == @root.turndata.index
+                @root.turndata.index = newindex
             newPlayers[newindex] = @root.players[index]
         @root.players = newPlayers
         @root\calculatePlayerPos!
-        for i,p in pairs @root.players
-            print("#{i}-#{p.__class.__name}")
         
-
+-- Swaps players at @args.firstindex and @args.secondindex
 export class CutsceneSwap extends BattleCutscene
     new: (...) =>
         super ...
@@ -167,5 +171,6 @@ export class CutsceneSwap extends BattleCutscene
 
     sceneFinish: =>
         @root.players[@args.firstindex], @root.players[@args.secondindex] = @root.players[@args.secondindex], @root.players[@args.firstindex]
-        @root.currentTurnIndex.index = index
+        @root.turndata.index = @args.secondindex if @root.turndata.index == @args.firstindex
+        @root.turndata.index = @args.firstindex if @root.turndata.index == @args.secondindex
         @root\calculatePlayerPos!

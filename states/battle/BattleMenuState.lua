@@ -209,7 +209,7 @@ do
       return self.parent.parent:skillAction()
     end,
     valid = function(self)
-      return self.parent.parent.currentTurn.__class == Fighter
+      return self.parent.parent:currentTurn().__class == Fighter
     end
   }
   _base_0.__index = _base_0
@@ -387,7 +387,7 @@ do
       lg.setColor(0, 0, 0, 1)
       lg.rectangle("line", 116, 4, 116, 50)
       lg.setColor(1, 1, 1, 1)
-      local selectedX = self.parent.currentTurn.pos.x
+      local selectedX = self.parent:currentTurn().pos.x
       lg.polygon("fill", selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
       lg.setColor(0, 0, 0, 1)
       lg.line(selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
