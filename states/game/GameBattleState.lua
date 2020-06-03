@@ -33,7 +33,7 @@ do
       return self:activeEntities()[self.turndata.index]
     end,
     init = function(self)
-      self.state = BattleMenuState(self)
+      self.state = State(self)
       self.players = {
         Paladin(self, {
           x = 120,
@@ -60,7 +60,8 @@ do
           y = 127
         })
       }
-      return self:getNextInitiative(true)
+      self:getNextInitiative(true)
+      return self.state:changeState(TurnIntroState)
     end,
     calculatePlayerPos = function(self)
       for i, player in pairs(self.players) do
@@ -75,6 +76,9 @@ do
     end,
     turnEnd = function(self)
       self:getNextInitiative(true)
+      return self.state:changeState(TurnIntroState)
+    end,
+    turnStart = function(self)
       local _exp_0 = self.turndata.type
       if "player" == _exp_0 then
         return self.state:changeState(BattleMenuState)
@@ -186,8 +190,7 @@ do
       return self.state:changeState(BattleEnemySelectState)
     end,
     enemyTurn = function(self)
-      print("Enemy turn unimplimented - skip")
-      return self:turnEnd()
+      return self:currentTurn():enemyTurn()
     end,
     skillAction = function(self)
       return self.state:changeState(BattleSkillSelectState)

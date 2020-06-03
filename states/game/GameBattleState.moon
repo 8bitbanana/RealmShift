@@ -45,7 +45,7 @@ export class GameBattleState extends State
 
     init: =>
         -- BattlePlayer position is the bottom-left of the sprite
-        @state = BattleMenuState(@)
+        @state = State(@)
         @players = {
             Paladin(@, {x:120,y:127}), -- player x is 92+28*i
             Fighter(@, {x:148,y:127}),
@@ -60,6 +60,7 @@ export class GameBattleState extends State
         }
 
         @getNextInitiative true
+        @state\changeState(TurnIntroState)
     
     calculatePlayerPos: =>
         for i, player in pairs @players
@@ -73,6 +74,9 @@ export class GameBattleState extends State
 
     turnEnd: () =>
         @getNextInitiative true
+        @state\changeState(TurnIntroState)
+
+    turnStart: () =>
         switch @turndata.type
             when "player"
                 @state\changeState(BattleMenuState)
@@ -126,8 +130,7 @@ export class GameBattleState extends State
         @state\changeState(BattleEnemySelectState)
 
     enemyTurn: () =>
-        print "Enemy turn unimplimented - skip"
-        @turnEnd!
+        @currentTurn!\enemyTurn!
 
     skillAction: () =>
         @state\changeState(BattleSkillSelectState)

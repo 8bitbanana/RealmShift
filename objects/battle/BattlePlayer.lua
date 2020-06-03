@@ -219,7 +219,8 @@ do
     end,
     skillSecondaryInfo = function(self)
       return {
-        name = "REPOSITION"
+        name = "REPOSITION",
+        desc = "Swap the position of two allies, or move an ally to an empty space."
       }
     end,
     skillSecondary = function(self)
