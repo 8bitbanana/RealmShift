@@ -23,9 +23,11 @@ do
       local width = obj_data.width
       local height = obj_data.height
       local obj_class = _G[obj_data.type]
-      local params = table.stripKeys(obj_data.properties)
       if obj_class then
-        local obj = obj_class(pos, width, height, unpack(params))
+        local obj = obj_class(pos, width, height)
+        for k, v in pairs(obj_data.properties) do
+          obj[k] = v
+        end
         return obj
       end
     end,

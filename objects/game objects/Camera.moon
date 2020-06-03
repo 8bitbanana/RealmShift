@@ -13,6 +13,10 @@ export class Camera
 		if input\down("down")
 			@pos.y += 1
 
+	setPos: (p) =>
+		@pos.x = p.x - GAME_WIDTH/2
+		@pos.y = p.y - GAME_HEIGHT/2
+
 	followObject: (obj) =>
 		if obj
 			@pos.x = obj.pos.x - GAME_WIDTH/2

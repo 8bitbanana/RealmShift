@@ -7,6 +7,8 @@ do
       self.current_room:init()
       self.player = OverworldPlayer()
       self.camera = Camera()
+      self.camera:setPos(self.player.pos)
+      self.camera:limitPos(self.current_room)
       self.objects:addObject(self.camera)
       self.objects:addObject(self.player)
       return self.current_room.world:add(self.player, self.player.pos.x, self.player.pos.y, self.player.width, self.player.height)

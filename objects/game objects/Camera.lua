@@ -15,6 +15,10 @@ do
         self.pos.y = self.pos.y + 1
       end
     end,
+    setPos = function(self, p)
+      self.pos.x = p.x - GAME_WIDTH / 2
+      self.pos.y = p.y - GAME_HEIGHT / 2
+    end,
     followObject = function(self, obj)
       if obj then
         self.pos.x = obj.pos.x - GAME_WIDTH / 2

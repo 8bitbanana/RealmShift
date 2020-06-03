@@ -80,6 +80,8 @@
    <properties>
     <property name="dest_room" value="test_room"/>
     <property name="is_door" type="bool" value="true"/>
+    <property name="tx" type="int" value="152"/>
+    <property name="ty" type="int" value="96"/>
    </properties>
   </object>
  </objectgroup>

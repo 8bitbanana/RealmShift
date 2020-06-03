@@ -1,7 +1,11 @@
 
 export class RoomExit
-	new: (@pos={x: 0, y: 0}, @width=16, @height=16, @dest="test_town", @is_door=false, @tx=0, @ty=0) =>
+	new: (@pos={x: 0, y: 0}, @width=16, @height=16, @dest_room="test_town", @is_door=false, @tx=0, @ty=0) =>
+		-- RoomExits are created when the current Room calls loadObjects.
+		-- RoomExits are created with default values shown above and then
+		-- have their custom values assigned in createMapObject in Room.moon
 
+		--print("RoomExit: #{@dest_room}, #{@is_door}, #{@tx}, #{@ty}")
 
 	gotoOverworld: =>
 		-- game.next_state = {state: GameOverworldState, params: {}}
@@ -9,12 +13,12 @@ export class RoomExit
 		game.next_state = {state: GameOverworldState, params: {}}
 
 	gotoRoom: =>
-		-- game.next_state = {state: GameExploreState, params: {@dest, @tx, @ty}}
-		-- game.next_state = {state: GameTransitionState, params: {GameExploreState, @dest}}
-		game.next_state = {state: GameExploreState, params: {@dest, @tx, @ty}}
+		-- game.next_state = {state: GameExploreState, params: {@dest_room, @tx, @ty}}
+		-- game.next_state = {state: GameTransitionState, params: {GameExploreState, @dest_room}}
+		game.next_state = {state: GameExploreState, params: {@dest_room, @tx, @ty}}
 
 	changeRoom: =>
-		if @dest == "overworld"
+		if @dest_room == "overworld"
 			@\gotoOverworld!
 		else
 			@\gotoRoom!
@@ -40,6 +44,6 @@ export class RoomExit
 	draw: =>
 		lg.setColor(ORANGE)
 		lg.rectangle("line", @pos.x, @pos.y, @width, @height)
-		lg.print({BLACK, "Dest: #{@dest}"}, @pos.x+1, @pos.y-15)
+		lg.print({BLACK, "Dest: #{@dest_room}"}, @pos.x+1, @pos.y-15)
 		lg.setColor(WHITE)
-		lg.print("Dest: #{@dest}", @pos.x, @pos.y-16)
+		lg.print("Dest: #{@dest_room}", @pos.x, @pos.y-16)

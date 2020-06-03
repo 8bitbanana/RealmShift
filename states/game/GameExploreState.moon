@@ -11,6 +11,8 @@ export class GameExploreState extends State
 
 		@player = Player({x: @tx, y: @ty})
 		@camera = Camera!
+		@camera\setPos(@player.pos)
+		@camera\limitPos(@current_room)
 
 		-- Add objects to object manager
 		@objects\addObject(@player)

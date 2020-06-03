@@ -10,6 +10,8 @@ do
         y = self.ty
       })
       self.camera = Camera()
+      self.camera:setPos(self.player.pos)
+      self.camera:limitPos(self.current_room)
       self.objects:addObject(self.player)
       self.objects:addObject(self.camera)
       return self.current_room.world:add(self.player, self.player.pos.x, self.player.pos.y, self.player.width, self.player.height)

@@ -78,7 +78,6 @@ export class Game
 
 		-----------------------------------
 
-
 		if @next_state and not @transitioning
 			@\startStateTransitionIn!
 

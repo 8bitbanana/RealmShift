@@ -33,6 +33,9 @@
   <object id="3" template="Object Templates/exit.tx" x="152" y="80">
    <properties>
     <property name="dest_room" value="towns/test_town"/>
+    <property name="is_door" type="bool" value="true"/>
+    <property name="tx" type="int" value="112"/>
+    <property name="ty" type="int" value="164"/>
    </properties>
   </object>
  </objectgroup>

@@ -9,7 +9,7 @@ return {
   tilewidth = 8,
   tileheight = 8,
   nextlayerid = 4,
-  nextobjectid = 10,
+  nextobjectid = 11,
   properties = {},
   tilesets = {
     {
@@ -411,8 +411,8 @@ return {
           properties = {
             ["dest_room"] = "test_room",
             ["is_door"] = true,
-            ["tx"] = 32,
-            ["ty"] = 32
+            ["tx"] = 152,
+            ["ty"] = 96
           }
         }
       }

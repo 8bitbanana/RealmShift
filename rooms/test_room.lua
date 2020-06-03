@@ -352,8 +352,9 @@ return {
           visible = true,
           properties = {
             ["dest_room"] = "towns/test_town",
-            ["tx"] = 32,
-            ["ty"] = 32
+            ["is_door"] = true,
+            ["tx"] = 112,
+            ["ty"] = 164
           }
         }
       }

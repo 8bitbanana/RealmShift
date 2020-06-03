@@ -11,6 +11,9 @@ export class GameOverworldState extends State
 
 		@player = OverworldPlayer!
 		@camera = Camera!
+		@camera\setPos(@player.pos)
+		@camera\limitPos(@current_room)
+
 		@objects\addObject(@camera)
 		@objects\addObject(@player)
 
