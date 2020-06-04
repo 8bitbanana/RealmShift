@@ -2,11 +2,26 @@
 export class OverworldEnemy
 	new: (@pos = {x: 0, y: 0}) =>
 		-- @dir = math.random(4)
-		@spd = 1.5 -- speed in seconds it takes to move across a tile
-		@wait = 0.75
+		@spd = 0.8 -- speed in seconds it takes to move across a tile
+		@wait = 1.0
 
 		@timer = Timer!
 		@\startChase!
+
+		-- Make un-touchable whilst spawning so enemy doesn't
+		-- instantly spawn on player
+		@touchable = false
+		@timer\after(@wait, @\makeTouchable )
+
+		-- Blink sprite on spawning
+		@blink = false
+		@timer\every(@wait/12, @\blinkSprite, 12)
+
+	makeTouchable: =>
+		@touchable = true
+
+	blinkSprite: =>
+		@blink = not @blink
 
 	startChase: =>
 		@timer\after(@wait, @\chasePlayer)
@@ -58,8 +73,10 @@ export class OverworldEnemy
 
 	update: =>
 		@timer\update(dt)
-		@\checkCollidePlayer!
+		if @touchable
+			@\checkCollidePlayer!
 
 	draw: =>
-		sprites.overworld.enemy\draw(@pos.x, @pos.y)
+		if not @blink
+			sprites.overworld.enemy\draw(@pos.x, @pos.y)
 

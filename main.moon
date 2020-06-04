@@ -21,7 +21,7 @@ requireFolder("rooms")
 
 -- Seed RNG once when game launches
 math.randomseed(os.time())
-math.random();math.random();math.random();
+math.random()
 
 love.load = ->
 		setupGraphics!

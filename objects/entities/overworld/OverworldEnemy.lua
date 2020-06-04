@@ -1,6 +1,12 @@
 do
   local _class_0
   local _base_0 = {
+    makeTouchable = function(self)
+      self.touchable = true
+    end,
+    blinkSprite = function(self)
+      self.blink = not self.blink
+    end,
     startChase = function(self)
       return self.timer:after(self.wait, (function()
         local _base_1 = self
@@ -77,10 +83,14 @@ do
     end,
     update = function(self)
       self.timer:update(dt)
-      return self:checkCollidePlayer()
+      if self.touchable then
+        return self:checkCollidePlayer()
+      end
     end,
     draw = function(self)
-      return sprites.overworld.enemy:draw(self.pos.x, self.pos.y)
+      if not self.blink then
+        return sprites.overworld.enemy:draw(self.pos.x, self.pos.y)
+      end
     end
   }
   _base_0.__index = _base_0
@@ -93,10 +103,26 @@ do
         }
       end
       self.pos = pos
-      self.spd = 1.5
-      self.wait = 0.75
+      self.spd = 0.8
+      self.wait = 1.0
       self.timer = Timer()
-      return self:startChase()
+      self:startChase()
+      self.touchable = false
+      self.timer:after(self.wait, (function()
+        local _base_1 = self
+        local _fn_0 = _base_1.makeTouchable
+        return function(...)
+          return _fn_0(_base_1, ...)
+        end
+      end)())
+      self.blink = false
+      return self.timer:every(self.wait / 12, (function()
+        local _base_1 = self
+        local _fn_0 = _base_1.blinkSprite
+        return function(...)
+          return _fn_0(_base_1, ...)
+        end
+      end)(), 12)
     end,
     __base = _base_0,
     __name = "OverworldEnemy"

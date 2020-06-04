@@ -6,7 +6,7 @@ export class GameOverworldState extends State
 		@objects = ObjectManager!
 		@current_room = Room("overworld/overworld_1")
 
-		@enemy_spawn_rate = 3
+		@enemy_spawn_rate = 4
 		@max_enemies = 3
 		@enemy_timer = Timer!
 
