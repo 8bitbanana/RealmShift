@@ -1,6 +1,50 @@
 do
   local _class_0
   local _base_0 = {
+    startChase = function(self)
+      return self.timer:after(self.wait, (function()
+        local _base_1 = self
+        local _fn_0 = _base_1.chasePlayer
+        return function(...)
+          return _fn_0(_base_1, ...)
+        end
+      end)())
+    end,
+    addVariation = function(self, n, p)
+      if p == nil then
+        p = 0.10
+      end
+      if math.random() <= p then
+        return (n * -1)
+      end
+      return n
+    end,
+    chasePlayer = function(self)
+      local p = game.state.player
+      local dx = p.pos.x - self.pos.x
+      local dy = p.pos.y - self.pos.y
+      if dx ~= 0 then
+        dx = dx / abs(dx)
+      end
+      if dy ~= 0 then
+        dy = dy / abs(dy)
+      end
+      dx = self:addVariation(dx)
+      dy = self:addVariation(dy)
+      print(dx, dy)
+      local tx = self.pos.x + (dx * 8)
+      local ty = self.pos.y + (dy * 8)
+      return self.timer:tween(self.spd, self.pos, {
+        x = tx,
+        y = ty
+      }, 'out-elastic', (function()
+        local _base_1 = self
+        local _fn_0 = _base_1.startChase
+        return function(...)
+          return _fn_0(_base_1, ...)
+        end
+      end)())
+    end,
     checkCollidePlayer = function(self)
       local p = game.state.player
       local rect1 = {
@@ -26,6 +70,11 @@ do
         }
       end
     end,
+    destroy = function(self)
+      print("OverworldEnemy destroy called")
+      self.timer:destroy()
+      self.destroyed = true
+    end,
     update = function(self)
       self.timer:update(dt)
       return self:checkCollidePlayer()
@@ -44,9 +93,10 @@ do
         }
       end
       self.pos = pos
-      self.dir = math.random(4)
-      self.spd = 0.5
+      self.spd = 1.5
+      self.wait = 0.75
       self.timer = Timer()
+      return self:startChase()
     end,
     __base = _base_0,
     __name = "OverworldEnemy"

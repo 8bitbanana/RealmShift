@@ -19,12 +19,16 @@ requireFolder("states")
 requireFolder("objects")
 requireFolder("rooms")
 
+-- Seed RNG once when game launches
+math.randomseed(os.time())
+math.random();math.random();math.random();
+
 love.load = ->
 		setupGraphics!
 		setupFonts!
 		setupWindow!
 		loadSprites!
-		
+
 		-- Exporting variables makes them global so they can be accessed from anywhere else
 		export input = setupInput!
 		export game = Game!
@@ -33,7 +37,7 @@ love.load = ->
 
 love.update = ->
 	export dt = love.timer.getDelta()
-	
+
 	game\update!
 
 
@@ -43,7 +47,7 @@ love.resize = (w, h) ->
 
 love.draw = ->
 		Push\start!
-				
+
 		game\draw!
-		
+
 		Push\finish!
