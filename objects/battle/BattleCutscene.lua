@@ -64,8 +64,8 @@ do
     sceneFinish = function(self) end,
     update = function(self)
       if self.started then
-        self.ttl = self.ttl - 1
-        if self.ttl == 0 then
+        self.ttl = self.ttl - dt
+        if self.ttl <= 0 then
           self:sceneFinish()
           self.done = true
         end
@@ -73,7 +73,7 @@ do
           return self:sceneUpdate()
         end
       else
-        self.tts = self.tts - 1
+        self.tts = self.tts - dt
         if self.tts <= 0 then
           self.started = true
           return self:sceneStart()
@@ -89,7 +89,7 @@ do
       self.started = false
       self.done = false
       self.tts_max = 0
-      self.ttl_max = 10
+      self.ttl_max = 0.16
     end,
     __base = _base_0,
     __name = "BattleCutscene"
@@ -109,7 +109,8 @@ do
   local _parent_0 = BattleCutscene
   local _base_0 = {
     sceneUpdate = function(self)
-      if self.ttl == 8 then
+      if self.ttl <= 0.13 and not self.attacked then
+        self.attacked = true
         local damage = self.root:currentTurn():attack(self.root:inactiveEntities()[self.args.index], self.args.damage)
         local pos = self.root:inactiveEntities()[self.args.index]:getCursorPos()
         local particle = BattleDamageNumber(pos, damage)
@@ -123,7 +124,8 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.ttl_max = 10
+      self.ttl_max = 0.16
+      self.attacked = false
     end,
     __base = _base_0,
     __name = "CutsceneAttack",
@@ -255,7 +257,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.ttl = 25
+      self.ttl = 0.40
       self.moves = { }
     end,
     __base = _base_0,
@@ -328,7 +330,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.ttl = 25
+      self.ttl = 0.40
     end,
     __base = _base_0,
     __name = "CutsceneSwap",

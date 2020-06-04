@@ -128,9 +128,9 @@ export class GameBattleState extends State
 
 	attackAction: () =>
 		@selectionCallback = (index) =>
-			attackscene = CutsceneAttack({tts:6, index:index})
+			attackscene = CutsceneAttack({tts:0.1, index:index})
 			@cutscenes\addCutscene(attackscene)
-			@state\changeState(BattleTurnState, {ttl:20})
+			@state\changeState(BattleTurnState, {ttl:0.33})
 		@state\changeState(BattleEnemySelectState)
 
 	enemyTurn: () =>
@@ -140,16 +140,16 @@ export class GameBattleState extends State
 		@state\changeState(BattleSkillSelectState)
 
 	waitAction: () =>
-		@state\changeState(BattleTurnState, {ttl:30})
+		@state\changeState(BattleTurnState, {ttl:0.5})
 
 	swapAction: () =>
 		@selectionCallback = (index) ->
 			currentSpace = @currentTurnIndex.index
 			assert currentSpace != nil
 			assert index <= 4
-			swapscene = CutsceneSwap({tts:2, firstindex:@currentTurnIndex.index,secondindex:index})
+			swapscene = CutsceneSwap({tts:0.033, firstindex:@currentTurnIndex.index,secondindex:index})
 			@cutscenes\addCutscene(swapscene)
-			@state\changeState(BattleTurnState, {ttl:30})
+			@state\changeState(BattleTurnState, {ttl:0.5})
 		@state\changeState(BattleSpaceSelectState, {selectedspace:@currentTurnIndex.index})
 
 	selectedPlayer: =>
@@ -157,12 +157,15 @@ export class GameBattleState extends State
 
 	checkDead: (tbl) =>
 		for o in *tbl
-			if o.dead == false
-				return false
+			if o ~= nil
+				if o.dead == false
+					return false
 		return true
 
 	checkWon: =>
-		@\checkDead(@enemies)
+		if @state.__class.__name == "TurnIntroState" and @\checkDead(@enemies)
+			return true
+		return false
 
 	checkLost: =>
 		@\checkDead(@players)
@@ -173,7 +176,7 @@ export class GameBattleState extends State
 		@aniObjs\updateObjects!
 		@aniObjs\checkDestroyed!
 
-		-- Check if battle has been won
+		-- Check if battle has been won, then return to the overworld if true
 		if @\checkWon!
 			game.next_state = {state: GameOverworldState, params: {@rx, @ry}}
 
@@ -181,6 +184,9 @@ export class GameBattleState extends State
 		-- Suggestion: They lose gold and return to previous town
 		elseif @\checkLost!
 			print("You died chump")
+			game.next_state = {state: GameOverworldState, params: {@rx, @ry}}
+			-- ^^^^^ This will be changed to transition to a game over state
+			-- or save game reload state etc.
 
 	draw: =>
 		lg.setColor(0.28,0.81,0.81,1)

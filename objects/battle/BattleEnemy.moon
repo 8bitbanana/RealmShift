@@ -20,9 +20,9 @@ export class BattleEnemy extends BattlePlayer
 			table.insert(indexes, i)
 		targetindex = indexes[love.math.random(#indexes)]
 		print("Attacking target " .. targetindex)
-		attackScene = CutsceneAttack({tts:20, index:targetindex})
+		attackScene = CutsceneAttack({tts:0.33, index:targetindex})
 		@parent.cutscenes\addCutscene(attackScene)
-		@parent.state\changeState(BattleTurnState, {ttl:40})
+		@parent.state\changeState(BattleTurnState, {ttl:0.66})
 
 	getCursorPos: () =>
 		return {

@@ -154,7 +154,7 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.basestats.hp = 50
-      self.basestats.attack = 3
+      self.basestats.attack = 100
       self.basestats.defence = 2
       self.basestats.speed = 5
       self.basestats.magic = 10
@@ -212,14 +212,14 @@ do
           dir = -4
         })
         local attackscene = CutsceneAttack({
-          tts = 6,
+          tts = 0.1,
           index = index,
           damage = damage
         })
         self.cutscenes:addCutscene(shovescene)
         self.cutscenes:addCutscene(attackscene)
         return self.state:changeState(BattleTurnState, {
-          ttl = 30
+          ttl = 0.5
         })
       end
       return self.parent.state:changeState(BattleEnemySelectState)
@@ -244,13 +244,13 @@ do
           assert(currentSpace ~= nil)
           assert(secondindex <= 4)
           local swapscene = CutsceneSwap({
-            tts = 2,
+            tts = 0.033,
             firstindex = firstindex,
             secondindex = secondindex
           })
           self.cutscenes:addCutscene(swapscene)
           return self.state:changeState(BattleTurnState, {
-            ttl = 30
+            ttl = 0.5
           })
         end
         return self.state:changeState(BattleSpaceSelectState, {
@@ -272,7 +272,7 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.basestats.hp = 50
-      self.basestats.attack = 8
+      self.basestats.attack = 100
       self.basestats.defence = 4
       self.basestats.speed = 7
       self.basestats.magic = 2
