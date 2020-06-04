@@ -6,6 +6,10 @@ export class GameOverworldState extends State
 		@objects = ObjectManager!
 		@current_room = Room("overworld/overworld_1")
 
+		@enemy_spawn_rate = 3
+		@max_enemies = 3
+		@enemy_timer = Timer!
+
 	init: =>
 		@current_room\init!
 
@@ -20,7 +24,26 @@ export class GameOverworldState extends State
 		-- Add player to physics world so they can collide with tiles
 		@current_room.world\add(@player, @player.pos.x, @player.pos.y, @player.width, @player.height)
 
+		-- Start enemy spawner timer
+		@enemy_timer\every(@enemy_spawn_rate, @\spawnEnemy)
+
+	spawnEnemy: =>
+		enemy_count = @objects\countObjects("OverworldEnemy")
+		if enemy_count < @max_enemies
+			range = 5
+			tx = @player.pos.x + (math.random(range*2) - range) * 8
+			ty = @player.pos.y + (math.random(range*2) - range) * 8
+			print(tx, ty)
+			e = OverworldEnemy({x: tx, y: ty})
+			@objects\addObject(e)
+
+	destroy: =>
+		@enemy_timer\destroy!
+		super\destroy!
+
 	update: =>
+		@enemy_timer\update(dt)
+
 		@objects\updateObjects!
 		@objects\checkDestroyed!
 
@@ -29,9 +52,7 @@ export class GameOverworldState extends State
 
 		@current_room\draw(@camera.pos)
 
-
 		lg.push!
-
 		lg.translate(-@camera.pos.x, -@camera.pos.y)
 		@objects\drawObjects!
 

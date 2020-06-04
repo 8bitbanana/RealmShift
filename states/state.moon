@@ -3,21 +3,22 @@
 	-- old_state_var = new_state(parent)
 
 export class State
-	new: (@parent) =>		
-	
+	new: (@parent) =>
+
 	destroy: =>
 		if @objects
 			@objects\destroyAll!
-	
-	changeState: (new_state, params={}) =>	
-		@parent.state\destroy!
+
+	changeState: (new_state, params={}) =>
+		--@parent.state\destroy!
+		@\destroy!
 		@parent.state = new_state(@parent, params)
-		
+
 		if @parent.state.init
 			@parent.state\init!
-	
+
 	update: =>
-	
-	
+
+
 	draw: =>
-		
+

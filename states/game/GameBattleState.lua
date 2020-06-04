@@ -201,7 +201,7 @@ do
       })
     end,
     swapAction = function(self)
-      self.selectionCallback = function(self, index)
+      self.selectionCallback = function(index)
         local currentSpace = self.currentTurnIndex.index
         assert(currentSpace ~= nil)
         assert(index <= 4)
@@ -222,11 +222,37 @@ do
     selectedPlayer = function(self)
       return self.players[self.selectedSpace]
     end,
+    checkDead = function(self, tbl)
+      for _index_0 = 1, #tbl do
+        local o = tbl[_index_0]
+        if o.dead == false then
+          return false
+        end
+      end
+      return true
+    end,
+    checkWon = function(self)
+      return self:checkDead(self.enemies)
+    end,
+    checkLost = function(self)
+      return self:checkDead(self.players)
+    end,
     update = function(self)
       self.state:update()
       self.cutscenes:update()
       self.aniObjs:updateObjects()
-      return self.aniObjs:checkDestroyed()
+      self.aniObjs:checkDestroyed()
+      if self:checkWon() then
+        game.next_state = {
+          state = GameOverworldState,
+          params = {
+            self.rx,
+            self.ry
+          }
+        }
+      elseif self:checkLost() then
+        return print("You died chump")
+      end
     end,
     draw = function(self)
       lg.setColor(0.28, 0.81, 0.81, 1)
@@ -254,8 +280,15 @@ do
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self, parent)
-      self.parent = parent
+    __init = function(self, parent, rx, ry)
+      if rx == nil then
+        rx = 0
+      end
+      if ry == nil then
+        ry = 0
+      end
+      self.parent, self.rx, self.ry = parent, rx, ry
+      print(self.rx, self.ry)
       self.players = {
         nil,
         nil,

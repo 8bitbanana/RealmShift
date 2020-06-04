@@ -34,6 +34,7 @@ function setupInput()
 		end
 	)
 
+
 	-- GAMEPAD
 -- 	input:bind("dpleft", "left")
 -- 	input:bind("dpright", "right")
@@ -42,5 +43,3 @@ function setupInput()
 
 	return input
 end
-
-

@@ -3,24 +3,6 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    getCursorPos = function(self)
-      return {
-        x = self.pos.x + 3,
-        y = self.pos.y - 68
-      }
-    end,
-    draw_alive = function(self)
-      lg.setColor(RED)
-      lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
-      lg.setColor(BLACK)
-      return lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
-    end,
-    draw_dead = function(self)
-      lg.setColor(GRAY)
-      lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
-      lg.setColor(BLACK)
-      return lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
-    end,
     enemyTurn = function(self)
       local indexes = { }
       for i, target in pairs(self.parent:inactiveEntities()) do
@@ -51,6 +33,24 @@ do
       return self.parent.state:changeState(BattleTurnState, {
         ttl = 40
       })
+    end,
+    getCursorPos = function(self)
+      return {
+        x = self.pos.x + 3,
+        y = self.pos.y - 68
+      }
+    end,
+    draw_alive = function(self)
+      lg.setColor(RED)
+      lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
+      lg.setColor(BLACK)
+      return lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
+    end,
+    draw_dead = function(self)
+      lg.setColor(GRAY)
+      lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
+      lg.setColor(BLACK)
+      return lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
     end
   }
   _base_0.__index = _base_0

@@ -14,9 +14,35 @@ do
       self.camera:limitPos(self.current_room)
       self.objects:addObject(self.camera)
       self.objects:addObject(self.player)
-      return self.current_room.world:add(self.player, self.player.pos.x, self.player.pos.y, self.player.width, self.player.height)
+      self.current_room.world:add(self.player, self.player.pos.x, self.player.pos.y, self.player.width, self.player.height)
+      return self.enemy_timer:every(self.enemy_spawn_rate, (function()
+        local _base_1 = self
+        local _fn_0 = _base_1.spawnEnemy
+        return function(...)
+          return _fn_0(_base_1, ...)
+        end
+      end)())
+    end,
+    spawnEnemy = function(self)
+      local enemy_count = self.objects:countObjects("OverworldEnemy")
+      if enemy_count < self.max_enemies then
+        local range = 5
+        local tx = self.player.pos.x + (math.random(range * 2) - range) * 8
+        local ty = self.player.pos.y + (math.random(range * 2) - range) * 8
+        print(tx, ty)
+        local e = OverworldEnemy({
+          x = tx,
+          y = ty
+        })
+        return self.objects:addObject(e)
+      end
+    end,
+    destroy = function(self)
+      self.enemy_timer:destroy()
+      return _class_0.__parent.destroy(self)
     end,
     update = function(self)
+      self.enemy_timer:update(dt)
       self.objects:updateObjects()
       return self.objects:checkDestroyed()
     end,
@@ -42,6 +68,9 @@ do
       self.parent, self.tx, self.ty = parent, tx, ty
       self.objects = ObjectManager()
       self.current_room = Room("overworld/overworld_1")
+      self.enemy_spawn_rate = 3
+      self.max_enemies = 3
+      self.enemy_timer = Timer()
     end,
     __base = _base_0,
     __name = "GameOverworldState",

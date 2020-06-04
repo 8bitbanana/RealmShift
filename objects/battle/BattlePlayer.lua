@@ -21,9 +21,13 @@ do
       self.hp = self.hp - damage
       print("I took " .. damage .. " damage (" .. incomingattack .. "ATK " .. self.stats.defence .. "DEF)")
       if self.hp < 0 then
-        self.hp = 0
+        self:die()
       end
       return damage
+    end,
+    die = function(self)
+      self.hp = 0
+      self.dead = true
     end,
     attack = function(self, target, damageOverride)
       local damage = nil
@@ -40,6 +44,7 @@ do
     skillPrimaryInfo = function(self)
       return {
         name = "SKILLPRIMARY",
+        desc = "Base primary skill",
         valid = function(self)
           return false
         end
@@ -48,6 +53,7 @@ do
     skillSecondaryInfo = function(self)
       return {
         name = "SKILLSECONDARY",
+        desc = "Base secondary skill",
         valid = function(self)
           return false
         end
@@ -74,7 +80,7 @@ do
       }
     end,
     draw = function(self)
-      if self.hp == 0 then
+      if self.dead then
         return self:draw_dead()
       else
         self:draw_alive()
@@ -118,6 +124,7 @@ do
         rally = false,
         poison = false
       }
+      self.dead = false
     end,
     __base = _base_0,
     __name = "BattlePlayer"
@@ -319,7 +326,7 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.basestats.hp = 50
-      self.basestats.attack = 5
+      self.basestats.attack = 100
       self.basestats.defence = 8
       self.basestats.speed = 3
       self.basestats.magic = 6

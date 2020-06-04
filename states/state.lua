@@ -10,7 +10,7 @@ do
       if params == nil then
         params = { }
       end
-      self.parent.state:destroy()
+      self:destroy()
       self.parent.state = new_state(self.parent, params)
       if self.parent.state.init then
         return self.parent.state:init()

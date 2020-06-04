@@ -6,6 +6,19 @@ do
         return table.insert(self.objects, obj)
       end
     end,
+    countObjects = function(self, class_name)
+      local count = 0
+      if _G[class_name] then
+        local _list_0 = self.objects
+        for _index_0 = 1, #_list_0 do
+          local o = _list_0[_index_0]
+          if o.__class.__name == class_name then
+            count = count + 1
+          end
+        end
+      end
+      return count
+    end,
     updateObjects = function(self)
       for i = 1, #self.objects do
         local o = self.objects[i]
