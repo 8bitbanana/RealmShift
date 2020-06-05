@@ -160,6 +160,15 @@ do
       if nextIndex > #self.initiative then
         nextIndex = 1
       end
+      while self.initiative[nextIndex].entity.dead do
+        nextIndex = nextIndex + 1
+        if nextIndex > #self.initiative then
+          nextIndex = 1
+        end
+        if nextIndex == self.initiativeIndex then
+          error("Everyone is dead - initiative has looped")
+        end
+      end
       local nextInitiative = self.initiative[nextIndex]
       if apply then
         self.initiativeIndex = nextIndex

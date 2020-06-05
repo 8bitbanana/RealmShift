@@ -147,6 +147,11 @@ export class GameBattleState extends State
 	getNextInitiative: (apply=false)=>
 		nextIndex = @initiativeIndex + 1
 		nextIndex = 1 if nextIndex > #@initiative
+		while @initiative[nextIndex].entity.dead -- dead people don't get a turn, wild I know
+			nextIndex += 1
+			nextIndex = 1 if nextIndex > #@initiative
+			if nextIndex == @initiativeIndex
+				error "Everyone is dead - initiative has looped"
 		nextInitiative = @initiative[nextIndex]
 		if apply
 			@initiativeIndex = nextIndex
