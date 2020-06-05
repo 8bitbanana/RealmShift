@@ -65,6 +65,7 @@ do
         })
       }
       self:calculateEnemyPos()
+      self:calculateInitiative()
       self:getNextInitiative(true)
       return self.state:changeState(TurnIntroState)
     end,
@@ -124,95 +125,50 @@ do
         return self:enemyTurn()
       end
     end,
+    calculateInitiative = function(self)
+      self.initiative = { }
+      for i, player in pairs(self.players) do
+        table.insert(self.initiative, {
+          speed = player.stats.speed,
+          index = i,
+          type = "player",
+          entity = player
+        })
+      end
+      for i, enemy in pairs(self.enemies) do
+        table.insert(self.initiative, {
+          speed = enemy.stats.speed,
+          index = i,
+          type = "enemy",
+          entity = enemy
+        })
+      end
+      local sortfunc
+      sortfunc = function(a, b)
+        return a.speed > b.speed
+      end
+      table.sort(self.initiative, sortfunc)
+      for i, v in pairs(self.initiative) do
+        print(tostring(i) .. " T:" .. tostring(v.type) .. " S:" .. tostring(v.speed))
+      end
+    end,
     getNextInitiative = function(self, apply)
       if apply == nil then
         apply = false
       end
-      local nextup = nil
-      local nextupSpeed = -999
-      local nextupData = {
-        type = nil,
-        index = 0
-      }
-      local nextup_all = nil
-      local nextup_allSpeed = -999
-      local nextup_allData = {
-        type = nil,
-        index = 0
-      }
-      local currentTurnSpeed = 999
-      if self:currentTurn() ~= nil then
-        currentTurnSpeed = self:currentTurn().stats.speed
+      local nextIndex = self.initiativeIndex + 1
+      if nextIndex > #self.initiative then
+        nextIndex = 1
       end
-      for index, player in pairs(self.players) do
-        local _continue_0 = false
-        repeat
-          if player == nil then
-            _continue_0 = true
-            break
-          end
-          if player.stats.speed > nextupSpeed and player.stats.speed < currentTurnSpeed then
-            nextup = player
-            nextupSpeed = player.stats.speed
-            nextupData = {
-              type = "player",
-              index = index
-            }
-          end
-          if player.stats.speed > nextup_allSpeed then
-            nextup_all = player
-            nextup_allSpeed = player.stats.speed
-            nextup_allData = {
-              type = "player",
-              index = index
-            }
-          end
-          _continue_0 = true
-        until true
-        if not _continue_0 then
-          break
-        end
+      local nextInitiative = self.initiative[nextIndex]
+      if apply then
+        self.initiativeIndex = nextIndex
+        self.turndata = {
+          type = nextInitiative.type,
+          index = nextInitiative.index
+        }
       end
-      for index, enemy in pairs(self.enemies) do
-        local _continue_0 = false
-        repeat
-          if enemy == nil then
-            _continue_0 = true
-            break
-          end
-          if enemy.stats.speed > nextupSpeed and enemy.stats.speed < currentTurnSpeed then
-            nextup = enemy
-            nextupSpeed = enemy.stats.speed
-            nextupData = {
-              type = "enemy",
-              index = index
-            }
-          end
-          if enemy.stats.speed > nextup_allSpeed then
-            nextup_all = enemy
-            nextup_allSpeed = enemy.stats.speed
-            nextup_allData = {
-              type = "enemy",
-              index = index
-            }
-          end
-          _continue_0 = true
-        until true
-        if not _continue_0 then
-          break
-        end
-      end
-      if nextup == nil then
-        if apply then
-          self.turndata = nextup_allData
-        end
-        return nextup_all
-      else
-        if apply then
-          self.turndata = nextupData
-        end
-        return nextup
-      end
+      return nextInitiative.entity
     end,
     attackAction = function(self)
       self.selectionCallback = function(self, index)
@@ -345,6 +301,8 @@ do
         type = nil,
         index = 0
       }
+      self.initiative = { }
+      self.initiativeIndex = 0
       self.selectionCallback = function() end
       self.cutsceneCallback = function() end
     end,

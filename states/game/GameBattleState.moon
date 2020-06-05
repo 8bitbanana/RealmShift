@@ -22,6 +22,8 @@ export class GameBattleState extends State
 
 		-- type is player or enemy
 		@turndata = {type:nil, index:0}
+		@initiative = {}
+		@initiativeIndex = 0
 
 		@selectionCallback = ()->
 		@cutsceneCallback = ()->
@@ -67,6 +69,7 @@ export class GameBattleState extends State
 		}
 		@calculateEnemyPos!
 
+		@calculateInitiative!
 		@getNextInitiative true
 		@state\changeState(TurnIntroState)
 
@@ -119,43 +122,39 @@ export class GameBattleState extends State
 			when "enemy"
 				@enemyTurn!
 
+	calculateInitiative: =>
+		@initiative = {}
+		for i, player in pairs @players
+			table.insert(@initiative, {
+				speed: player.stats.speed,
+				index: i,
+				type: "player",
+				entity: player
+			})
+		for i, enemy in pairs @enemies
+			table.insert(@initiative, {
+				speed: enemy.stats.speed,
+				index: i,
+				type: "enemy",
+				entity: enemy
+			})
+		sortfunc = (a, b) ->
+			return a.speed > b.speed
+		table.sort(@initiative, sortfunc)
+		for i,v in pairs @initiative
+			print("#{i} T:#{v.type} S:#{v.speed}")
+
 	getNextInitiative: (apply=false)=>
-		nextup = nil
-		nextupSpeed = -999
-		nextupData = {type:nil, index:0}
-		nextup_all = nil
-		nextup_allSpeed = -999
-		nextup_allData = {type:nil, index:0}
-
-		currentTurnSpeed = 999
-		currentTurnSpeed = @currentTurn!.stats.speed if @currentTurn! != nil
-
-		for index, player in pairs @players
-			continue if player == nil
-			if player.stats.speed > nextupSpeed and player.stats.speed < currentTurnSpeed
-				nextup = player
-				nextupSpeed = player.stats.speed
-				nextupData = {type:"player", index:index}
-			if player.stats.speed > nextup_allSpeed
-				nextup_all = player
-				nextup_allSpeed = player.stats.speed
-				nextup_allData = {type:"player", index:index}
-		for index, enemy in pairs @enemies
-			continue if enemy == nil
-			if enemy.stats.speed > nextupSpeed and enemy.stats.speed < currentTurnSpeed
-				nextup = enemy
-				nextupSpeed = enemy.stats.speed
-				nextupData = {type:"enemy", index:index}
-			if enemy.stats.speed > nextup_allSpeed
-				nextup_all = enemy
-				nextup_allSpeed = enemy.stats.speed
-				nextup_allData = {type:"enemy", index:index}
-		if nextup == nil
-			@turndata = nextup_allData if apply
-			return nextup_all
-		else
-			@turndata = nextupData if apply
-			return nextup
+		nextIndex = @initiativeIndex + 1
+		nextIndex = 1 if nextIndex > #@initiative
+		nextInitiative = @initiative[nextIndex]
+		if apply
+			@initiativeIndex = nextIndex
+			@turndata = {
+				type: nextInitiative.type,
+				index: nextInitiative.index
+			}
+		return nextInitiative.entity
 
 
 	attackAction: () =>
