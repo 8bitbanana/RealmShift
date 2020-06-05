@@ -173,12 +173,12 @@ do
     attackAction = function(self)
       self.selectionCallback = function(self, index)
         local attackscene = CutsceneAttack({
-          tts = 6,
+          tts = 0.1,
           index = index
         })
         self.cutscenes:addCutscene(attackscene)
         return self.state:changeState(BattleTurnState, {
-          ttl = 20
+          ttl = 0.33
         })
       end
       return self.state:changeState(BattleEnemySelectState)
@@ -191,7 +191,7 @@ do
     end,
     waitAction = function(self)
       return self.state:changeState(BattleTurnState, {
-        ttl = 30
+        ttl = 0.5
       })
     end,
     swapAction = function(self)
@@ -200,13 +200,13 @@ do
         assert(currentSpace ~= nil)
         assert(index <= 4)
         local swapscene = CutsceneSwap({
-          tts = 2,
+          tts = 0.033,
           firstindex = self.currentTurnIndex.index,
           secondindex = index
         })
         self.cutscenes:addCutscene(swapscene)
         return self.state:changeState(BattleTurnState, {
-          ttl = 30
+          ttl = 0.5
         })
       end
       return self.state:changeState(BattleSpaceSelectState, {
@@ -219,14 +219,19 @@ do
     checkDead = function(self, tbl)
       for _index_0 = 1, #tbl do
         local o = tbl[_index_0]
-        if o.dead == false then
-          return false
+        if o ~= nil then
+          if o.dead == false then
+            return false
+          end
         end
       end
       return true
     end,
     checkWon = function(self)
-      return self:checkDead(self.enemies)
+      if self.state.__class.__name == "TurnIntroState" and self:checkDead(self.enemies) then
+        return true
+      end
+      return false
     end,
     checkLost = function(self)
       return self:checkDead(self.players)
@@ -245,7 +250,14 @@ do
           }
         }
       elseif self:checkLost() then
-        return print("You died chump")
+        print("You died chump")
+        game.next_state = {
+          state = GameOverworldState,
+          params = {
+            self.rx,
+            self.ry
+          }
+        }
       end
     end,
     draw = function(self)

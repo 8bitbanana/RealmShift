@@ -6,7 +6,7 @@ export class GameOverworldState extends State
 		@objects = ObjectManager!
 		@current_room = Room("overworld/overworld_1")
 
-		@enemy_spawn_rate = 3
+		@enemy_spawn_rate = 4
 		@max_enemies = 3
 		@enemy_timer = Timer!
 
@@ -30,7 +30,7 @@ export class GameOverworldState extends State
 	spawnEnemy: =>
 		enemy_count = @objects\countObjects("OverworldEnemy")
 		if enemy_count < @max_enemies
-			range = 5
+			range = 8 -- range in tiles that enemy can spawn at
 			tx = @player.pos.x + (math.random(range*2) - range) * 8
 			ty = @player.pos.y + (math.random(range*2) - range) * 8
 			print(tx, ty)

@@ -1,4 +1,4 @@
-Inspect = require("lib/Inspect")      
+Inspect = require("lib/Inspect")
 
 export class BattleCutsceneManager
 	new: (@parent) =>
@@ -22,7 +22,7 @@ export class BattleCutscene
 		@started = false
 		@done = false
 		@tts_max = 0
-		@ttl_max = 10
+		@ttl_max = 0.16
 
 	init: =>
 		assert @root != nil
@@ -44,26 +44,28 @@ export class BattleCutscene
 
 	update: ()=>
 		if @started
-			@ttl-=1
-			if @ttl == 0
+			@ttl-=dt
+			if @ttl <= 0
 				@sceneFinish!
 				@done = true
 			if not @done
 				@sceneUpdate!
 		else
-			@tts -=1
+			@tts -=dt
 			if @tts <= 0
-				@started = true 
+				@started = true
 				@sceneStart!
 
 -- currentTurn attacks player/enemy at @args.index
 export class CutsceneAttack extends BattleCutscene
 	new: (...) =>
 		super ...
-		@ttl_max = 10
+		@ttl_max = 0.16
+		@attacked = false
 
 	sceneUpdate: =>
-		if @ttl == 8
+		if @ttl <= 0.13 and not @attacked
+			@attacked = true
 			damage = @root\currentTurn!\attack(@root\inactiveEntities![@args.index], @args.damage)
 			pos = @root\inactiveEntities![@args.index]\getCursorPos!
 			particle = BattleDamageNumber(pos, damage)
@@ -78,7 +80,7 @@ export class CutsceneAttack extends BattleCutscene
 export class CutsceneShove extends BattleCutscene
 	new: (...) =>
 		super ...
-		@ttl = 25
+		@ttl = 0.40
 		@moves = {}
 
 	sceneStart: =>
@@ -108,14 +110,14 @@ export class CutsceneShove extends BattleCutscene
 		for i=shovestart, shoveend-shovedir, shovedir
 			if @root.players[i] != nil
 				table.insert(@moves, {i, i+shovedir})
-	
+
 	sceneUpdate: =>
 		for move in *@moves
 			oldindex, newindex = move[1], move[2]
 			oldpos = @root\getPlayerIndexPos(oldindex)
 			newpos = @root\getPlayerIndexPos(newindex)
 			@root.players[oldindex].pos = vector.lerp(oldpos, newpos, @progress!)
-	
+
 	sceneFinish: =>
 		newPlayers = {nil,nil,nil,nil}
 		for index=1, 4
@@ -130,12 +132,12 @@ export class CutsceneShove extends BattleCutscene
 			newPlayers[newindex] = @root.players[index]
 		@root.players = newPlayers
 		@root\calculatePlayerPos!
-		
+
 -- Swaps players at @args.firstindex and @args.secondindex
 export class CutsceneSwap extends BattleCutscene
 	new: (...) =>
 		super ...
-		@ttl = 25
+		@ttl = 0.40
 
 	sceneStart: =>
 		@playerA = @root.players[@args.firstindex]

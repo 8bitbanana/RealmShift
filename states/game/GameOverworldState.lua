@@ -26,7 +26,7 @@ do
     spawnEnemy = function(self)
       local enemy_count = self.objects:countObjects("OverworldEnemy")
       if enemy_count < self.max_enemies then
-        local range = 5
+        local range = 8
         local tx = self.player.pos.x + (math.random(range * 2) - range) * 8
         local ty = self.player.pos.y + (math.random(range * 2) - range) * 8
         print(tx, ty)
@@ -68,7 +68,7 @@ do
       self.parent, self.tx, self.ty = parent, tx, ty
       self.objects = ObjectManager()
       self.current_room = Room("overworld/overworld_1")
-      self.enemy_spawn_rate = 3
+      self.enemy_spawn_rate = 4
       self.max_enemies = 3
       self.enemy_timer = Timer()
     end,

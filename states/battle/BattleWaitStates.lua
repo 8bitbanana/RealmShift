@@ -8,7 +8,7 @@ do
     end,
     update = function(self)
       if not self.done then
-        self.ttl = self.ttl - 1
+        self.ttl = self.ttl - dt
       end
       if self.ttl <= 0 and not self.done then
         self.done = true
@@ -54,14 +54,14 @@ do
   local _parent_0 = State
   local _base_0 = {
     init = function(self)
-      self.ttl = 60
+      self.ttl = 1.0
       if self.args.ttl then
         self.ttl = self.args.ttl
       end
     end,
     update = function(self)
       if not self.done then
-        self.ttl = self.ttl - 1
+        self.ttl = self.ttl - dt
       end
       if self.ttl <= 0 and not self.done then
         self.done = true

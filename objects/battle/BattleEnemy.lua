@@ -26,12 +26,12 @@ do
       local targetindex = indexes[love.math.random(#indexes)]
       print("Attacking target " .. targetindex)
       local attackScene = CutsceneAttack({
-        tts = 20,
+        tts = 0.33,
         index = targetindex
       })
       self.parent.cutscenes:addCutscene(attackScene)
       return self.parent.state:changeState(BattleTurnState, {
-        ttl = 40
+        ttl = 0.66
       })
     end,
     getCursorPos = function(self)

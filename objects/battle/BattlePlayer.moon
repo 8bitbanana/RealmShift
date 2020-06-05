@@ -124,7 +124,7 @@ export class Mage extends BattlePlayer
 	new: (...) =>
 		super ...
 		@basestats.hp = 50
-		@basestats.attack = 3
+		@basestats.attack = 100--3
 		@basestats.defence = 2
 		@basestats.speed = 5
 		@basestats.magic = 10
@@ -138,7 +138,7 @@ export class Fighter extends BattlePlayer
 	new: (...) =>
 		super ...
 		@basestats.hp = 50
-		@basestats.attack = 8
+		@basestats.attack = 100--8
 		@basestats.defence = 4
 		@basestats.speed = 7
 		@basestats.magic = 2
@@ -159,10 +159,10 @@ export class Fighter extends BattlePlayer
 
 		@parent.selectionCallback = (index) =>
 			shovescene = CutsceneShove({tts:0, dir:-4})
-			attackscene = CutsceneAttack({tts:6, index:index, damage:damage})
+			attackscene = CutsceneAttack({tts:0.1, index:index, damage:damage})
 			@cutscenes\addCutscene(shovescene)
 			@cutscenes\addCutscene(attackscene)
-			@state\changeState(BattleTurnState, {ttl:30})
+			@state\changeState(BattleTurnState, {ttl:0.5})
 		@parent.state\changeState(BattleEnemySelectState)
 
 	-- Reposition - swap two allies places
@@ -180,9 +180,9 @@ export class Fighter extends BattlePlayer
 				currentSpace = firstindex
 				assert currentSpace != nil
 				assert secondindex <= 4
-				swapscene = CutsceneSwap({tts:2, firstindex:firstindex, secondindex:secondindex})
+				swapscene = CutsceneSwap({tts:0.033, firstindex:firstindex, secondindex:secondindex})
 				@cutscenes\addCutscene(swapscene)
-				@state\changeState(BattleTurnState, {ttl:30})
+				@state\changeState(BattleTurnState, {ttl:0.5})
 			@state\changeState(BattleSpaceSelectState, {selectedspace:firstindex})
 		@parent.state\changeState(BattlePlayerSelectState, {selectedIndex:myindex})
 
@@ -194,8 +194,7 @@ export class Paladin extends BattlePlayer
 	new: (...) =>
 		super ...
 		@basestats.hp = 50
-		-- @basestats.attack = 5
-		@basestats.attack = 100 -- Debug Testing
+		@basestats.attack = 100--5
 
 		@basestats.defence = 8
 		@basestats.speed = 3
