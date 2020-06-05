@@ -42,15 +42,15 @@ do
     end,
     draw_alive = function(self)
       lg.setColor(RED)
-      lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
+      lg.rectangle("fill", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
       lg.setColor(BLACK)
-      return lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
+      return lg.rectangle("line", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
     end,
     draw_dead = function(self)
       lg.setColor(GRAY)
-      lg.rectangle("fill", self.pos.x, self.pos.y - 48, 30, 48)
+      lg.rectangle("fill", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
       lg.setColor(BLACK)
-      return lg.rectangle("line", self.pos.x, self.pos.y - 48, 30, 48)
+      return lg.rectangle("line", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
     end
   }
   _base_0.__index = _base_0
@@ -62,6 +62,10 @@ do
       self.basestats.attack = 3
       self.basestats.defence = 4
       self.basestats.speed = 2
+      self.size = {
+        w = 30,
+        h = 48
+      }
       return self:init()
     end,
     __base = _base_0,

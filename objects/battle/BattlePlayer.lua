@@ -98,15 +98,15 @@ do
       if overwrite then
         lg.setColor(ORANGE)
       end
-      lg.rectangle("fill", self.pos.x, self.pos.y - 32, 24, 32)
+      lg.rectangle("fill", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
       lg.setColor(BLACK)
-      return lg.rectangle("line", self.pos.x, self.pos.y - 32, 24, 32)
+      return lg.rectangle("line", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
     end,
     draw_dead = function(self)
       lg.setColor(GRAY)
-      lg.rectangle("fill", self.pos.x, self.pos.y - 32, 24, 32)
+      lg.rectangle("fill", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
       lg.setColor(BLACK)
-      return lg.rectangle("line", self.pos.x, self.pos.y - 32, 24, 32)
+      return lg.rectangle("line", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
     end
   }
   _base_0.__index = _base_0
@@ -125,6 +125,10 @@ do
         poison = false
       }
       self.dead = false
+      self.size = {
+        w = 24,
+        h = 32
+      }
     end,
     __base = _base_0,
     __name = "BattlePlayer"

@@ -9,6 +9,7 @@ export class BattleEnemy extends BattlePlayer
 		@basestats.attack = 3
 		@basestats.defence = 4
 		@basestats.speed = 2
+		@size = {w:30, h:48}
 		@init!
 
 	enemyTurn: () =>
@@ -32,12 +33,12 @@ export class BattleEnemy extends BattlePlayer
 
 	draw_alive: () =>
 		lg.setColor(RED)
-		lg.rectangle("fill", @pos.x, @pos.y-48, 30, 48)
+		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 		lg.setColor(BLACK)
-		lg.rectangle("line", @pos.x, @pos.y-48, 30, 48)
+		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 
 	draw_dead: () =>
 		lg.setColor(GRAY)
-		lg.rectangle("fill", @pos.x, @pos.y-48, 30, 48)
+		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 		lg.setColor(BLACK)
-		lg.rectangle("line", @pos.x, @pos.y-48, 30, 48)
+		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)

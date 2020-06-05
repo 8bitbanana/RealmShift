@@ -22,6 +22,7 @@ export class BattlePlayer
 			poison: false
 		}
 		@dead = false
+		@size = {w:24, h:32}
 
 	init: () =>
 		@stats = table.shallow_copy(@basestats)
@@ -49,9 +50,9 @@ export class BattlePlayer
 	attack: (target, damageOverride) =>
 		damage = nil
 		if damageOverride
-				damage = damageOverride
+			damage = damageOverride
 		else
-				damage = @stats.attack
+			damage = @stats.attack
 		damage *= 1.1 if @buffs.rally
 
 		target\takeDamage(damage)
@@ -107,16 +108,16 @@ export class BattlePlayer
 	-- Draw call if alive
 	draw_alive: (overwrite=false) =>
 		lg.setColor(ORANGE) if overwrite
-		lg.rectangle("fill", @pos.x, @pos.y-32, 24, 32)
+		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 		lg.setColor(BLACK)
-		lg.rectangle("line", @pos.x, @pos.y-32, 24, 32)
+		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 
 	-- Draw call if dead
 	draw_dead: () =>
 		lg.setColor(GRAY)
-		lg.rectangle("fill", @pos.x, @pos.y-32, 24, 32)
+		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 		lg.setColor(BLACK)
-		lg.rectangle("line", @pos.x, @pos.y-32, 24, 32)
+		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 
 
 export class Mage extends BattlePlayer
