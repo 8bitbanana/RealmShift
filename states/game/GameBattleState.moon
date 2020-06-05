@@ -183,7 +183,7 @@ export class GameBattleState extends State
 			currentSpace = @currentTurnIndex.index
 			assert currentSpace != nil
 			assert index <= 4
-			swapscene = CutsceneSwap({tts:0.033, firstindex:@currentTurnIndex.index,secondindex:index})
+			swapscene = CutsceneSwap({tts:0.033, type:"player", firstindex:@currentTurnIndex.index,secondindex:index})
 			@cutscenes\addCutscene(swapscene)
 			@state\changeState(BattleTurnState, {ttl:0.5})
 		@state\changeState(BattleSpaceSelectState, {selectedspace:@currentTurnIndex.index})

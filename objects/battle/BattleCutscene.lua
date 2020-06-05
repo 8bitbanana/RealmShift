@@ -292,18 +292,36 @@ do
   local _parent_0 = BattleCutscene
   local _base_0 = {
     sceneStart = function(self)
-      self.playerA = self.root.players[self.args.firstindex]
-      self.playerB = self.root.players[self.args.secondindex]
+      self.entities = nil
+      if self.args.type == "player" then
+        self.entities = self.root.players
+      end
+      if self.args.type == "enemy" then
+        self.entities = self.root.enemies
+      end
+      assert(self.entities ~= nil)
+      self.playerA = self.entities[self.args.firstindex]
+      self.playerB = self.entities[self.args.secondindex]
       assert(self.args.firstindex ~= self.args.secondindex)
       if self.playerA then
         self.posA = self.playerA.pos
       else
-        self.posA = self.root:getPlayerIndexPos(self.args.firstindex)
+        if self.args.type == "player" then
+          self.posA = self.root:getPlayerIndexPos(self.args.firstindex)
+        end
+        if self.args.type == "enemy" then
+          self.posA = self.root:getEnemyIndexPos(self.args.firstindex)
+        end
       end
       if self.playerB then
         self.posB = self.playerB.pos
       else
-        self.posB = self.root:getPlayerIndexPos(self.args.secondindex)
+        if self.args.type == "player" then
+          self.posB = self.root:getPlayerIndexPos(self.args.secondindex)
+        end
+        if self.args.type == "enemy" then
+          self.posB = self.root:getEnemyIndexPos(self.args.secondindex)
+        end
       end
     end,
     sceneUpdate = function(self)
@@ -315,14 +333,21 @@ do
       end
     end,
     sceneFinish = function(self)
-      self.root.players[self.args.firstindex], self.root.players[self.args.secondindex] = self.root.players[self.args.secondindex], self.root.players[self.args.firstindex]
-      if self.root.turndata.index == self.args.firstindex then
-        self.root.turndata.index = self.args.secondindex
+      self.entities[self.args.firstindex], self.entities[self.args.secondindex] = self.entities[self.args.secondindex], self.entities[self.args.firstindex]
+      if self.root.turndata.type == self.args.type then
+        if self.root.turndata.index == self.args.firstindex then
+          self.root.turndata.index = self.args.secondindex
+        end
+        if self.root.turndata.index == self.args.secondindex then
+          self.root.turndata.index = self.args.firstindex
+        end
       end
-      if self.root.turndata.index == self.args.secondindex then
-        self.root.turndata.index = self.args.firstindex
+      if self.args.type == "player" then
+        self.root:calculatePlayerPos()
       end
-      return self.root:calculatePlayerPos()
+      if self.args.type == "enemy" then
+        return self.root:calculateEnemyPos()
+      end
     end
   }
   _base_0.__index = _base_0

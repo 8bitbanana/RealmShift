@@ -210,6 +210,7 @@ do
         assert(index <= 4)
         local swapscene = CutsceneSwap({
           tts = 0.033,
+          type = "player",
           firstindex = self.currentTurnIndex.index,
           secondindex = index
         })

@@ -180,7 +180,7 @@ export class Fighter extends BattlePlayer
 				currentSpace = firstindex
 				assert currentSpace != nil
 				assert secondindex <= 4
-				swapscene = CutsceneSwap({tts:0.033, firstindex:firstindex, secondindex:secondindex})
+				swapscene = CutsceneSwap({tts:0.033, type:"player", firstindex:firstindex, secondindex:secondindex})
 				@cutscenes\addCutscene(swapscene)
 				@state\changeState(BattleTurnState, {ttl:0.5})
 			@state\changeState(BattleSpaceSelectState, {selectedspace:firstindex})
