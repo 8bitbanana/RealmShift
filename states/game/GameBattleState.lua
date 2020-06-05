@@ -58,8 +58,13 @@ do
         BattleEnemy(self, {
           x = 50,
           y = 127
+        }),
+        BattleEnemy(self, {
+          x = 0,
+          y = 0
         })
       }
+      self:calculateEnemyPos()
       self:getNextInitiative(true)
       return self.state:changeState(TurnIntroState)
     end,
@@ -70,9 +75,42 @@ do
     end,
     getPlayerIndexPos = function(self, i)
       return {
-        x = 92 + 28 * i,
+        x = 97 + 28 * i,
         y = 127
       }
+    end,
+    calculateEnemyPos = function(self)
+      local totalEnemyWidth = 0
+      local enemyCount = 0
+      local _list_0 = self.enemies
+      for _index_0 = 1, #_list_0 do
+        local enemy = _list_0[_index_0]
+        totalEnemyWidth = totalEnemyWidth + enemy.size.w
+        enemyCount = enemyCount + 1
+      end
+      local leftPadding = 5
+      if (totalEnemyWidth < 90) then
+        leftPadding = 10
+      end
+      local extraSpace = 110 - leftPadding - totalEnemyWidth
+      assert(extraSpace >= 0)
+      local gap = math.floor(extraSpace / enemyCount)
+      if gap > 10 then
+        gap = 10
+      end
+      local currentX = leftPadding
+      for i, enemy in pairs(self.enemies) do
+        enemy.pos = {
+          x = currentX,
+          y = 127
+        }
+        self.enemyPosData[i] = enemy.pos
+        currentX = currentX + enemy.size.w
+        currentX = currentX + gap
+      end
+    end,
+    getEnemyIndexPos = function(self, i)
+      return self.enemyPosData[i]
     end,
     turnEnd = function(self)
       self:getNextInitiative(true)
@@ -300,6 +338,7 @@ do
       }
       self.selectedSpace = 1
       self.state = nil
+      self.enemyPosData = { }
       self.aniObjs = ObjectManager()
       self.cutscenes = BattleCutsceneManager(self)
       self.turndata = {

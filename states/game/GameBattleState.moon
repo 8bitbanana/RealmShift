@@ -15,6 +15,8 @@ export class GameBattleState extends State
 
 		@state = nil
 
+		@enemyPosData = {}
+
 		@aniObjs = ObjectManager!
 		@cutscenes = BattleCutsceneManager(@)
 
@@ -61,7 +63,9 @@ export class GameBattleState extends State
 		@enemies = {
 			BattleEnemy(@, {x:10,y:127})
 			BattleEnemy(@, {x:50,y:127})
+			BattleEnemy(@, {x:0, y:0})
 		}
+		@calculateEnemyPos!
 
 		@getNextInitiative true
 		@state\changeState(TurnIntroState)
@@ -72,9 +76,37 @@ export class GameBattleState extends State
 
 	getPlayerIndexPos: (i) =>
 		return {
-			x: 92+28*i
+			x: 97+28*i
 			y: 127
 		}
+
+	calculateEnemyPos: =>
+		totalEnemyWidth = 0
+		enemyCount = 0
+		for enemy in *@enemies
+			totalEnemyWidth += enemy.size.w
+			enemyCount += 1
+		
+		leftPadding = 5
+		leftPadding = 10 if (totalEnemyWidth < 90)
+		
+		extraSpace = 110 - leftPadding - totalEnemyWidth
+		assert(extraSpace >= 0)
+		gap = math.floor(extraSpace / enemyCount)
+		gap = 10 if gap > 10
+
+		currentX = leftPadding
+		for i, enemy in pairs @enemies
+			enemy.pos = {
+				x: currentX,
+				y: 127
+			}
+			@enemyPosData[i] = enemy.pos
+			currentX += enemy.size.w
+			currentX += gap
+
+	getEnemyIndexPos: (i) =>
+		return @enemyPosData[i]
 
 	turnEnd: () =>
 		@getNextInitiative true
