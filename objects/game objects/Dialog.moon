@@ -119,6 +119,8 @@ export class DialogBox
 		if @started
 			lg.setColor(1, 1, 1)
 			lg.rectangle("fill", 3, 107, 234, 50)
+			lg.setColor(0, 0, 0)
+			lg.rectangle("line", 3, 107, 234, 50)
 			Push\setCanvas("dialogbox")
 			lg.clear()
 			width = 0

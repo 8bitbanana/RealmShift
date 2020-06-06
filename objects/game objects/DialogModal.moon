@@ -43,10 +43,9 @@ export class DialogModal
 			@size.h += 3
 			currentPos.y += option.size.h + 5
 		@size.w += maxW
-		print(Inspect(@size))
 		@pos = {
-			x: GAME_WIDTH - 3 - @size.w
-			y: GAME_HEIGHT - 3 - @size.h
+			x: GAME_WIDTH - 5 - @size.w
+			y: GAME_HEIGHT - 5 - @size.h
 		}
 
 		for option in *@options
