@@ -22,6 +22,28 @@ export class ObjectManager
 			if o.update and not o.destroyed then
 				o\update!
 
+	sortByValue: (vtbl) =>
+		-- vtbl table of values like: {"pos", "x"} to index obj.pos.x
+		sort_func = -> return nil
+
+		if #vtbl > 1
+			sort_func = (a, b) ->
+				av = a[vtbl[1]]
+				for i=2, #vtbl
+					av = av[vtbl[i]]
+
+				bv = b[vtbl[1]]
+				for i=2, #vtbl
+					bv = bv[vtbl[i]]
+
+				-- print("av: #{av}, bv: #{bv}")
+				return av < bv
+		else
+			sort_func = (a, b) -> return a.vtbl[1] < b.vtbl[1]
+
+		table.sort(@objects, sort_func)
+
+
 	drawObjects: =>
 		for i=1, #@objects do
 			o = @objects[i]

@@ -25,6 +25,10 @@ do
       self.current_room:draw(self.camera.pos)
       lg.push()
       lg.translate(-self.camera.pos.x, -self.camera.pos.y)
+      self.objects:sortByValue({
+        "pos",
+        "y"
+      })
       self.objects:drawObjects()
       return lg.pop()
     end
@@ -34,13 +38,13 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent, room_path, tx, ty)
       if room_path == nil then
-        room_path = "towns/test_town"
+        room_path = "areas/desert_new"
       end
       if tx == nil then
-        tx = 64
+        tx = 88
       end
       if ty == nil then
-        ty = 64
+        ty = 88
       end
       self.parent, self.room_path, self.tx, self.ty = parent, room_path, tx, ty
       self.objects = ObjectManager()

@@ -8,8 +8,8 @@ return {
   height = 64,
   tilewidth = 8,
   tileheight = 8,
-  nextlayerid = 4,
-  nextobjectid = 11,
+  nextlayerid = 5,
+  nextobjectid = 18,
   properties = {},
   tilesets = {
     {
@@ -413,6 +413,99 @@ return {
             ["is_door"] = true,
             ["tx"] = 152,
             ["ty"] = 80
+          }
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      id = 4,
+      name = "NPCs",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 13,
+          name = "",
+          type = "NPC",
+          shape = "rectangle",
+          x = 152,
+          y = 88,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 57,
+          visible = true,
+          properties = {
+            ["solid"] = true
+          }
+        },
+        {
+          id = 14,
+          name = "",
+          type = "NPC",
+          shape = "rectangle",
+          x = 40,
+          y = 200,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 57,
+          visible = true,
+          properties = {
+            ["solid"] = true
+          }
+        },
+        {
+          id = 15,
+          name = "",
+          type = "NPC",
+          shape = "rectangle",
+          x = 400,
+          y = 320,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 57,
+          visible = true,
+          properties = {
+            ["solid"] = true
+          }
+        },
+        {
+          id = 16,
+          name = "",
+          type = "NPC",
+          shape = "rectangle",
+          x = 256,
+          y = 416,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 57,
+          visible = true,
+          properties = {
+            ["solid"] = true
+          }
+        },
+        {
+          id = 17,
+          name = "",
+          type = "NPC",
+          shape = "rectangle",
+          x = 400,
+          y = 128,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 57,
+          visible = true,
+          properties = {
+            ["solid"] = true
           }
         }
       }

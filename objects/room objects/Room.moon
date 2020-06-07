@@ -31,6 +31,7 @@ export class Room
 
 		-- Check if class exists and create a new object if so
 		if obj_class
+			-- print("class #{obj_data.type} exists")
 			-- Create object with default values
 			obj = obj_class(pos, width, height)--, unpack(params))
 			-- Loop through all the custom values in the object data
@@ -43,6 +44,10 @@ export class Room
 			-- the correct keys in the final object. Using the previous method
 			-- of unpacking the values caused issues where tx and ty values
 			-- for room doors were unpacking in the wrong order.
+
+			-- If obj.solid then add obj to collision world
+			if obj.solid
+				@world\add(obj, obj.pos.x, obj.pos.y, obj.width, obj.height)
 
 			return obj
 
@@ -61,9 +66,11 @@ export class Room
 
 	draw: (pos={x: 0, y: 0}) =>
 		lg.setColor(WHITE)
-		@map.layers[1].x = -pos.x
-		@map.layers[1].y = -pos.y
-		@map\drawTileLayer(@map.layers[1])
+		for layer in *@map.layers
+			if layer.type == "tilelayer"
+				layer.x = -pos.x
+				layer.y = -pos.y
+				@map\drawTileLayer(layer)
 
 		if SHOW_COLLIDERS
 			lg.setColor(RED)

@@ -23,6 +23,7 @@ export class BattlePlayer
 		}
 		@dead = false
 		@size = {w:24, h:32}
+		@sprite = sprites.battle.main_char
 
 	init: () =>
 		@stats = table.shallow_copy(@basestats)
@@ -107,10 +108,11 @@ export class BattlePlayer
 
 	-- Draw call if alive
 	draw_alive: (overwrite=false) =>
-		lg.setColor(ORANGE) if overwrite
-		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
-		lg.setColor(BLACK)
-		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+		@sprite\draw(@pos.x, @pos.y)
+-- 		lg.setColor(ORANGE) if overwrite
+-- 		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+-- 		lg.setColor(BLACK)
+-- 		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 
 	-- Draw call if dead
 	draw_dead: () =>
@@ -193,6 +195,7 @@ export class Fighter extends BattlePlayer
 export class Paladin extends BattlePlayer
 	new: (...) =>
 		super ...
+		@sprite = sprites.battle.paladin_char
 		@basestats.hp = 50
 		@basestats.attack = 100--5
 

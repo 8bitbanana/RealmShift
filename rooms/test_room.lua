@@ -351,9 +351,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["dest_room"] = "towns/test_town",
+            ["dest_room"] = "areas/test_town",
             ["is_door"] = true,
-            ["is_room"] = true,
             ["tx"] = 112,
             ["ty"] = 152
           }

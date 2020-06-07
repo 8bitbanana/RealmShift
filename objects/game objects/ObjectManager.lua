@@ -27,6 +27,30 @@ do
         end
       end
     end,
+    sortByValue = function(self, vtbl)
+      local sort_func
+      sort_func = function()
+        return nil
+      end
+      if #vtbl > 1 then
+        sort_func = function(a, b)
+          local av = a[vtbl[1]]
+          for i = 2, #vtbl do
+            av = av[vtbl[i]]
+          end
+          local bv = b[vtbl[1]]
+          for i = 2, #vtbl do
+            bv = bv[vtbl[i]]
+          end
+          return av < bv
+        end
+      else
+        sort_func = function(a, b)
+          return a.vtbl[1] < b.vtbl[1]
+        end
+      end
+      return table.sort(self.objects, sort_func)
+    end,
     drawObjects = function(self)
       for i = 1, #self.objects do
         local o = self.objects[i]
