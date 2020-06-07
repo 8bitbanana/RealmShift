@@ -14,6 +14,9 @@ sin = math.sin
 cos = math.cos
 floor = math.floor
 
+PI = 3.14
+TWO_PI = PI * 2
+
 GAME_WIDTH = 240
 GAME_HEIGHT = 160
 SCALE = 2

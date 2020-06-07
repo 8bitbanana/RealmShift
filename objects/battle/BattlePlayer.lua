@@ -95,12 +95,7 @@ do
       if overwrite == nil then
         overwrite = false
       end
-      if overwrite then
-        lg.setColor(ORANGE)
-      end
-      lg.rectangle("fill", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
-      lg.setColor(BLACK)
-      return lg.rectangle("line", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
+      return self.sprite:draw(self.pos.x, self.pos.y)
     end,
     draw_dead = function(self)
       lg.setColor(GRAY)
@@ -129,6 +124,7 @@ do
         w = 24,
         h = 32
       }
+      self.sprite = sprites.battle.main_char
     end,
     __base = _base_0,
     __name = "BattlePlayer"
@@ -329,6 +325,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
+      self.sprite = sprites.battle.paladin_char
       self.basestats.hp = 50
       self.basestats.attack = 100
       self.basestats.defence = 8

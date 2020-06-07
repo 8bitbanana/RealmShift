@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="11">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="8" tileheight="8" infinite="0" nextlayerid="5" nextobjectid="18">
  <tileset firstgid="1" source="Grass Tileset.tsx"/>
  <layer id="2" name="Tile Layer 1" width="64" height="64">
   <data encoding="csv">
@@ -86,5 +86,12 @@
     <property name="ty" type="int" value="80"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup id="4" name="NPCs">
+  <object id="13" template="Object Templates/npc.tx" x="152" y="88"/>
+  <object id="14" template="Object Templates/npc.tx" x="40" y="200"/>
+  <object id="15" template="Object Templates/npc.tx" x="400" y="320"/>
+  <object id="16" template="Object Templates/npc.tx" x="256" y="416"/>
+  <object id="17" template="Object Templates/npc.tx" x="400" y="128"/>
  </objectgroup>
 </map>

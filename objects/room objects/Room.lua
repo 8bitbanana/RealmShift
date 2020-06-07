@@ -28,6 +28,9 @@ do
         for k, v in pairs(obj_data.properties) do
           obj[k] = v
         end
+        if obj.solid then
+          self.world:add(obj, obj.pos.x, obj.pos.y, obj.width, obj.height)
+        end
         return obj
       end
     end,
@@ -56,9 +59,15 @@ do
         }
       end
       lg.setColor(WHITE)
-      self.map.layers[1].x = -pos.x
-      self.map.layers[1].y = -pos.y
-      self.map:drawTileLayer(self.map.layers[1])
+      local _list_0 = self.map.layers
+      for _index_0 = 1, #_list_0 do
+        local layer = _list_0[_index_0]
+        if layer.type == "tilelayer" then
+          layer.x = -pos.x
+          layer.y = -pos.y
+          self.map:drawTileLayer(layer)
+        end
+      end
       if SHOW_COLLIDERS then
         lg.setColor(RED)
         local items = self.world:getItems()

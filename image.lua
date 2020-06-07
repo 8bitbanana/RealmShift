@@ -10,6 +10,8 @@ function loadSprites()
 		battle = {
 			cursor_right = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_right.png"), 8, 12),
 			cursor_down = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_down.png"), 12, 8),
+			main_char = Soda.newSprite(lg.newImage("images/sprites/battle/main_char.png"), 8, -16),
+			paladin_char = Soda.newSprite(lg.newImage("images/sprites/battle/paladin_char.png"), 8, -16),
 		},
 		gui = {
 		  z_button = Soda.newSprite(lg.newImage("images/sprites/gui/z_button.png"), 13, 13),
