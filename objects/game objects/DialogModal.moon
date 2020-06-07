@@ -55,6 +55,8 @@ export class DialogModal
 		@cursor = Cursor({x:0,y:0}, "right")
 		@updateCursorPos!
 
+	begin: =>
+
 	updateCursorPos: =>
 		option = @selectedOption!
 		mid = math.floor(option.size.h / 2)
@@ -75,6 +77,11 @@ export class DialogModal
 		@selected = 1 if @selected < 1
 		@selected = #@options if @selected > #@options
 		@updateCursorPos!
+
+	select: =>
+		@result = @selectedOption!
+		@resultindex = @selected
+		@done = true
 
 	draw: =>
 		lg.setColor(1,1,1)
