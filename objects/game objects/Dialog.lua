@@ -236,7 +236,7 @@ do
       end
       Push:setCanvas("main")
       if self.waitingForInput and not self.waitingForModal and (self.framecount - self.cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2 then
-        sprites.gui.cursor:draw(219, 146)
+        sprites.gui.cursor:draw(216, 142)
       end
       if self.modal and self.waitingForModal then
         return self.modal:draw()

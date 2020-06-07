@@ -160,5 +160,5 @@ export class DialogBox
 				width += dialogfont\getWidth(@chars[index]) + X_SPACING
 		Push\setCanvas("main")
 		if @waitingForInput and not @waitingForModal and (@framecount - @cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2
-			sprites.gui.cursor\draw(219, 146)
+			sprites.gui.cursor\draw(216, 142)
 		@modal\draw! if @modal and @waitingForModal
