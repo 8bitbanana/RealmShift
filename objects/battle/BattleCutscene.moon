@@ -140,17 +140,25 @@ export class CutsceneSwap extends BattleCutscene
 		@ttl = 0.40
 
 	sceneStart: =>
-		@playerA = @root.players[@args.firstindex]
-		@playerB = @root.players[@args.secondindex]
+		@entities = nil
+		@entities = @root.players if @args.type == "player"
+		@entities = @root.enemies if @args.type == "enemy"
+		assert @entities != nil
+
+		@playerA = @entities[@args.firstindex]
+		@playerB = @entities[@args.secondindex]
 		assert @args.firstindex != @args.secondindex
+
 		if @playerA
 			@posA = @playerA.pos
 		else
-			@posA = @root\getPlayerIndexPos(@args.firstindex)
+			@posA = @root\getPlayerIndexPos(@args.firstindex) if @args.type == "player"
+			@posA = @root\getEnemyIndexPos(@args.firstindex) if @args.type == "enemy"
 		if @playerB
 			@posB = @playerB.pos
 		else
-			@posB = @root\getPlayerIndexPos(@args.secondindex)
+			@posB = @root\getPlayerIndexPos(@args.secondindex) if @args.type == "player"
+			@posB = @root\getEnemyIndexPos(@args.secondindex) if @args.type == "enemy"
 
 	sceneUpdate: =>
 		if @playerA != nil
@@ -159,7 +167,9 @@ export class CutsceneSwap extends BattleCutscene
 			@playerB.pos = vector.lerp(@posB, @posA, @progress!)
 
 	sceneFinish: =>
-		@root.players[@args.firstindex], @root.players[@args.secondindex] = @root.players[@args.secondindex], @root.players[@args.firstindex]
-		@root.turndata.index = @args.secondindex if @root.turndata.index == @args.firstindex
-		@root.turndata.index = @args.firstindex if @root.turndata.index == @args.secondindex
-		@root\calculatePlayerPos!
+		@entities[@args.firstindex], @entities[@args.secondindex] = @entities[@args.secondindex], @entities[@args.firstindex]
+		if @root.turndata.type == @args.type
+			@root.turndata.index = @args.secondindex if @root.turndata.index == @args.firstindex
+			@root.turndata.index = @args.firstindex if @root.turndata.index == @args.secondindex
+		@root\calculatePlayerPos! if @args.type == "player"
+		@root\calculateEnemyPos! if @args.type == "enemy"
