@@ -65,7 +65,7 @@ do
             }),
             DialogBox("Dialog 4"),
             DialogBox("Dialog 5"),
-            DialogBox("Dialog 6")
+            DialogBox("Dialog 6 wow {pause,30}{color,4,1,0,0}{wave,4}nice")
           }, {
             [1] = 2,
             [2] = 3,

@@ -77,18 +77,22 @@ export class DialogBox
 			charIndex = x.index
 			destruct = string.split(rawToken, ",")
 			code = destruct[1]
-			multilength_codes = {"wave":true, "color":true}
-			length = 1 -- why are vars defined in if statements
-			args = {}  -- local to that if statement???
+			multilength_codes = {"wave":true, "color":true} -- arg[2] is the code length
+			code_offsets = {"input":-1, "pause":-1} -- Apply an index offset to these codes
+			length = 1
+			args = {}
 			if multilength_codes[code] != nil
 				length = tonumber(destruct[2])
 				args = [x for x in *destruct[3,]]
 			else
 				args = [x for x in *destruct[2,]]
 			for i=1, length
-				@tokens[charIndex+i] = {} if @tokens[charIndex+i] == nil
+				extraoffset = 0
+				for k,v in pairs code_offsets
+					extraoffset += v if k == code
+				@tokens[charIndex+i+extraoffset] = {} if @tokens[charIndex+i+extraoffset] == nil
 				token = {code:code, index:i+1, args:args}
-				table.insert(@tokens[charIndex+i], token)
+				table.insert(@tokens[charIndex+i+extraoffset], token)
 
 	incText: () =>
 		return if @waitingForInput

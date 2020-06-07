@@ -95,6 +95,10 @@ do
           ["wave"] = true,
           ["color"] = true
         }
+        local code_offsets = {
+          ["input"] = -1,
+          ["pause"] = -1
+        }
         local length = 1
         local args = { }
         if multilength_codes[code] ~= nil then
@@ -122,15 +126,21 @@ do
           end
         end
         for i = 1, length do
-          if self.tokens[charIndex + i] == nil then
-            self.tokens[charIndex + i] = { }
+          local extraoffset = 0
+          for k, v in pairs(code_offsets) do
+            if k == code then
+              extraoffset = extraoffset + v
+            end
+          end
+          if self.tokens[charIndex + i + extraoffset] == nil then
+            self.tokens[charIndex + i + extraoffset] = { }
           end
           local token = {
             code = code,
             index = i + 1,
             args = args
           }
-          table.insert(self.tokens[charIndex + i], token)
+          table.insert(self.tokens[charIndex + i + extraoffset], token)
         end
       end
     end,
