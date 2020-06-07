@@ -7,11 +7,16 @@ FRAME_MOD = 2
 CURSOR_BLINK_MOD = 60
 
 export class DialogBox
-	new: (@text) =>
+	new: (@text, @modaloptions) =>
 		@reset!
 
 	reset: =>
-		@started = false -- The dialog has started
+		@modal = nil -- Optional DialogModal
+		if @modaloptions != nil
+			@modal = DialogModal(@modaloptions)
+		@modalresult = nil -- Result of the optional modal
+		@waitingForModal = false
+		
 		@waitingForInput = false -- The dialog is waiting for input
 		@waitingForClose = false -- The dialog is waiting for the final input
 		@done = false -- The dialog is finished: the manager should close it
@@ -27,17 +32,20 @@ export class DialogBox
 		@chars = {} -- List of raw text chars (unlike @text, which also has the unprocessed tokens)
 		@tokens = {} -- List of processed formatting tokens
 		@tokenise!
+		@incText!
 
 	advanceInput: () =>
-		@waitingForInput = false if @waitingForInput
+		if @waitingForInput
+			@waitingForInput = false 
 		if @waitingForClose
 			@done = true
 			@waitingForClose = false
-
-	begin: =>
-		if not @started
-			@started = true
-			@incText!
+		if @modal and @waitingForModal
+			@modal\advanceInput!
+			if @modal.done
+				@done = true
+				@modalresult = @modal.result
+				@waitingForModal = false
 
 	tokenise: =>
 		@chars = {}
@@ -99,50 +107,54 @@ export class DialogBox
 					if token.code == "pause"
 						@skipcount = tonumber(token.args[1])
 		else
-			@waitingForInput = true
-			@waitingForClose = true
-			@cursorBlinkFrameOffset = @framecount % CURSOR_BLINK_MOD
+			if @modal
+				@waitingForModal = true
+				@waitingForInput = true
+			else
+				@waitingForInput = true
+				@waitingForClose = true
+				@cursorBlinkFrameOffset = @framecount % CURSOR_BLINK_MOD
 
 	update: =>
-		if @started
-			@framecount += 1
-			@skipcount -= 1 if @skipcount > 0
-			if @scrollFlag and not @waitingForInput
-				@targetscrollOffset -= dialogfont\getHeight!
-				@scrollFlag = false
-			if @targetscrollOffset != @scrollOffset
-				@scrollOffset += math.sign(@targetscrollOffset - @scrollOffset)
-			if @framecount % FRAME_MOD == 0 and @skipcount == 0
-				@incText!
+		@framecount += 1
+		@skipcount -= 1 if @skipcount > 0
+		if @scrollFlag and not @waitingForInput
+			@targetscrollOffset -= dialogfont\getHeight!
+			@scrollFlag = false
+		if @targetscrollOffset != @scrollOffset
+			@scrollOffset += math.sign(@targetscrollOffset - @scrollOffset)
+		if @framecount % FRAME_MOD == 0 and @skipcount == 0
+			@incText!
+		@modal\update! if @modal and @waitingForModal
 
 	draw: =>
-		if @started
-			lg.setColor(1, 1, 1)
-			lg.rectangle("fill", 3, 107, 234, 50)
+		lg.setColor(1, 1, 1)
+		lg.rectangle("fill", 3, 107, 234, 50)
+		lg.setColor(0, 0, 0)
+		lg.rectangle("line", 3, 107, 234, 50)
+		Push\setCanvas("dialogbox")
+		lg.clear()
+		width = 0
+		height = 0
+		lg.setFont(dialogfont)
+		for index=1, @currentIndex
 			lg.setColor(0, 0, 0)
-			lg.rectangle("line", 3, 107, 234, 50)
-			Push\setCanvas("dialogbox")
-			lg.clear()
-			width = 0
-			height = 0
-			lg.setFont(dialogfont)
-			for index=1, @currentIndex
-				lg.setColor(0, 0, 0)
-				xoffset = width
-				yoffset = height
-				if @tokens[index] != nil
-					for token in *@tokens[index]
-						switch token.code
-							when "color"
-								lg.setColor(token.args)
-							when "wave"
-								yoffset += 6*math.sin((@framecount + token.index*3) / 10)
-				if @chars[index] == "\n"
-					height += dialogfont\getHeight! + Y_SPACING
-					width = 0
-				else
-					lg.print(@chars[index], 3+xoffset, 3+yoffset+@scrollOffset, 0)
-					width += dialogfont\getWidth(@chars[index]) + X_SPACING
-			Push\setCanvas("main")
-			if @waitingForInput and (@framecount - @cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2
-				sprites.gui.cursor\draw(219, 146)
+			xoffset = width
+			yoffset = height
+			if @tokens[index] != nil
+				for token in *@tokens[index]
+					switch token.code
+						when "color"
+							lg.setColor(token.args)
+						when "wave"
+							yoffset += 6*math.sin((@framecount + token.index*3) / 10)
+			if @chars[index] == "\n"
+				height += dialogfont\getHeight! + Y_SPACING
+				width = 0
+			else
+				lg.print(@chars[index], 3+xoffset, 3+yoffset+@scrollOffset, 0)
+				width += dialogfont\getWidth(@chars[index]) + X_SPACING
+		Push\setCanvas("main")
+		if @waitingForInput and not @waitingForModal and (@framecount - @cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2
+			sprites.gui.cursor\draw(219, 146)
+		@modal\draw! if @modal and @waitingForModal

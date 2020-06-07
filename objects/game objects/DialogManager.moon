@@ -4,34 +4,29 @@ export class DialogManager
 		@reset!
 
 	reset: () =>
-		@queue = {}
+		@tree = nil
 		@running = false
 		@awaitinginput = false
 
-	push: (dialog) => -- Add a new dialog to the end of the queue
-		table.insert(@queue, dialog)
-		if not @running
-			@queue[1]\begin!
-			@running = true
+	setTree: (tree) =>
+		@tree = tree
+		@running = true
+		@awaitinginput = false
 
 	advanceInput: () =>
-		if @queue[1] != nil
-			@queue[1]\advanceInput!
+		if @tree != nil
+			@tree\advanceInput!
 
 	update: () =>
-		if @queue[1] != nil
-			@queue[1]\update!
-			@awaitinginput = @queue[1].awaitinginput
-			if @queue[1].done
-				table.remove(@queue, 1)
+		if @tree != nil
+			@tree\update!
+			@awaitinginput = @tree.awaitinginput
+			if @tree.done
 				Push\setCanvas("dialogbox")
 				lg.clear()
 				Push\setCanvas("main")
-				if @queue[1] == nil
-					@running = false
-				else
-					@queue[1]\begin!
+				@tree = nil
+				@running = false
 
 	draw: () =>
-		if @queue[1] != nil
-			@queue[1]\draw!
+		@tree\draw! if @tree != nil

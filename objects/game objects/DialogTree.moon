@@ -1,11 +1,11 @@
 
-{
-	[1]:2,
-	[2]:{3,5},
-	[3]:4,
-	[4]:6,
-	[5]:6
-}
+-- {
+-- 	[1]:2,
+-- 	[2]:{3,5},
+-- 	[3]:4,
+-- 	[4]:6,
+-- 	[5]:6
+-- }
 
 export class DialogTree
 	new: (@dialogs, @map) =>
@@ -18,13 +18,14 @@ export class DialogTree
 		@done = false
 		@awaitinginput = false
 
-		@current = @dialogs[@currentIndex]
-		@current\begin!
+	current: =>
+		return @dialogs[@currentIndex]
 
 	advanceInput: () =>
-		@current\advanceInput!
+		@current!\advanceInput! if @current!
 
-	nextup:
+	nextup: =>
+		previous = @current!
 		next = @map[@currentIndex]
 		switch type(next)
 			when "number"
@@ -36,11 +37,19 @@ export class DialogTree
 			else error "Unexpected type in @map"
 		if @currentIndex == nil
 			@done = true
+		if @current! == nil
+			@done = true
+		else
+			@current!\reset!
+		
 
 	update: =>
-		@current\update!
-		@awaitinginput = @current\awaitinginput
-		if @current.done
-			@lastOption = @current.resultindex
-			@nextup!
+		if @current! != nil
+			@current!\update!
+			@awaitinginput = @current!\awaitinginput
+			if @current!.done
+				@lastOption = @current!.modalresult
+				@nextup!
 			
+	draw: =>
+		@current!\draw! if @current!

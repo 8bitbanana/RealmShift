@@ -39,7 +39,6 @@ do
   local _base_0 = {
     reset = function(self)
       self.result = nil
-      self.resultindex = nil
       self.done = false
       self.selected = 1
       local optionCount = #self.options
@@ -66,10 +65,9 @@ do
         currentPos.y = currentPos.y + (option.size.h + 5)
       end
       self.size.w = self.size.w + maxW
-      print(Inspect(self.size))
       self.pos = {
-        x = GAME_WIDTH - 3 - self.size.w,
-        y = GAME_HEIGHT - 3 - self.size.h
+        x = GAME_WIDTH - 5 - self.size.w,
+        y = GAME_HEIGHT - 5 - self.size.h
       }
       local _list_0 = self.options
       for _index_0 = 1, #_list_0 do
@@ -82,6 +80,9 @@ do
         y = 0
       }, "right")
       return self:updateCursorPos()
+    end,
+    advanceInput = function(self)
+      return self:select()
     end,
     updateCursorPos = function(self)
       local option = self:selectedOption()
@@ -112,6 +113,10 @@ do
       end
       return self:updateCursorPos()
     end,
+    select = function(self)
+      self.result = self.selected
+      self.done = true
+    end,
     draw = function(self)
       lg.setColor(1, 1, 1)
       lg.rectangle("fill", self.pos.x, self.pos.y, self.size.w, self.size.h)
@@ -134,6 +139,12 @@ do
           ModalOption("Sure!"),
           ModalOption("Wait a second...")
         }
+      else
+        for i, option in pairs(self.options) do
+          if type(option) == "string" then
+            self.options[i] = ModalOption(option)
+          end
+        end
       end
       return self:reset()
     end,

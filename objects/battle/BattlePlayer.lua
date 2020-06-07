@@ -249,7 +249,7 @@ do
           assert(secondindex <= 4)
           local swapscene = CutsceneSwap({
             tts = 0.033,
-            type = "enemy",
+            type = "player",
             firstindex = firstindex,
             secondindex = secondindex
           })

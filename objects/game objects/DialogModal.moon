@@ -19,11 +19,14 @@ export class DialogModal
 				ModalOption("Sure!"),
 				ModalOption("Wait a second...")
 			}
+		else
+			for i,option in pairs @options
+				if type(option) == "string"
+					@options[i] = ModalOption(option)
 		@reset!
 
 	reset: =>
 		@result = nil
-		@resultindex = nil
 		@done = false
 		@selected = 1
 
@@ -55,7 +58,7 @@ export class DialogModal
 		@cursor = Cursor({x:0,y:0}, "right")
 		@updateCursorPos!
 
-	begin: =>
+	advanceInput: => @select!
 
 	updateCursorPos: =>
 		option = @selectedOption!
@@ -79,8 +82,7 @@ export class DialogModal
 		@updateCursorPos!
 
 	select: =>
-		@result = @selectedOption!
-		@resultindex = @selected
+		@result = @selected
 		@done = true
 
 	draw: =>

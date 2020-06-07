@@ -8,7 +8,12 @@ do
   local _class_0
   local _base_0 = {
     reset = function(self)
-      self.started = false
+      self.modal = nil
+      if self.modaloptions ~= nil then
+        self.modal = DialogModal(self.modaloptions)
+      end
+      self.modalresult = nil
+      self.waitingForModal = false
       self.waitingForInput = false
       self.waitingForClose = false
       self.done = false
@@ -23,7 +28,8 @@ do
       self.cursorBlinkFrameOffset = 0
       self.chars = { }
       self.tokens = { }
-      return self:tokenise()
+      self:tokenise()
+      return self:incText()
     end,
     advanceInput = function(self)
       if self.waitingForInput then
@@ -33,11 +39,13 @@ do
         self.done = true
         self.waitingForClose = false
       end
-    end,
-    begin = function(self)
-      if not self.started then
-        self.started = true
-        return self:incText()
+      if self.modal and self.waitingForModal then
+        self.modal:advanceInput()
+        if self.modal.done then
+          self.done = true
+          self.modalresult = self.modal.result
+          self.waitingForModal = false
+        end
       end
     end,
     tokenise = function(self)
@@ -153,73 +161,82 @@ do
           end
         end
       else
-        self.waitingForInput = true
-        self.waitingForClose = true
-        self.cursorBlinkFrameOffset = self.framecount % CURSOR_BLINK_MOD
+        if self.modal then
+          self.waitingForModal = true
+          self.waitingForInput = true
+        else
+          self.waitingForInput = true
+          self.waitingForClose = true
+          self.cursorBlinkFrameOffset = self.framecount % CURSOR_BLINK_MOD
+        end
       end
     end,
     update = function(self)
-      if self.started then
-        self.framecount = self.framecount + 1
-        if self.skipcount > 0 then
-          self.skipcount = self.skipcount - 1
-        end
-        if self.scrollFlag and not self.waitingForInput then
-          self.targetscrollOffset = self.targetscrollOffset - dialogfont:getHeight()
-          self.scrollFlag = false
-        end
-        if self.targetscrollOffset ~= self.scrollOffset then
-          self.scrollOffset = self.scrollOffset + math.sign(self.targetscrollOffset - self.scrollOffset)
-        end
-        if self.framecount % FRAME_MOD == 0 and self.skipcount == 0 then
-          return self:incText()
-        end
+      self.framecount = self.framecount + 1
+      if self.skipcount > 0 then
+        self.skipcount = self.skipcount - 1
+      end
+      if self.scrollFlag and not self.waitingForInput then
+        self.targetscrollOffset = self.targetscrollOffset - dialogfont:getHeight()
+        self.scrollFlag = false
+      end
+      if self.targetscrollOffset ~= self.scrollOffset then
+        self.scrollOffset = self.scrollOffset + math.sign(self.targetscrollOffset - self.scrollOffset)
+      end
+      if self.framecount % FRAME_MOD == 0 and self.skipcount == 0 then
+        self:incText()
+      end
+      if self.modal and self.waitingForModal then
+        return self.modal:update()
       end
     end,
     draw = function(self)
-      if self.started then
-        lg.setColor(1, 1, 1)
-        lg.rectangle("fill", 3, 107, 234, 50)
-        Push:setCanvas("dialogbox")
-        lg.clear()
-        local width = 0
-        local height = 0
-        lg.setFont(dialogfont)
-        for index = 1, self.currentIndex do
-          lg.setColor(0, 0, 0)
-          local xoffset = width
-          local yoffset = height
-          if self.tokens[index] ~= nil then
-            local _list_0 = self.tokens[index]
-            for _index_0 = 1, #_list_0 do
-              local token = _list_0[_index_0]
-              local _exp_0 = token.code
-              if "color" == _exp_0 then
-                lg.setColor(token.args)
-              elseif "wave" == _exp_0 then
-                yoffset = yoffset + (6 * math.sin((self.framecount + token.index * 3) / 10))
-              end
+      lg.setColor(1, 1, 1)
+      lg.rectangle("fill", 3, 107, 234, 50)
+      lg.setColor(0, 0, 0)
+      lg.rectangle("line", 3, 107, 234, 50)
+      Push:setCanvas("dialogbox")
+      lg.clear()
+      local width = 0
+      local height = 0
+      lg.setFont(dialogfont)
+      for index = 1, self.currentIndex do
+        lg.setColor(0, 0, 0)
+        local xoffset = width
+        local yoffset = height
+        if self.tokens[index] ~= nil then
+          local _list_0 = self.tokens[index]
+          for _index_0 = 1, #_list_0 do
+            local token = _list_0[_index_0]
+            local _exp_0 = token.code
+            if "color" == _exp_0 then
+              lg.setColor(token.args)
+            elseif "wave" == _exp_0 then
+              yoffset = yoffset + (6 * math.sin((self.framecount + token.index * 3) / 10))
             end
           end
-          if self.chars[index] == "\n" then
-            height = height + (dialogfont:getHeight() + Y_SPACING)
-            width = 0
-          else
-            lg.print(self.chars[index], 3 + xoffset, 3 + yoffset + self.scrollOffset, 0)
-            width = width + (dialogfont:getWidth(self.chars[index]) + X_SPACING)
-          end
         end
-        Push:setCanvas("main")
-        if self.waitingForInput and (self.framecount - self.cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2 then
-          return sprites.gui.cursor:draw(219, 146)
+        if self.chars[index] == "\n" then
+          height = height + (dialogfont:getHeight() + Y_SPACING)
+          width = 0
+        else
+          lg.print(self.chars[index], 3 + xoffset, 3 + yoffset + self.scrollOffset, 0)
+          width = width + (dialogfont:getWidth(self.chars[index]) + X_SPACING)
         end
+      end
+      Push:setCanvas("main")
+      if self.waitingForInput and not self.waitingForModal and (self.framecount - self.cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2 then
+        sprites.gui.cursor:draw(219, 146)
+      end
+      if self.modal and self.waitingForModal then
+        return self.modal:draw()
       end
     end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, text)
-      self.text = text
+    __init = function(self, text, modaloptions)
+      self.text, self.modaloptions = text, modaloptions
       return self:reset()
     end,
     __base = _base_0,
