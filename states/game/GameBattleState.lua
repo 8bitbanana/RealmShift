@@ -34,36 +34,27 @@ do
     end,
     init = function(self)
       self.state = State(self)
-      self.players = {
-        Paladin(self, {
-          x = 120,
-          y = 127
-        }),
-        Fighter(self, {
-          x = 148,
-          y = 127
-        }),
-        nil,
-        Mage(self, {
-          x = 204,
-          y = 127
-        })
-      }
+      self.players = self.parent.party
+      local _list_0 = self.players
+      for _index_0 = 1, #_list_0 do
+        local player = _list_0[_index_0]
+        if player ~= nil then
+          player.parent = self
+        end
+      end
       self:calculatePlayerPos()
       self.enemies = {
-        BattleEnemy(self, {
-          x = 10,
-          y = 127
-        }),
-        BattleEnemy(self, {
-          x = 50,
-          y = 127
-        }),
-        BattleEnemy(self, {
-          x = 0,
-          y = 0
-        })
+        BattleEnemy(),
+        BattleEnemy(),
+        BattleEnemy()
       }
+      local _list_1 = self.enemies
+      for _index_0 = 1, #_list_1 do
+        local enemy = _list_1[_index_0]
+        if enemy ~= nil then
+          enemy.parent = self
+        end
+      end
       self:calculateEnemyPos()
       self:calculateInitiative()
       self:getNextInitiative(true)

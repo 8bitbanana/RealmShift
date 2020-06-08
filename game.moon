@@ -8,6 +8,13 @@ export class Game
 
 		@dialog = DialogManager!
 
+		@party = {
+			Paladin!
+			Fighter!
+			nil,
+			Mage!
+		}
+
 		@transitioning = false
 		@transition_progress = 0.0
 		@transition_length = 0.25

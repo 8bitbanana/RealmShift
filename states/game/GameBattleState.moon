@@ -54,19 +54,18 @@ export class GameBattleState extends State
 	init: =>
 		-- BattlePlayer position is the bottom-left of the sprite
 		@state = State(@)
-		@players = {
-				Paladin(@, {x:120,y:127}), -- player x is 92+28*i
-				Fighter(@, {x:148,y:127}),
-				nil,
-				Mage(@, {x:204,y:127}),
-		}
+		@players = @parent.party
+		for player in *@players
+			player.parent = @ if player != nil
 		@calculatePlayerPos!
 
 		@enemies = {
-			BattleEnemy(@, {x:10,y:127})
-			BattleEnemy(@, {x:50,y:127})
-			BattleEnemy(@, {x:0, y:0})
+			BattleEnemy!
+			BattleEnemy!
+			BattleEnemy!
 		}
+		for enemy in *@enemies
+			enemy.parent = @ if enemy != nil
 		@calculateEnemyPos!
 
 		@calculateInitiative!
