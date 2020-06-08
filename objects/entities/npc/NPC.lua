@@ -1,5 +1,6 @@
 require("objects/entities/player/Player")
-require("objects/game objects/Dialog")
+require("objects/game objects/dialog/Dialog")
+local Inspect = require("lib/inspect")
 do
   local _class_0
   local _parent_0 = Player
@@ -46,18 +47,16 @@ do
             if input:pressed("talk") then
               print("setting dialog tree")
               gd:setTree(self.dialog)
-              self.state:changeState(NPCTalkState)
+              return self.state:changeState(NPCTalkState)
             end
           else
             if input:pressed("talk") then
               print(("advancing text"))
               gd:advanceInput()
-            end
-          end
-          if gd.tree then
-            if gd.tree.done then
-              print("dialog done")
-              return self.state:changeState(NPCWanderState)
+              if gd.tree and gd.tree.done then
+                print("dialog done")
+                return self.state:changeState(NPCWanderState)
+              end
             end
           end
         end

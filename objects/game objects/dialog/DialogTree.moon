@@ -12,6 +12,9 @@ export class DialogTree
 		@reset!
 
 	reset: =>
+		for dialog in *@dialogs
+			dialog\reset!
+
 		@currentIndex = 1
 		@lastOption = nil
 		@started = false
@@ -23,6 +26,9 @@ export class DialogTree
 
 	advanceInput: () =>
 		@current!\advanceInput! if @current!
+		if @current!.done
+			@lastOption = @current!.modalresult
+			@nextup!
 
 	finish: =>
 		@done = true

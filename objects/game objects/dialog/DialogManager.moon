@@ -10,6 +10,7 @@ export class DialogManager
 
 	setTree: (tree) =>
 		@tree = tree
+		@tree\reset!
 		@running = true
 		@awaitinginput = false
 

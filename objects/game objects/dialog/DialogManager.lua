@@ -8,6 +8,7 @@ do
     end,
     setTree = function(self, tree)
       self.tree = tree
+      self.tree:reset()
       self.running = true
       self.awaitinginput = false
     end,

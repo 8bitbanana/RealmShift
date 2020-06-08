@@ -2,6 +2,11 @@ do
   local _class_0
   local _base_0 = {
     reset = function(self)
+      local _list_0 = self.dialogs
+      for _index_0 = 1, #_list_0 do
+        local dialog = _list_0[_index_0]
+        dialog:reset()
+      end
       self.currentIndex = 1
       self.lastOption = nil
       self.started = false
@@ -13,7 +18,11 @@ do
     end,
     advanceInput = function(self)
       if self:current() then
-        return self:current():advanceInput()
+        self:current():advanceInput()
+      end
+      if self:current().done then
+        self.lastOption = self:current().modalresult
+        return self:nextup()
       end
     end,
     finish = function(self)

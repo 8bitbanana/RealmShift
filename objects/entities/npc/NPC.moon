@@ -1,6 +1,7 @@
 
 require "objects/entities/player/Player"
-require "objects/game objects/Dialog"
+require "objects/game objects/dialog/Dialog"
+Inspect = require "lib/inspect"
 
 export class NPC extends Player
 	new: (@pos = {x: 0, y: 0}) =>
@@ -58,11 +59,9 @@ export class NPC extends Player
 					if input\pressed "talk"
 						print ("advancing text")
 						gd\advanceInput!
-
-				if gd.tree
-					if gd.tree.done
-						print("dialog done")
-						@state\changeState(NPCWanderState)
+						if gd.tree and gd.tree.done
+							print("dialog done")
+							@state\changeState(NPCWanderState)
 
 	drawTalkZone: =>
 		c = @\getTalkZone!
