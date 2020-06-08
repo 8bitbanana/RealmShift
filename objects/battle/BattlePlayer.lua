@@ -106,8 +106,12 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, parent, pos)
-      self.parent, self.pos = parent, pos
+    __init = function(self)
+      self.parent = nil
+      self.pos = {
+        x = 0,
+        y = 0
+      }
       self.basestats = {
         hp = 0,
         attack = 0,

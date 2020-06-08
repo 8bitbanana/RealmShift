@@ -9,7 +9,9 @@ DAMAGE_FORMULA = {
 Inspect = require("lib/inspect")
 
 export class BattlePlayer
-	new: (@parent, @pos)=>
+	new: ()=>
+		@parent = nil
+		@pos = {x:0,y:0}
 		@basestats = {
 			hp: 0,
 			attack: 0,

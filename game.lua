@@ -136,6 +136,12 @@ do
         x = ""
       }
       self.dialog = DialogManager()
+      self.party = {
+        Paladin(),
+        Fighter(),
+        nil,
+        Mage()
+      }
       self.transitioning = false
       self.transition_progress = 0.0
       self.transition_length = 0.25
