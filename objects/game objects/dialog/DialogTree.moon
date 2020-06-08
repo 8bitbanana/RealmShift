@@ -24,6 +24,9 @@ export class DialogTree
 	advanceInput: () =>
 		@current!\advanceInput! if @current!
 
+	finish: =>
+		@done = true
+
 	nextup: =>
 		previous = @current!
 		next = @map[@currentIndex]
@@ -36,12 +39,12 @@ export class DialogTree
 				@currentIndex = nil
 			else error "Unexpected type in @map"
 		if @currentIndex == nil
-			@done = true
+			@\finish!
 		if @current! == nil
-			@done = true
+			@\finish!
 		else
 			@current!\reset!
-		
+
 
 	update: =>
 		if @current! != nil
@@ -50,6 +53,6 @@ export class DialogTree
 			if @current!.done
 				@lastOption = @current!.modalresult
 				@nextup!
-			
+
 	draw: =>
 		@current!\draw! if @current!

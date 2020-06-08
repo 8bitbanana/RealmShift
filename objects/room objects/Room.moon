@@ -39,6 +39,10 @@ export class Room
 			for k, v in pairs(obj_data.properties) do
 				obj[k] = v
 
+			-- Call object initiate function if it has one
+			if obj.init
+				obj\init!
+
 			-- ^^^^
 			-- This way is much safer and ensures that values are assigned to
 			-- the correct keys in the final object. Using the previous method

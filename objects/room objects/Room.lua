@@ -28,6 +28,9 @@ do
         for k, v in pairs(obj_data.properties) do
           obj[k] = v
         end
+        if obj.init then
+          obj:init()
+        end
         if obj.solid then
           self.world:add(obj, obj.pos.x, obj.pos.y, obj.width, obj.height)
         end

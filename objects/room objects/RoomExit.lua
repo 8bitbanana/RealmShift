@@ -30,19 +30,7 @@ do
     checkPlayerEntered = function(self)
       local p = game.state.player
       if p then
-        local box1 = {
-          x = p.pos.x,
-          y = p.pos.y,
-          width = p.width,
-          height = p.height
-        }
-        local box2 = {
-          x = self.pos.x,
-          y = self.pos.y,
-          width = self.width,
-          height = self.height
-        }
-        if AABB(box1, box2) then
+        if AABB(self, p) then
           if self.is_door then
             game.button_prompts.z = "Enter"
             if input:pressed("open_door") then

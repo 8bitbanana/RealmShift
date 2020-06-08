@@ -710,9 +710,10 @@ return {
           width = 8,
           height = 8,
           rotation = 0,
-          gid = 825,
+          gid = 57,
           visible = true,
           properties = {
+            ["name"] = "",
             ["solid"] = true
           }
         },
@@ -726,9 +727,10 @@ return {
           width = 8,
           height = 8,
           rotation = 0,
-          gid = 825,
+          gid = 57,
           visible = true,
           properties = {
+            ["name"] = "Craig",
             ["solid"] = true
           }
         },
@@ -742,9 +744,10 @@ return {
           width = 8,
           height = 8,
           rotation = 0,
-          gid = 825,
+          gid = 57,
           visible = true,
           properties = {
+            ["name"] = "",
             ["solid"] = true
           }
         }

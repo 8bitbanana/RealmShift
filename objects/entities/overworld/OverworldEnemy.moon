@@ -59,10 +59,11 @@ export class OverworldEnemy
 
 	checkCollidePlayer: =>
 		p = game.state.player
-		rect1 = {x: p.pos.x, y: p.pos.y, width: p.width, height: p.height}
-		rect2 = {x: @pos.x, y: @pos.y, width: 8, height: 8}
+-- 		rect1 = {x: p.pos.x, y: p.pos.y, width: p.width, height: p.height}
+-- 		rect2 = {x: @pos.x, y: @pos.y, width: 8, height: 8}
 
-		if AABB(rect1, rect2)
+-- 		if AABB(rect1, rect2)
+		if AABB(@, p)
 			print("Transition to Battle state!")
 			game.next_state = {state: GameBattleState, params: {p.pos.x, p.pos.y}}
 

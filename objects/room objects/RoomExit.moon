@@ -27,10 +27,11 @@ export class RoomExit
 	checkPlayerEntered: =>
 		p = game.state.player
 		if p
-			box1 = {x: p.pos.x, y: p.pos.y, width: p.width, height: p.height}
-			box2 = {x: @pos.x, y: @pos.y, width: @width, height: @height}
+-- 			box1 = {x: p.pos.x, y: p.pos.y, width: p.width, height: p.height}
+-- 			box2 = {x: @pos.x, y: @pos.y, width: @width, height: @height}
 
-			if AABB(box1, box2)
+-- 			if AABB(box1, box2)
+			if AABB(@, p)
 				if @is_door
 					game.button_prompts.z = "Enter"
 					if input\pressed("open_door")

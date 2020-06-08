@@ -16,6 +16,9 @@ do
         return self:current():advanceInput()
       end
     end,
+    finish = function(self)
+      self.done = true
+    end,
     nextup = function(self)
       local previous = self:current()
       local next = self.map[self.currentIndex]
@@ -30,10 +33,10 @@ do
         error("Unexpected type in @map")
       end
       if self.currentIndex == nil then
-        self.done = true
+        self:finish()
       end
       if self:current() == nil then
-        self.done = true
+        return self:finish()
       else
         return self:current():reset()
       end

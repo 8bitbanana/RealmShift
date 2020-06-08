@@ -112,7 +112,11 @@
  </layer>
  <objectgroup id="4" name="NPCs">
   <object id="13" template="../../../Object Templates/npc.tx" x="296" y="232"/>
-  <object id="14" template="../../../Object Templates/npc.tx" x="136" y="112"/>
+  <object id="14" template="../../../Object Templates/npc.tx" x="136" y="112">
+   <properties>
+    <property name="name" value="Craig"/>
+   </properties>
+  </object>
   <object id="15" template="../../../Object Templates/npc.tx" x="296" y="64"/>
  </objectgroup>
 </map>

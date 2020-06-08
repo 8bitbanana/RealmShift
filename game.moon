@@ -70,25 +70,25 @@ export class Game
 
 			if @dialog.running
 				@dialog\advanceInput!
-			else
-				tree = DialogTree({
-					DialogBox("Dialog 1"),
-					DialogBox("Dialog 2"),
-					DialogBox("Dialog 3{input}\nWhere would you\nlike to go?",
-					 {"Go to dialog 4", "Go to dialog 5-6", "Go back to the start"}),
-					DialogBox("Dialog 4")
-					DialogBox("Dialog 5")
-					DialogBox("Dialog 6 wow {pause,30}{color,4,1,0,0}{wave,4}nice")
-				},{
-					[1]:2,
-					[2]:3,
-					[3]:{4,5,1},
-					[4]:nil,
-					[5]:6
-					[6]:nil
-				})
+-- 			else
+-- 				tree = DialogTree({
+-- 					DialogBox("Dialog 1"),
+-- 					DialogBox("Dialog 2"),
+-- 					DialogBox("Dialog 3{input}\nWhere would you\nlike to go?",
+-- 					 {"Go to dialog 4", "Go to dialog 5-6", "Go back to the start"}),
+-- 					DialogBox("Dialog 4")
+-- 					DialogBox("Dialog 5")
+-- 					DialogBox("Dialog 6 wow {pause,30}{color,4,1,0,0}{wave,4}nice")
+-- 				},{
+-- 					[1]:2,
+-- 					[2]:3,
+-- 					[3]:{4,5,1},
+-- 					[4]:nil,
+-- 					[5]:6
+-- 					[6]:nil
+-- 				})
 
-				@dialog\setTree(tree)
+-- 				@dialog\setTree(tree)
 
 		if input\pressed "battledebug"
 			@next_state = {state: GameBattleState, params: {}}

@@ -6,6 +6,8 @@ Y_SPACING = 0
 FRAME_MOD = 2
 CURSOR_BLINK_MOD = 60
 
+--------------------------------------------------
+
 export class DialogBox
 	new: (@text, @modaloptions) =>
 		@reset!
@@ -16,7 +18,7 @@ export class DialogBox
 			@modal = DialogModal(@modaloptions)
 		@modalresult = nil -- Result of the optional modal
 		@waitingForModal = false
-		
+
 		@waitingForInput = false -- The dialog is waiting for input
 		@waitingForClose = false -- The dialog is waiting for the final input
 		@done = false -- The dialog is finished: the manager should close it
@@ -36,7 +38,7 @@ export class DialogBox
 
 	advanceInput: () =>
 		if @waitingForInput
-			@waitingForInput = false 
+			@waitingForInput = false
 		if @waitingForClose
 			@done = true
 			@waitingForClose = false

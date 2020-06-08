@@ -38,10 +38,15 @@ export class NPCWanderState extends State
 
 	update: =>
 		@timer\update(dt)
+		if @parent.dialog
+			@parent\checkTalk!
 
 	draw: =>
 		p = @parent
 		p.sprite\draw(p.pos.x, p.pos.y)
+
+		if p.name
+			shadowPrint(p.name, p.pos.x, p.pos.y-16)
 
 	destroy: =>
 		@timer\destroy!

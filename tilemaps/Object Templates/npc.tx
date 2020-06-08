@@ -3,6 +3,7 @@
  <tileset firstgid="1" source="../all_area_tiles.tsx"/>
  <object type="NPC" gid="57" width="8" height="8">
   <properties>
+   <property name="name" value=""/>
    <property name="solid" type="bool" value="true"/>
   </properties>
  </object>

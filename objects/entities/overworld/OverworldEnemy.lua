@@ -53,19 +53,7 @@ do
     end,
     checkCollidePlayer = function(self)
       local p = game.state.player
-      local rect1 = {
-        x = p.pos.x,
-        y = p.pos.y,
-        width = p.width,
-        height = p.height
-      }
-      local rect2 = {
-        x = self.pos.x,
-        y = self.pos.y,
-        width = 8,
-        height = 8
-      }
-      if AABB(rect1, rect2) then
+      if AABB(self, p) then
         print("Transition to Battle state!")
         game.next_state = {
           state = GameBattleState,

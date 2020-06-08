@@ -1,0 +1,87 @@
+
+How To Write Dialogue Files (As a Narrative Designer):
+======================================================
+
+Creating a Dialogue File:
+-------------------------
+
+Dialogue files should be written as .lua files.
+
+You can make a .lua file by creating a text file in notepad
+then saving the file as a .lua instead of a .txt with the name
+of the NPC the dialog is for:
+
+	Desert_Explorer_1.lua
+
+
+
+
+
+Structuring Dialogue:
+---------------------
+
+The structure of the file should be as follows:
+
+	local tree = DialogTree({
+		-- Actual Dialogue
+		[1] = DialogBox("This is the first piece of dialogue!"),
+		[2] = DialogBox("This is the second and last piece of dialogue!"),
+	},{
+		-- Dialogue Map
+		[1] = 2,
+		[2] = nil,
+	})
+	return tree
+
+What this does is define the individual pieces of dialogue along with
+which piece of dialogue should be shown after the current dialogue has
+been read. In the example above, DialogueBox 1 points to DialogueBox 2
+and DialogueBox 2 points to 'nil' which tells the system that we are
+at the end of all the dialogue.
+
+
+
+
+
+Advanced Dialogue & Choices:
+----------------------------
+
+Below is an example of some dialogue with branching paths:
+
+	local tree = DialogTree({
+			-- Actual Dialogue
+			[1] = DialogBox("This is the first piece of dialogue!"),
+			[2] = DialogBox("This is the second and last piece of dialogue!"),
+			[3] = DialogBox("{input}Where would you like to go next?",
+			{"Back to the first dialogue!", "let's end this conversavtion..."}),
+			[4] = DialogBox("It was good speaking with you!"),
+		},{
+		-- Dialogue Map
+			[1] = 2,
+			[2] = 3,
+			[3] = {1, 4},
+			[4] = nil,
+		})
+		return tree
+
+You can use the {input} keyword along with a table of choices to define
+branching dialogue. Just remember to map the input dialogue to the respective
+dialogue choices in the Dialogue Map with a table of dialogue numbers ([3] = {1, 4})
+
+
+
+
+
+Special Keyword Actions:
+------------------------
+
+Here is a list of the current keywords that allow for certain actions to occur
+such as having slight pauses in between words or different coloured text:
+
+	{pause, f} - pause for f frames
+	{input} - wait for user input
+	{wave, n} - make the next n chars wavy
+	{color, n, r, g, b} - make the next n chars r,g,b colour
+
+
+

@@ -9,6 +9,7 @@ function setupInput()
 	input:bind("s", "down")
 
 	input:bind("z", "open_door")
+	input:bind("z", "talk")
 
 	-- -- MENU
 	input:bind("z", "confirm")

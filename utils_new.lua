@@ -96,7 +96,7 @@ pointBoxCollision = function(point, box)
   return point.x > box.x and point.x < box.x + box.width and point.y > box.y and point.y < box.y + box.height
 end
 AABB = function(b1, b2)
-  return b1.x < (b2.x + b2.width) and (b1.x + b1.width) > b2.x and b1.y < (b2.y + b2.height) and (b1.y + b1.height) > b2.y
+  return b1.pos.x < (b2.pos.x + b2.width) and (b1.pos.x + b1.width) > b2.pos.x and b1.pos.y < (b2.pos.y + b2.height) and (b1.pos.y + b1.height) > b2.pos.y
 end
 shadowPrint = function(text, x, y)
   if text == nil then

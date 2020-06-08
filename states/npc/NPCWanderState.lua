@@ -39,11 +39,17 @@ do
       p.pos.x, p.pos.y = world:move(p, nx, ny)
     end,
     update = function(self)
-      return self.timer:update(dt)
+      self.timer:update(dt)
+      if self.parent.dialog then
+        return self.parent:checkTalk()
+      end
     end,
     draw = function(self)
       local p = self.parent
-      return p.sprite:draw(p.pos.x, p.pos.y)
+      p.sprite:draw(p.pos.x, p.pos.y)
+      if p.name then
+        return shadowPrint(p.name, p.pos.x, p.pos.y - 16)
+      end
     end,
     destroy = function(self)
       return self.timer:destroy()

@@ -10,7 +10,7 @@ string.split = (s, delim) ->
 
 string.totable = (s) ->
     t = {}
-    s\gsub(".", (c)->table.insert(t, c)) 
+    s\gsub(".", (c)->table.insert(t, c))
     return t
 
 -- stripKeys returns a copy of the passed table that contains only the values and no keys
@@ -26,7 +26,7 @@ math.sign = (x) ->
     if x < 0 return -1
     elseif x > 0 return 1
 	else return 0
-	
+
 table.contains = (t, element) ->
 	for _, value in pairs table
 		return true if value == element
@@ -64,13 +64,13 @@ limitPosToCurrentRoom = (obj) ->
 	tile_size = map.tilewidth
 	maxw = (map.width * tile_size) - obj.width
 	maxh = (map.height * tile_size) - obj.height
-	
+
 	obj.pos.x = clamp(0, obj.pos.x, maxw)
 	obj.pos.y = clamp(0, obj.pos.y, maxh)
 
 onScreen = (x, y, border=0) ->
 	cam = game.state.camera
-	
+
 	cx, cy = cam.pos.x, cam.pos.y
 	return x > cx - border and x < cx + GAME_WIDTH + border and
 				 y > cy - border and y < cy + GAME_HEIGHT + border
@@ -81,8 +81,8 @@ pointBoxCollision = (point, box) ->
 
 -- Axis Aligned Bounding Box Collision Detection / Are these two squares overlapping?
 AABB = (b1, b2) ->
-	return b1.x < (b2.x+b2.width) and (b1.x+b1.width) > b2.x and
-	b1.y < (b2.y+b2.height) and (b1.y+b1.height) > b2.y
+	return b1.pos.x < (b2.pos.x+b2.width) and (b1.pos.x+b1.width) > b2.pos.x and
+	b1.pos.y < (b2.pos.y+b2.height) and (b1.pos.y+b1.height) > b2.pos.y
 
 shadowPrint = (text="empty_text", x=0, y=0) ->
 	lg.setColor(WHITE)
@@ -125,5 +125,5 @@ getTableLength = (t) ->
 	length = 0
 	for k, v in pairs(t) do
 		length = length + 1
-	
+
 	return length
