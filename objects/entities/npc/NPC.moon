@@ -54,6 +54,7 @@ export class NPC extends Player
 						print("setting dialog tree")
 						gd\setTree(@dialog)
 						@state\changeState(NPCTalkState)
+						p.state\changeState(PlayerTalkState)
 
 				else
 					if input\pressed "talk"
@@ -62,6 +63,7 @@ export class NPC extends Player
 						if gd.tree and gd.tree.done
 							print("dialog done")
 							@state\changeState(NPCWanderState)
+							p.state\changeState(PlayerIdleState)
 
 	drawTalkZone: =>
 		c = @\getTalkZone!

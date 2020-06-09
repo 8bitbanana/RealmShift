@@ -2,3 +2,4 @@
 build/*
 .lite_workspace.lua
 'How To Dialogue.txt'
+capture/*

@@ -47,7 +47,8 @@ do
             if input:pressed("talk") then
               print("setting dialog tree")
               gd:setTree(self.dialog)
-              return self.state:changeState(NPCTalkState)
+              self.state:changeState(NPCTalkState)
+              return p.state:changeState(PlayerTalkState)
             end
           else
             if input:pressed("talk") then
@@ -55,7 +56,8 @@ do
               gd:advanceInput()
               if gd.tree and gd.tree.done then
                 print("dialog done")
-                return self.state:changeState(NPCWanderState)
+                self.state:changeState(NPCWanderState)
+                return p.state:changeState(PlayerIdleState)
               end
             end
           end
