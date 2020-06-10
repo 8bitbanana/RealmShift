@@ -6,15 +6,13 @@ WRAP_ITEM_CURSOR = false
 export class MenuItem
 	text: "NULL"
 	new: (@parent, @pos)=>
-		@cursor = Cursor({x:@pos.x-15,y:@pos.y-4}, "right")
+
 	clicked: ()=>
 		@activate! if @valid!
 	
 	activate: ()=>
 	valid: ()=>false
 	draw: ()=>
-		--if @parent\selectedItem! == @
-			--@cursor\draw!
 		if @valid!                
 			lg.setColor(BLACK)
 		else

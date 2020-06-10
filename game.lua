@@ -62,6 +62,12 @@ do
           params = { }
         }
       end
+      if input:pressed("inventorydebug") then
+        self.next_state = {
+          state = GameInventoryState,
+          params = { }
+        }
+      end
       if input:pressed("overworlddebug") then
         self.next_state = {
           state = GameOverworldState,
@@ -126,6 +132,7 @@ do
         nil,
         Mage()
       }
+      self.inventory = Inventory(self)
       self.transitioning = false
       self.transition_progress = 0.0
       self.transition_length = 0.25

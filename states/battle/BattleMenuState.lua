@@ -27,10 +27,6 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent, pos)
       self.parent, self.pos = parent, pos
-      self.cursor = Cursor({
-        x = self.pos.x - 15,
-        y = self.pos.y - 4
-      }, "right")
     end,
     __base = _base_0,
     __name = "MenuItem"

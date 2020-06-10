@@ -14,6 +14,7 @@ export class Game
 			nil,
 			Mage!
 		}
+		@inventory = Inventory(@)
 
 		@transitioning = false
 		@transition_progress = 0.0
@@ -99,6 +100,9 @@ export class Game
 
 		if input\pressed "battledebug"
 			@next_state = {state: GameBattleState, params: {}}
+
+		if input\pressed "inventorydebug"
+			@next_state = {state: GameInventoryState, params: {}}
 
 		if input\pressed "overworlddebug"
 			@next_state = {state: GameOverworldState, params: {12*8, 8*8}}
