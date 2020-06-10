@@ -88,8 +88,19 @@ do
       end
     end,
     draw_health = function(self)
-      lg.printf(self.hp, self.pos.x + 2, self.pos.y, 20, "left")
-      return lg.printf(self.stats.hp, self.pos.x + 2, self.pos.y + 12, 20, "right")
+      local hp = self.hp
+      local max_hp = self.basestats.hp
+      local max_len = self.size.w
+      local len = (hp / max_hp) * max_len
+      local x = self.pos.x
+      local y = self.pos.y
+      lg.setColor(BLACK)
+      lg.rectangle("fill", x, y + 5, max_len, 2)
+      lg.setColor(RED)
+      lg.rectangle("fill", x - 1, y + 4, len, 2)
+      lg.setColor(WHITE)
+      shadowPrint(max_hp, x + 12, y + 12)
+      return shadowPrint(hp, x, y + 8)
     end,
     draw_alive = function(self, overwrite)
       if overwrite == nil then
@@ -276,6 +287,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
+      self.sprite = sprites.battle.artificer_char
       self.basestats.hp = 50
       self.basestats.attack = 100
       self.basestats.defence = 4

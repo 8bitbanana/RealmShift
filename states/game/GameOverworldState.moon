@@ -13,6 +13,7 @@ export class GameOverworldState extends State
 	init: =>
 		@current_room\init!
 
+-- 		print("tx: #{@tx}, ty: #{@ty}")
 		@player = OverworldPlayer({x: @tx, y: @ty})
 		@camera = Camera!
 		@camera\setPos(@player.pos)

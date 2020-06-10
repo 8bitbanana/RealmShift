@@ -243,13 +243,12 @@ do
       self.aniObjs:updateObjects()
       self.aniObjs:checkDestroyed()
       if self:checkWon() then
-        game.next_state = {
-          state = GameOverworldState,
-          params = {
-            self.rx,
-            self.ry
-          }
-        }
+        print(self.rx, self.ry)
+        print(self.state.parent)
+        return self.state:changeState(BattleWinState, {
+          rx = self.rx,
+          ry = self.ry
+        })
       elseif self:checkLost() then
         print("You died chump")
         game.next_state = {

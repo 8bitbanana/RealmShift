@@ -14,6 +14,7 @@ export class Camera
 			@pos.y += 1
 
 	setPos: (p) =>
+-- 		print(p.x, p.y)
 		@pos.x = p.x - GAME_WIDTH/2
 		@pos.y = p.y - GAME_HEIGHT/2
 

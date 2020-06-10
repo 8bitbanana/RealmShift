@@ -105,8 +105,24 @@ export class BattlePlayer
 
 	-- Draw a health tracker below me
 	draw_health: () =>
-		lg.printf(@hp, @pos.x+2, @pos.y, 20, "left")
-		lg.printf(@stats.hp, @pos.x+2, @pos.y+12, 20, "right")
+-- 		lg.printf(@hp, @pos.x+2, @pos.y, 20, "left")
+-- 		lg.printf(@stats.hp, @pos.x+2, @pos.y+12, 20, "right")
+		hp = @hp
+		max_hp = @basestats.hp
+		max_len = @size.w
+		len = (hp/max_hp)*max_len
+		x = @pos.x
+		y = @pos.y
+
+		lg.setColor(BLACK)
+		lg.rectangle("fill", x, y+5, max_len, 2)
+		lg.setColor(RED)
+		lg.rectangle("fill", x-1, y+4, len, 2)
+		lg.setColor(WHITE)
+
+		shadowPrint(max_hp, x+12, y+12)
+-- 		shadowPrint("/", x+6, y+10)
+		shadowPrint(hp, x, y+8)
 
 	-- Draw call if alive
 	draw_alive: (overwrite=false) =>
@@ -141,6 +157,8 @@ export class Mage extends BattlePlayer
 export class Fighter extends BattlePlayer
 	new: (...) =>
 		super ...
+		@sprite = sprites.battle.artificer_char
+		-- Sprite does not match class but is temporary until classes are finalised
 		@basestats.hp = 50
 		@basestats.attack = 100--8
 		@basestats.defence = 4

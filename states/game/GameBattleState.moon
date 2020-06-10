@@ -88,10 +88,10 @@ export class GameBattleState extends State
 		for enemy in *@enemies
 			totalEnemyWidth += enemy.size.w
 			enemyCount += 1
-		
+
 		leftPadding = 5
 		leftPadding = 10 if (totalEnemyWidth < 90)
-		
+
 		extraSpace = 110 - leftPadding - totalEnemyWidth
 		assert(extraSpace >= 0)
 		gap = math.floor(extraSpace / enemyCount)
@@ -213,7 +213,10 @@ export class GameBattleState extends State
 
 		-- Check if battle has been won, then return to the overworld if true
 		if @\checkWon!
-			game.next_state = {state: GameOverworldState, params: {@rx, @ry}}
+			--game.next_state = {state: GameOverworldState, params: {@rx, @ry}}
+			print(@rx, @ry)
+			print(@state.parent)
+			@state\changeState(BattleWinState, {rx: @rx, ry: @ry})
 
 		-- To-do: what happens if the player loses?
 		-- Suggestion: They lose gold and return to previous town

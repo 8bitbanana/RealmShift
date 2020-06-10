@@ -27,6 +27,9 @@ export setupWindow = ->
 				height: 50,
 				x: 3,
 				y: 107
-			}
+			},
+			{
+				name: "battlesummary",
+			},
 		}
 	)
