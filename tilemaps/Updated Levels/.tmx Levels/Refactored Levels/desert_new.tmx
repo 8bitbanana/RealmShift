@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="48" height="32" tilewidth="8" tileheight="8" infinite="0" nextlayerid="5" nextobjectid="16">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="48" height="32" tilewidth="8" tileheight="8" infinite="0" nextlayerid="6" nextobjectid="19">
  <tileset firstgid="1" source="../../../all_area_tiles.tsx"/>
  <tileset firstgid="769" source="../../../Grass Tileset.tsx"/>
  <layer id="1" name="Ground" width="48" height="32">
@@ -118,5 +118,31 @@
    </properties>
   </object>
   <object id="15" template="../../../Object Templates/npc.tx" x="296" y="64"/>
+ </objectgroup>
+ <objectgroup id="5" name="Exits">
+  <object id="16" template="../../../Object Templates/exit.tx" name="Overworld Exit" x="0" y="176">
+   <properties>
+    <property name="dest_room" value="overworld"/>
+    <property name="is_door" type="bool" value="false"/>
+    <property name="tx" type="int" value="160"/>
+    <property name="ty" type="int" value="72"/>
+   </properties>
+  </object>
+  <object id="17" template="../../../Object Templates/exit.tx" name="Overworld Exit" x="368" y="128">
+   <properties>
+    <property name="dest_room" value="overworld"/>
+    <property name="is_door" type="bool" value="false"/>
+    <property name="tx" type="int" value="160"/>
+    <property name="ty" type="int" value="72"/>
+   </properties>
+  </object>
+  <object id="18" template="../../../Object Templates/exit.tx" name="Overworld Exit" x="264" y="0">
+   <properties>
+    <property name="dest_room" value="overworld"/>
+    <property name="is_door" type="bool" value="false"/>
+    <property name="tx" type="int" value="160"/>
+    <property name="ty" type="int" value="72"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

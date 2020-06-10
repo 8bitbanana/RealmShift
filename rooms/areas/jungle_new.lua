@@ -8,8 +8,8 @@ return {
   height = 40,
   tilewidth = 8,
   tileheight = 8,
-  nextlayerid = 3,
-  nextobjectid = 1,
+  nextlayerid = 5,
+  nextobjectid = 5,
   properties = {},
   tilesets = {
     {
@@ -381,6 +381,101 @@ return {
         0, 0, 0, 73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      }
+    },
+    {
+      type = "objectgroup",
+      id = 4,
+      name = "NPCs",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 2,
+          name = "",
+          type = "NPC",
+          shape = "rectangle",
+          x = 160,
+          y = 80,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 57,
+          visible = true,
+          properties = {
+            ["name"] = "",
+            ["solid"] = true
+          }
+        },
+        {
+          id = 3,
+          name = "",
+          type = "NPC",
+          shape = "rectangle",
+          x = 80,
+          y = 288,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 57,
+          visible = true,
+          properties = {
+            ["name"] = "",
+            ["solid"] = true
+          }
+        },
+        {
+          id = 4,
+          name = "",
+          type = "NPC",
+          shape = "rectangle",
+          x = 208,
+          y = 176,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 57,
+          visible = true,
+          properties = {
+            ["name"] = "",
+            ["solid"] = true
+          }
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      id = 3,
+      name = "Exits",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 1,
+          name = "Overworld Exit",
+          type = "RoomExit",
+          shape = "rectangle",
+          x = 304,
+          y = 152,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dest_room"] = "overworld",
+            ["is_door"] = false,
+            ["tx"] = 120,
+            ["ty"] = 160
+          }
+        }
       }
     }
   }

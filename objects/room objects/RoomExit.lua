@@ -59,13 +59,15 @@ do
     end,
     drawIcon = function(self)
       lg.setColor(BLACK)
-      sprites.gui.cursor:draw(self.pos.x - 4, self.pos.y - (self.height) + (self.icon_timer * 16))
+      if self.is_door then
+        sprites.gui.cursor_small:draw(self.pos.x - 4, self.pos.y - (14) + (self.icon_timer * 8))
+      else
+        sprites.gui.cursor:draw(self.pos.x - 4, self.pos.y - (self.height / 2) + (self.icon_timer * 16))
+      end
       return lg.setColor(WHITE)
     end,
     draw = function(self)
-      if not self.is_door then
-        return self:drawIcon()
-      end
+      return self:drawIcon()
     end
   }
   _base_0.__index = _base_0

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="8" tileheight="8" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="8" tileheight="8" infinite="0" nextlayerid="5" nextobjectid="5">
  <tileset firstgid="1" source="../../../all_area_tiles.tsx"/>
  <layer id="1" name="Ground" width="40" height="40">
   <data encoding="csv">
@@ -89,4 +89,19 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="4" name="NPCs">
+  <object id="2" template="../../../Object Templates/npc.tx" x="160" y="80"/>
+  <object id="3" template="../../../Object Templates/npc.tx" x="80" y="288"/>
+  <object id="4" template="../../../Object Templates/npc.tx" x="208" y="176"/>
+ </objectgroup>
+ <objectgroup id="3" name="Exits">
+  <object id="1" template="../../../Object Templates/exit.tx" name="Overworld Exit" x="304" y="152">
+   <properties>
+    <property name="dest_room" value="overworld"/>
+    <property name="is_door" type="bool" value="false"/>
+    <property name="tx" type="int" value="120"/>
+    <property name="ty" type="int" value="160"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

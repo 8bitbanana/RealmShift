@@ -100,6 +100,9 @@ export class Game
 		if input\pressed "battledebug"
 			@next_state = {state: GameBattleState, params: {}}
 
+		if input\pressed "overworlddebug"
+			@next_state = {state: GameOverworldState, params: {12*8, 8*8}}
+
 		-----------------------------------
 
 		if @next_state and not @transitioning

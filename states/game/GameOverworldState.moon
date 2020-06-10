@@ -4,7 +4,7 @@ require "states/state"
 export class GameOverworldState extends State
 	new: (@parent, @tx=0, @ty=0) =>
 		@objects = ObjectManager!
-		@current_room = Room("overworld/overworld_1")
+		@current_room = Room("overworld/overworld_new")
 
 		@enemy_spawn_rate = 4
 		@max_enemies = 3

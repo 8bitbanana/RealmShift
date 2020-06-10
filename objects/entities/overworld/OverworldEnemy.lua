@@ -91,6 +91,8 @@ do
         }
       end
       self.pos = pos
+      self.width = 8
+      self.height = 8
       self.spd = 0.8
       self.wait = 1.0
       self.timer = Timer()

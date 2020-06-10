@@ -8,8 +8,8 @@ return {
   height = 32,
   tilewidth = 8,
   tileheight = 8,
-  nextlayerid = 5,
-  nextobjectid = 16,
+  nextlayerid = 6,
+  nextobjectid = 19,
   properties = {},
   tilesets = {
     {
@@ -749,6 +749,73 @@ return {
           properties = {
             ["name"] = "",
             ["solid"] = true
+          }
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      id = 5,
+      name = "Exits",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 16,
+          name = "Overworld Exit",
+          type = "RoomExit",
+          shape = "rectangle",
+          x = 0,
+          y = 176,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dest_room"] = "overworld",
+            ["is_door"] = false,
+            ["tx"] = 160,
+            ["ty"] = 72
+          }
+        },
+        {
+          id = 17,
+          name = "Overworld Exit",
+          type = "RoomExit",
+          shape = "rectangle",
+          x = 368,
+          y = 128,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dest_room"] = "overworld",
+            ["is_door"] = false,
+            ["tx"] = 160,
+            ["ty"] = 72
+          }
+        },
+        {
+          id = 18,
+          name = "Overworld Exit",
+          type = "RoomExit",
+          shape = "rectangle",
+          x = 264,
+          y = 0,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dest_room"] = "overworld",
+            ["is_door"] = false,
+            ["tx"] = 160,
+            ["ty"] = 72
           }
         }
       }

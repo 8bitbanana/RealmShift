@@ -17,6 +17,7 @@ function loadSprites()
 		  z_button = Soda.newSprite(lg.newImage("images/sprites/gui/z_button.png"), 13, 13),
 		  x_button = Soda.newSprite(lg.newImage("images/sprites/gui/x_button.png"), 13, 13),
 		  cursor = Soda.newSprite(lg.newImage("images/sprites/gui/cursor.png"), 12, 8),
+		  cursor_small = Soda.newSprite(lg.newImage("images/sprites/gui/cursor_small.png"), 8, 8),
 		},
 	}
 end

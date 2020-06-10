@@ -55,12 +55,17 @@ export class RoomExit
 
 	drawIcon: =>
 		lg.setColor(BLACK)
-		-- lg.rectangle("fill", @pos.x+margin, @pos.y+margin + (@icon_timer * 4), @width-margin, @height-margin)
-		sprites.gui.cursor\draw(@pos.x-4, @pos.y-(@height) + (@icon_timer * 16))
+
+		if @is_door
+			-- Draw small arrow icon
+			sprites.gui.cursor_small\draw(@pos.x-4, @pos.y-(14) + (@icon_timer * 8))
+		else
+			-- Draw large arrow icon
+			sprites.gui.cursor\draw(@pos.x-4, @pos.y-(@height/2) + (@icon_timer * 16))
+
 		lg.setColor(WHITE)
 
 	draw: =>
-		if not @is_door
-			@\drawIcon!
+		@\drawIcon!
 
 		-- @\drawDebug!

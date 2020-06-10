@@ -67,7 +67,7 @@ do
       end
       self.parent, self.tx, self.ty = parent, tx, ty
       self.objects = ObjectManager()
-      self.current_room = Room("overworld/overworld_1")
+      self.current_room = Room("overworld/overworld_new")
       self.enemy_spawn_rate = 4
       self.max_enemies = 3
       self.enemy_timer = Timer()

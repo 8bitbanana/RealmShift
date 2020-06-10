@@ -1,7 +1,8 @@
 
 export class OverworldEnemy
 	new: (@pos = {x: 0, y: 0}) =>
-		-- @dir = math.random(4)
+		@width = 8
+		@height = 8
 		@spd = 0.8 -- speed in seconds it takes to move across a tile
 		@wait = 1.0
 

@@ -62,6 +62,15 @@ do
           params = { }
         }
       end
+      if input:pressed("overworlddebug") then
+        self.next_state = {
+          state = GameOverworldState,
+          params = {
+            12 * 8,
+            8 * 8
+          }
+        }
+      end
       if self.next_state and not self.transitioning then
         return self:startStateTransitionIn()
       end
