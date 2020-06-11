@@ -28,6 +28,14 @@ export class GameBattleState extends State
 		@selectionCallback = ()->
 		@cutsceneCallback = ()->
 
+	updateEntityIndexes: (type, oldindex, newindex) =>
+		if @turndata.type == type and oldindex == @turndata.index
+			@turndata.index = newindex
+		for i,initiative in pairs @initiative
+			if initiative.type == type and initiative.index == oldindex
+				@initiative[i].index = newindex
+				break
+
 	activeEntities: =>
 		switch @turndata.type
 			when "player"
@@ -140,8 +148,11 @@ export class GameBattleState extends State
 		sortfunc = (a, b) ->
 			return a.speed > b.speed
 		table.sort(@initiative, sortfunc)
+		@printInitiative!
+
+	printInitiative: =>
 		for i,v in pairs @initiative
-			print("#{i} T:#{v.type} S:#{v.speed}")
+			print("#{i} T:#{v.type} I:#{v.index} S:#{v.speed}")
 
 	getNextInitiative: (apply=false)=>
 		nextIndex = @initiativeIndex + 1

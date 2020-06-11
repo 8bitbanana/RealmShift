@@ -126,9 +126,8 @@ export class CutsceneShove extends BattleCutscene
 			for move in *@moves
 				if move[1] == index
 					newindex = move[2]
+					@root\updateEntityIndexes("player", move[1], move[2])
 					break
-			if index == @root.turndata.index
-				@root.turndata.index = newindex
 			newPlayers[newindex] = @root.players[index]
 		@root.players = newPlayers
 		@root\calculatePlayerPos!
@@ -168,8 +167,9 @@ export class CutsceneSwap extends BattleCutscene
 
 	sceneFinish: =>
 		@entities[@args.firstindex], @entities[@args.secondindex] = @entities[@args.secondindex], @entities[@args.firstindex]
-		if @root.turndata.type == @args.type
-			@root.turndata.index = @args.secondindex if @root.turndata.index == @args.firstindex
-			@root.turndata.index = @args.firstindex if @root.turndata.index == @args.secondindex
+		if @playerA != nil
+			@root\updateEntityIndexes(@args.type, @args.firstindex, @args.secondindex)
+		if @playerB != nil
+			@root\updateEntityIndexes(@args.type, @args.secondindex, @args.firstindex)
 		@root\calculatePlayerPos! if @args.type == "player"
 		@root\calculateEnemyPos! if @args.type == "enemy"

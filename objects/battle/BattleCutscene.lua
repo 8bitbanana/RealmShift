@@ -235,11 +235,9 @@ do
             local move = _list_0[_index_0]
             if move[1] == index then
               newindex = move[2]
+              self.root:updateEntityIndexes("player", move[1], move[2])
               break
             end
-          end
-          if index == self.root.turndata.index then
-            self.root.turndata.index = newindex
           end
           newPlayers[newindex] = self.root.players[index]
           _continue_0 = true
@@ -334,13 +332,11 @@ do
     end,
     sceneFinish = function(self)
       self.entities[self.args.firstindex], self.entities[self.args.secondindex] = self.entities[self.args.secondindex], self.entities[self.args.firstindex]
-      if self.root.turndata.type == self.args.type then
-        if self.root.turndata.index == self.args.firstindex then
-          self.root.turndata.index = self.args.secondindex
-        end
-        if self.root.turndata.index == self.args.secondindex then
-          self.root.turndata.index = self.args.firstindex
-        end
+      if self.playerA ~= nil then
+        self.root:updateEntityIndexes(self.args.type, self.args.firstindex, self.args.secondindex)
+      end
+      if self.playerB ~= nil then
+        self.root:updateEntityIndexes(self.args.type, self.args.secondindex, self.args.firstindex)
       end
       if self.args.type == "player" then
         self.root:calculatePlayerPos()

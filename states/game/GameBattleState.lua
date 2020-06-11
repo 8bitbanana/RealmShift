@@ -5,6 +5,19 @@ do
   local _class_0
   local _parent_0 = State
   local _base_0 = {
+    updateEntityIndexes = function(self, type, oldindex, newindex)
+      if self.turndata.type == type and oldindex == self.turndata.index then
+        self.turndata.index = newindex
+      end
+      for i, initiative in pairs(self.initiative) do
+        if initiative.type == type and initiative.index == oldindex then
+          print("Changed initiative " .. tostring(oldindex) .. " to " .. tostring(newindex))
+          self.initiative[i].index = newindex
+          self:printInitiative()
+          break
+        end
+      end
+    end,
     activeEntities = function(self)
       local _exp_0 = self.turndata.type
       if "player" == _exp_0 then
@@ -139,8 +152,11 @@ do
         return a.speed > b.speed
       end
       table.sort(self.initiative, sortfunc)
+      return self:printInitiative()
+    end,
+    printInitiative = function(self)
       for i, v in pairs(self.initiative) do
-        print(tostring(i) .. " T:" .. tostring(v.type) .. " S:" .. tostring(v.speed))
+        print(tostring(i) .. " T:" .. tostring(v.type) .. " I:" .. tostring(v.index) .. " S:" .. tostring(v.speed))
       end
     end,
     getNextInitiative = function(self, apply)
