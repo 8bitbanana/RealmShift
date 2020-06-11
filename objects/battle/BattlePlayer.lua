@@ -9,6 +9,7 @@ local Inspect = require("lib/inspect")
 do
   local _class_0
   local _base_0 = {
+    name = "BattlePlayer",
     init = function(self)
       self.stats = table.shallow_copy(self.basestats)
       self.hp = self.stats.hp
@@ -158,6 +159,7 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
+    name = "Mage",
     draw_alive = function(self)
       lg.setColor(MAGE_COL)
       return _class_0.__parent.__base.draw_alive(self, false)
@@ -206,6 +208,7 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
+    name = "Fighter",
     skillPrimaryInfo = function(self)
       return {
         name = "LUNGE",
@@ -326,6 +329,7 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
+    name = "Paladin",
     skillPrimaryInfo = function(self)
       return {
         name = "RALLY"
@@ -381,6 +385,7 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
+    name = "Rogue",
     draw_alive = function(self)
       lg.setColor(ROGUE_COL)
       return _class_0.__parent.__base.draw_alive(self, false)

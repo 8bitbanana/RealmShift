@@ -49,8 +49,8 @@ export class Inventory
 
 	useItem: (index) =>
 		item = @items[index]
-		table.remove(index) if item.consumable
+		table.remove(@items, index) if item.consumable
 		item\use!
 
 	removeItem: (index) =>
-		table.remove(index)
+		table.remove(@items, index)

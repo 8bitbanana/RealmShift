@@ -11,9 +11,7 @@ do
       end
       for i, initiative in pairs(self.initiative) do
         if initiative.type == type and initiative.index == oldindex then
-          print("Changed initiative " .. tostring(oldindex) .. " to " .. tostring(newindex))
           self.initiative[i].index = newindex
-          self:printInitiative()
           break
         end
       end

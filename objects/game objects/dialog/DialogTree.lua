@@ -74,8 +74,14 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, dialogs, map)
-      self.dialogs, self.map = dialogs, map
+    __init = function(self, dialogs, map, callbacks)
+      if map == nil then
+        map = { }
+      end
+      if callbacks == nil then
+        callbacks = { }
+      end
+      self.dialogs, self.map, self.callbacks = dialogs, map, callbacks
       return self:reset()
     end,
     __base = _base_0,

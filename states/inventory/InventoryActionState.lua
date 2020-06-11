@@ -48,7 +48,7 @@ do
   local _base_0 = {
     text = "Move",
     valid = function(self)
-      return #self.parent.parent.parent.inventory.items > 1
+      return #game.inventory.items > 1
     end
   }
   _base_0.__index = _base_0
@@ -92,6 +92,14 @@ do
     text = "Toss",
     valid = function(self)
       return true
+    end,
+    activate = function(self)
+      local itemname = self.parent.parent:selectedItem().name
+      game.dialog:setTree(DialogTree({
+        DialogBox("You tossed the " .. tostring(itemname))
+      }))
+      game.inventory:removeItem(self.parent.parent.selectedIndex)
+      return self.parent.parent.state:changeState(InventoryWaitState)
     end
   }
   _base_0.__index = _base_0
@@ -155,10 +163,16 @@ do
       if input:pressed("down") then
         self:moveItemCursor(1)
       end
+      if input:pressed("confirm") then
+        self:select()
+      end
       if input:pressed("back") then
         self:back()
       end
       return self:updateCursorPos()
+    end,
+    select = function(self)
+      return self:selectedItem():clicked()
     end,
     back = function(self)
       return self.parent.state:changeState(InventoryItemState)

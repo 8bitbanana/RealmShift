@@ -9,6 +9,7 @@ DAMAGE_FORMULA = {
 Inspect = require("lib/inspect")
 
 export class BattlePlayer
+	name: "BattlePlayer"
 	new: ()=>
 		@parent = nil
 		@pos = {x:0,y:0}
@@ -141,6 +142,7 @@ export class BattlePlayer
 
 
 export class Mage extends BattlePlayer
+	name: "Mage"
 	new: (...) =>
 		super ...
 		@basestats.hp = 50
@@ -155,6 +157,7 @@ export class Mage extends BattlePlayer
 		super false
 
 export class Fighter extends BattlePlayer
+	name: "Fighter"
 	new: (...) =>
 		super ...
 		@sprite = sprites.battle.artificer_char
@@ -213,6 +216,7 @@ export class Fighter extends BattlePlayer
 		super false
 
 export class Paladin extends BattlePlayer
+	name: "Paladin"
 	new: (...) =>
 		super ...
 		@sprite = sprites.battle.paladin_char
@@ -235,6 +239,7 @@ export class Paladin extends BattlePlayer
 		super false
 
 export class Rogue extends BattlePlayer
+	name: "Rogue"
 	new: (...) =>
 		super ...
 		@basestats.hp = 50

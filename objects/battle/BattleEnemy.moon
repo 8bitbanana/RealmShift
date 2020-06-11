@@ -3,6 +3,7 @@ require "objects/battle/BattlePlayer"
 -- @pos is the bottom left to accomadate different sizes
 
 export class BattleEnemy extends BattlePlayer
+	name: "BattleEnemy"
 	new: (...) =>
 		super ...
 		@basestats.hp = 100

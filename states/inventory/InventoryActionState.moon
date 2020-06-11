@@ -5,11 +5,18 @@ class UseItemMenuItem extends MenuItem
 	
 class MoveItemMenuItem extends MenuItem
 	text: "Move"
-	valid: => return #@parent.parent.parent.inventory.items > 1 -- lol
+	valid: => return #game.inventory.items > 1
 
 class TossItemMenuItem extends MenuItem
 	text: "Toss"
 	valid: => true
+	activate: =>
+		itemname = @parent.parent\selectedItem!.name
+		game.dialog\setTree(DialogTree({
+			DialogBox("You tossed the #{itemname}")
+		}))
+		game.inventory\removeItem(@parent.parent.selectedIndex)
+		@parent.parent.state\changeState(InventoryWaitState)
 
 export class InventoryActionState extends State
 	new: (@parent) =>
@@ -36,9 +43,13 @@ export class InventoryActionState extends State
 		@cursor\update!
 		@moveItemCursor(-1) if input\pressed("up")
 		@moveItemCursor(1)  if input\pressed("down")
+		@select! if input\pressed("confirm")
 		@back! if input\pressed("back")
 		@updateCursorPos!
 	
+	select: =>
+		@selectedItem!\clicked!
+
 	back: =>
 		@parent.state\changeState(InventoryItemState)
 

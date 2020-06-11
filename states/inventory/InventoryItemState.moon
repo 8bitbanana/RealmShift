@@ -2,7 +2,7 @@ export class InventoryItemState extends State
 	new: (@parent) =>
 		@selected = 1
 		@cursor = Cursor({x:0,y:0}, "right")
-		@items = @parent.parent.inventory.items
+		@items = game.inventory.items
 
 	init: =>
 		@updateCursorPos!
@@ -23,7 +23,8 @@ export class InventoryItemState extends State
 		@updateCursorPos!
 		
 	select: =>
-		@parent.state\changeState(InventoryActionState)
+		if @items[@selected] != nil
+			@parent.state\changeState(InventoryActionState)
 
 	updateCursorPos: =>
 		@cursor.pos = {
@@ -33,4 +34,5 @@ export class InventoryItemState extends State
 		@parent.selectedIndex = @selected
 
 	draw: =>
-		@cursor\draw!
+		if @items[@selected] != nil
+			@cursor\draw!

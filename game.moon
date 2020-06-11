@@ -71,6 +71,8 @@ export class Game
 				@dialog\update!
 
 
+		@dialog\advanceInput! if input\pressed "confirm"
+
 		-- DEBUG CODE, NEEDS TO BE MOVED --
 		-----------------------------------
 

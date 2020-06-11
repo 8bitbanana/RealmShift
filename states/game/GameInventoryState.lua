@@ -24,7 +24,9 @@ do
       lg.rectangle("fill", GAME_WIDTH / 2 + 4, 8, GAME_WIDTH / 2 - 12, GAME_HEIGHT / 2 - 12)
       lg.setColor(0, 0, 0)
       lg.rectangle("line", GAME_WIDTH / 2 + 4, 8, GAME_WIDTH / 2 - 12, GAME_HEIGHT / 2 - 12)
-      lg.printf(self:selectedItem().desc, GAME_WIDTH / 2 + 7, 8, GAME_WIDTH / 2 - 18)
+      if self:selectedItem() ~= nil then
+        lg.printf(self:selectedItem().desc, GAME_WIDTH / 2 + 7, 8, GAME_WIDTH / 2 - 18)
+      end
       return self.state:draw()
     end
   }

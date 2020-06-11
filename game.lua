@@ -51,6 +51,9 @@ do
           self.dialog:update()
         end
       end
+      if input:pressed("confirm") then
+        self.dialog:advanceInput()
+      end
       if input:pressed("dialogdebug") then
         if self.dialog.running then
           self.dialog:advanceInput()

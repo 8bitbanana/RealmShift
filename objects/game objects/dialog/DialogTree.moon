@@ -8,7 +8,7 @@
 -- }
 
 export class DialogTree
-	new: (@dialogs, @map) =>
+	new: (@dialogs, @map={}, @callbacks={}) =>
 		@reset!
 
 	reset: =>

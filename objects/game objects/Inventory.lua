@@ -101,12 +101,12 @@ do
     useItem = function(self, index)
       local item = self.items[index]
       if item.consumable then
-        table.remove(index)
+        table.remove(self.items, index)
       end
       return item:use()
     end,
     removeItem = function(self, index)
-      return table.remove(index)
+      return table.remove(self.items, index)
     end
   }
   _base_0.__index = _base_0

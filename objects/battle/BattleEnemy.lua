@@ -3,6 +3,7 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
+    name = "BattleEnemy",
     enemyTurn = function(self)
       local indexes = { }
       for i, target in pairs(self.parent:inactiveEntities()) do

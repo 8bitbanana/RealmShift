@@ -31,7 +31,9 @@ do
       return self:updateCursorPos()
     end,
     select = function(self)
-      return self.parent.state:changeState(InventoryActionState)
+      if self.items[self.selected] ~= nil then
+        return self.parent.state:changeState(InventoryActionState)
+      end
     end,
     updateCursorPos = function(self)
       self.cursor.pos = {
@@ -41,7 +43,9 @@ do
       self.parent.selectedIndex = self.selected
     end,
     draw = function(self)
-      return self.cursor:draw()
+      if self.items[self.selected] ~= nil then
+        return self.cursor:draw()
+      end
     end
   }
   _base_0.__index = _base_0
@@ -54,7 +58,7 @@ do
         x = 0,
         y = 0
       }, "right")
-      self.items = self.parent.parent.inventory.items
+      self.items = game.inventory.items
     end,
     __base = _base_0,
     __name = "InventoryItemState",
