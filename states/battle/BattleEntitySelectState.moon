@@ -62,6 +62,7 @@ export class BattleEntitySelectState extends State
 		@moveCursor(-1) if input\pressed("left")
 		@moveCursor(1) if input\pressed("right")
 		@confirm! if input\pressed("confirm")
+		@parent\turnStart! if input\pressed("back")
 
 	draw: =>
 		@cursor\draw!

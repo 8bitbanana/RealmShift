@@ -68,7 +68,10 @@ do
         self:moveCursor(1)
       end
       if input:pressed("confirm") then
-        return self:confirm()
+        self:confirm()
+      end
+      if input:pressed("back") then
+        return self.parent:turnStart()
       end
     end,
     draw = function(self)

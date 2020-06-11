@@ -113,7 +113,10 @@ do
         self:moveItemCursor(1)
       end
       if input:pressed("confirm") then
-        return self:selectedItem():clicked()
+        self:selectedItem():clicked()
+      end
+      if input:pressed("back") then
+        return self.parent:turnStart()
       end
     end,
     moveItemCursor = function(self, dir)

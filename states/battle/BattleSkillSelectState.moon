@@ -40,6 +40,7 @@ export class BattleSkillSelectState extends State
 		--@moveItemCursor(-1) if input\pressed("left")
 		--@moveItemCursor(1)  if input\pressed("right")
 		@selectedItem!\clicked! if input\pressed("confirm")
+		@parent\turnStart! if input\pressed("back")
 
 	moveItemCursor: (dir) =>
 		newindex = @selectedIndex + dir

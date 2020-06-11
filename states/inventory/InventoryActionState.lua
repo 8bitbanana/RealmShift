@@ -48,7 +48,7 @@ do
   local _base_0 = {
     text = "Move",
     valid = function(self)
-      return #self.parent.parent.parent.inventory.items == 1
+      return #self.parent.parent.parent.inventory.items > 1
     end
   }
   _base_0.__index = _base_0
