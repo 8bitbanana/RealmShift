@@ -1,13 +1,22 @@
+Inspect = require("lib/inspect")
 export class GameInventoryState extends State
 	new: (@parent) =>
 		@state = State(@)
-		@selectedIndex = nil
+		@selectedIndex = 1
 
 	selectedItem: =>
 		@parent.inventory.items[@selectedIndex]
 
 	init: =>
 		@state\changeState(InventoryItemState)
+
+	useCurrentItem: =>
+		game.inventory\useItem(@selectedIndex)
+		@selectedIndex = #@parent.inventory.items if @selectedIndex > #@parent.inventory.items
+
+	tossCurrentItem: =>
+		game.inventory\removeItem(@selectedIndex)
+		@selectedIndex = #@parent.inventory.items if @selectedIndex > #@parent.inventory.items
 
 	update: =>
 		@state\update!

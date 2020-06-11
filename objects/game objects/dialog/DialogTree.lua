@@ -29,6 +29,9 @@ do
       self.done = true
     end,
     nextup = function(self)
+      if self.callbacks[self.currentIndex] then
+        self.callbacks[self.currentIndex](self.lastOption)
+      end
       local previous = self:current()
       local next = self.map[self.currentIndex]
       local _exp_0 = type(next)

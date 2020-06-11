@@ -53,7 +53,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent)
       self.parent = parent
-      self.selected = 1
+      self.selected = self.parent.selectedIndex
       self.cursor = Cursor({
         x = 0,
         y = 0

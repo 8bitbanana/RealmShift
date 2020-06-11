@@ -1,6 +1,6 @@
 export class InventoryItemState extends State
 	new: (@parent) =>
-		@selected = 1
+		@selected = @parent.selectedIndex
 		@cursor = Cursor({x:0,y:0}, "right")
 		@items = game.inventory.items
 

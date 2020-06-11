@@ -34,6 +34,8 @@ export class DialogTree
 		@done = true
 
 	nextup: =>
+		if @callbacks[@currentIndex]
+			@callbacks[@currentIndex](@lastOption)
 		previous = @current!
 		next = @map[@currentIndex]
 		switch type(next)

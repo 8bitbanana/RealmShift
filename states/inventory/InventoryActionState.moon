@@ -1,4 +1,3 @@
-
 class UseItemMenuItem extends MenuItem
 	text: "Use"
 	valid: => return @parent.parent\selectedItem!\is_usable!
@@ -12,10 +11,20 @@ class TossItemMenuItem extends MenuItem
 	valid: => true
 	activate: =>
 		itemname = @parent.parent\selectedItem!.name
-		game.dialog\setTree(DialogTree({
-			DialogBox("You tossed the #{itemname}")
-		}))
-		game.inventory\removeItem(@parent.parent.selectedIndex)
+		game.dialog\setTree(DialogTree(
+			{
+				DialogBox("Are you sure you want to toss\nthe #{itemname}?", {"Yes", "No"})
+				DialogBox("You tossed the #{itemname}.")
+			},
+			{
+				[1]:{2,nil}
+			},
+			{
+				[1]: (option)->
+					if option == 1
+						game.state\tossCurrentItem!
+			}
+		))
 		@parent.parent.state\changeState(InventoryWaitState)
 
 export class InventoryActionState extends State

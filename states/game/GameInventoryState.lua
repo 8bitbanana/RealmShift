@@ -1,3 +1,4 @@
+local Inspect = require("lib/inspect")
 do
   local _class_0
   local _parent_0 = State
@@ -7,6 +8,13 @@ do
     end,
     init = function(self)
       return self.state:changeState(InventoryItemState)
+    end,
+    useCurrentItem = function(self) end,
+    tossCurrentItem = function(self)
+      game.inventory:removeItem(self.selectedIndex)
+      if self.selectedIndex > #self.parent.inventory.items then
+        self.selectedIndex = #self.parent.inventory.items
+      end
     end,
     update = function(self)
       return self.state:update()
@@ -36,7 +44,7 @@ do
     __init = function(self, parent)
       self.parent = parent
       self.state = State(self)
-      self.selectedIndex = nil
+      self.selectedIndex = 1
     end,
     __base = _base_0,
     __name = "GameInventoryState",

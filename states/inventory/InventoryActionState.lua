@@ -96,9 +96,23 @@ do
     activate = function(self)
       local itemname = self.parent.parent:selectedItem().name
       game.dialog:setTree(DialogTree({
-        DialogBox("You tossed the " .. tostring(itemname))
+        DialogBox("Are you sure you want to toss\nthe " .. tostring(itemname) .. "?", {
+          "Yes",
+          "No"
+        }),
+        DialogBox("You tossed the " .. tostring(itemname) .. ".")
+      }, {
+        [1] = {
+          2,
+          nil
+        }
+      }, {
+        [1] = function(option)
+          if option == 1 then
+            return game.state:tossCurrentItem()
+          end
+        end
       }))
-      game.inventory:removeItem(self.parent.parent.selectedIndex)
       return self.parent.parent.state:changeState(InventoryWaitState)
     end
   }
