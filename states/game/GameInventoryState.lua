@@ -15,6 +15,11 @@ do
         self.selectedIndex = #self.parent.inventory.items
       end
     end,
+    swapCurrentItem = function(self, index)
+      local temp = game.inventory.items[self.selectedIndex]
+      game.inventory.items[self.selectedIndex] = game.inventory.items[index]
+      game.inventory.items[index] = temp
+    end,
     tossCurrentItem = function(self)
       game.inventory:removeItem(self.selectedIndex)
       if self.selectedIndex > #self.parent.inventory.items then

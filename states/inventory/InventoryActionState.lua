@@ -100,9 +100,12 @@ do
   local _class_0
   local _parent_0 = MenuItem
   local _base_0 = {
-    text = "Move",
+    text = "Swap",
     valid = function(self)
       return #game.inventory.items > 1
+    end,
+    activate = function(self)
+      return self.parent:changeState(InventoryMoveState)
     end
   }
   _base_0.__index = _base_0

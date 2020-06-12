@@ -15,6 +15,11 @@ export class GameInventoryState extends State
 		game.inventory\useItem(@selectedIndex)
 		@selectedIndex = #@parent.inventory.items if @selectedIndex > #@parent.inventory.items
 
+	swapCurrentItem: (index) =>
+		temp = game.inventory.items[@selectedIndex]
+		game.inventory.items[@selectedIndex] = game.inventory.items[index]
+		game.inventory.items[index] = temp
+
 	tossCurrentItem: =>
 		game.inventory\removeItem(@selectedIndex)
 		@selectedIndex = #@parent.inventory.items if @selectedIndex > #@parent.inventory.items

@@ -45,8 +45,10 @@ class UseItemMenuItem extends MenuItem
 		@parent.parent.state\changeState(InventoryWaitState)
 	
 class MoveItemMenuItem extends MenuItem
-	text: "Move"
+	text: "Swap"
 	valid: => return #game.inventory.items > 1
+	activate: =>
+		@parent\changeState(InventoryMoveState)
 
 class TossItemMenuItem extends MenuItem
 	text: "Toss"
