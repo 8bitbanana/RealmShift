@@ -51,9 +51,6 @@ do
           self.dialog:update()
         end
       end
-      if input:pressed("confirm") then
-        self.dialog:advanceInput()
-      end
       if input:pressed("dialogdebug") then
         if self.dialog.running then
           self.dialog:advanceInput()
@@ -135,6 +132,8 @@ do
         nil,
         Mage()
       }
+      self.party[1].hp = self.party[1].hp / 2
+      self.party[2].hp = self.party[2].hp / 2
       self.inventory = Inventory(self)
       self.transitioning = false
       self.transition_progress = 0.0

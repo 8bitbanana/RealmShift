@@ -1,6 +1,7 @@
 Inspect = require("lib/inspect")
 export class GameInventoryState extends State
 	new: (@parent) =>
+		@dialog = DialogManager!
 		@state = State(@)
 		@selectedIndex = 1
 
@@ -20,6 +21,7 @@ export class GameInventoryState extends State
 
 	update: =>
 		@state\update!
+		@dialog\update!
 
 	draw: =>
 		lg.clear(0,0,0)
@@ -38,3 +40,4 @@ export class GameInventoryState extends State
 			lg.printf(@selectedItem!.desc,GAME_WIDTH/2+7,8, GAME_WIDTH/2-18)
 
 		@state\draw!
+		@dialog\draw!

@@ -2,7 +2,8 @@ export class InventoryWaitState extends State
 	new: (@parent) =>
 
 	update: =>
-		if not game.dialog.running
+		@parent.dialog\advanceInput! if input\pressed "confirm"
+		if not @parent.dialog.running
 			@parent.state\changeState(InventoryItemState)
 
 	draw: =>

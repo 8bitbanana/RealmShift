@@ -1,6 +1,48 @@
+Inspect = require("lib/inspect")
 class UseItemMenuItem extends MenuItem
 	text: "Use"
 	valid: => return @parent.parent\selectedItem!\is_usable!
+	activate: =>
+		item = @parent.parent\selectedItem!
+		player_options = {}
+		for player in *game.party
+			if item\is_usable_on_target(player)
+				table.insert(player_options, "#{player.name} (#{player.hp}/#{player.stats.hp})")
+		table.insert(player_options, "Cancel")
+
+		callback = nil
+		switch item.use_target
+			when "player"
+				callback = (option) =>
+					players = {}
+					for player in *game.party
+						table.insert(players, player) if @selectedItem!\is_usable_on_target(player)
+					player = players[option]
+					if player == nil
+						return
+					response = @selectedItem!\use(player)
+					@dialog\setTree(DialogTree(
+						{DialogBox(response)}
+					))
+					if @selectedItem!.consumable
+						@tossCurrentItem!
+			when nil
+				callback = () =>
+					response = @selectedItem!\use!
+					@dialog\setTree(DialogTree(
+						{DialogBox(response)}
+					))
+					if @selectedItem!.consumable
+						@tossCurrentItem!
+
+		@parent.parent.dialog\setTree(DialogTree(
+			{DialogBox(item.use_prompt, player_options)},
+			{},
+			{[1]: callback},
+			@parent.parent
+		))
+
+		@parent.parent.state\changeState(InventoryWaitState)
 	
 class MoveItemMenuItem extends MenuItem
 	text: "Move"
@@ -11,7 +53,7 @@ class TossItemMenuItem extends MenuItem
 	valid: => true
 	activate: =>
 		itemname = @parent.parent\selectedItem!.name
-		game.dialog\setTree(DialogTree(
+		@parent.parent.dialog\setTree(DialogTree(
 			{
 				DialogBox("Are you sure you want to toss\nthe #{itemname}?", {"Yes", "No"})
 				DialogBox("You tossed the #{itemname}.")
@@ -20,10 +62,10 @@ class TossItemMenuItem extends MenuItem
 				[1]:{2,nil}
 			},
 			{
-				[1]: (option)->
+				[1]: (option) =>
 					if option == 1
-						game.state\tossCurrentItem!
-			}
+						@tossCurrentItem!
+			}, @parent.parent
 		))
 		@parent.parent.state\changeState(InventoryWaitState)
 

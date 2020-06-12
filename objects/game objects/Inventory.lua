@@ -7,15 +7,9 @@ do
     is_usable = function(self)
       return false
     end,
-    use = function(self)
-      if self.root.state.__class == GameBattleState then
-        return self:use_battle()
-      else
-        return self:use_world()
-      end
+    use = function(self, target)
+      self.target = target
     end,
-    use_world = function(self) end,
-    use_battle = function(self) end,
     draw_sprite = function(self, pos) end
   }
   _base_0.__index = _base_0
@@ -43,8 +37,32 @@ do
   local _base_0 = {
     name = "Potion",
     desc = "Restores some health for an ally",
+    consumable = true,
+    use_prompt = "Who would you like to\nuse the potion on?",
+    use_target = "player",
     is_usable = function(self)
-      return true
+      local _list_0 = game.party
+      for _index_0 = 1, #_list_0 do
+        local player = _list_0[_index_0]
+        if self:is_usable_on_target(player) then
+          return true
+        end
+      end
+      return false
+    end,
+    is_usable_on_target = function(self, target)
+      if target == nil then
+        return false
+      end
+      return target.hp < target.stats.hp
+    end,
+    use = function(self, target)
+      local oldhp = target.hp
+      target.hp = target.hp + 50
+      if target.hp > target.stats.hp then
+        target.hp = target.stats.hp
+      end
+      return tostring(target.name) .. " restored " .. tostring(target.hp - oldhp) .. " HP."
     end
   }
   _base_0.__index = _base_0

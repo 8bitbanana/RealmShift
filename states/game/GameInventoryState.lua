@@ -9,7 +9,12 @@ do
     init = function(self)
       return self.state:changeState(InventoryItemState)
     end,
-    useCurrentItem = function(self) end,
+    useCurrentItem = function(self)
+      game.inventory:useItem(self.selectedIndex)
+      if self.selectedIndex > #self.parent.inventory.items then
+        self.selectedIndex = #self.parent.inventory.items
+      end
+    end,
     tossCurrentItem = function(self)
       game.inventory:removeItem(self.selectedIndex)
       if self.selectedIndex > #self.parent.inventory.items then
@@ -17,7 +22,8 @@ do
       end
     end,
     update = function(self)
-      return self.state:update()
+      self.state:update()
+      return self.dialog:update()
     end,
     draw = function(self)
       lg.clear(0, 0, 0)
@@ -35,7 +41,8 @@ do
       if self:selectedItem() ~= nil then
         lg.printf(self:selectedItem().desc, GAME_WIDTH / 2 + 7, 8, GAME_WIDTH / 2 - 18)
       end
-      return self.state:draw()
+      self.state:draw()
+      return self.dialog:draw()
     end
   }
   _base_0.__index = _base_0
@@ -43,6 +50,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent)
       self.parent = parent
+      self.dialog = DialogManager()
       self.state = State(self)
       self.selectedIndex = 1
     end,

@@ -14,6 +14,7 @@ do
       end
       self.modalresult = nil
       self.waitingForModal = false
+      self.skipping = false
       self.waitingForInput = false
       self.waitingForClose = false
       self.done = false
@@ -32,6 +33,9 @@ do
       return self:incText()
     end,
     advanceInput = function(self)
+      if not self.waitingForInput then
+        self.skipping = true
+      end
       if self.waitingForInput then
         self.waitingForInput = false
       end
@@ -193,8 +197,15 @@ do
       if self.targetscrollOffset ~= self.scrollOffset then
         self.scrollOffset = self.scrollOffset + math.sign(self.targetscrollOffset - self.scrollOffset)
       end
-      if self.framecount % FRAME_MOD == 0 and self.skipcount == 0 then
-        self:incText()
+      if self.skipping then
+        while not self.waitingForInput do
+          self:incText()
+        end
+        self.skipping = false
+      else
+        if self.framecount % FRAME_MOD == 0 and self.skipcount == 0 then
+          self:incText()
+        end
       end
       if self.modal and self.waitingForModal then
         return self.modal:update()

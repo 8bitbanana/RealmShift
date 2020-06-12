@@ -3,7 +3,10 @@ do
   local _parent_0 = State
   local _base_0 = {
     update = function(self)
-      if not game.dialog.running then
+      if input:pressed("confirm") then
+        self.parent.dialog:advanceInput()
+      end
+      if not self.parent.dialog.running then
         return self.parent.state:changeState(InventoryItemState)
       end
     end,

@@ -8,7 +8,7 @@
 -- }
 
 export class DialogTree
-	new: (@dialogs, @map={}, @callbacks={}) =>
+	new: (@dialogs, @map={}, @callbacks={}, @callback_parent) =>
 		@reset!
 
 	reset: =>
@@ -35,7 +35,10 @@ export class DialogTree
 
 	nextup: =>
 		if @callbacks[@currentIndex]
-			@callbacks[@currentIndex](@lastOption)
+			if @callback_parent
+				@callbacks[@currentIndex](@callback_parent, @lastOption)
+			else
+				@callbacks[@currentIndex](@lastOption)
 		previous = @current!
 		next = @map[@currentIndex]
 		switch type(next)

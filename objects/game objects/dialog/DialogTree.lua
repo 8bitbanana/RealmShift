@@ -30,7 +30,11 @@ do
     end,
     nextup = function(self)
       if self.callbacks[self.currentIndex] then
-        self.callbacks[self.currentIndex](self.lastOption)
+        if self.callback_parent then
+          self.callbacks[self.currentIndex](self.callback_parent, self.lastOption)
+        else
+          self.callbacks[self.currentIndex](self.lastOption)
+        end
       end
       local previous = self:current()
       local next = self.map[self.currentIndex]
@@ -77,14 +81,14 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, dialogs, map, callbacks)
+    __init = function(self, dialogs, map, callbacks, callback_parent)
       if map == nil then
         map = { }
       end
       if callbacks == nil then
         callbacks = { }
       end
-      self.dialogs, self.map, self.callbacks = dialogs, map, callbacks
+      self.dialogs, self.map, self.callbacks, self.callback_parent = dialogs, map, callbacks, callback_parent
       return self:reset()
     end,
     __base = _base_0,

@@ -14,6 +14,8 @@ export class Game
 			nil,
 			Mage!
 		}
+		@party[1].hp /= 2
+		@party[2].hp /= 2
 		@inventory = Inventory(@)
 
 		@transitioning = false
