@@ -17,17 +17,26 @@ export class DialogManager
 	advanceInput: () =>
 		if @tree != nil
 			@tree\advanceInput!
+			@updateVars!
+			
+	cancelInput: () =>
+		if @tree != nil
+			@tree\cancelInput!
+			@updateVars!
+
+	updateVars: =>
+		@awaitinginput = @tree.awaitinginput
+		if @tree.done
+			Push\setCanvas("dialogbox")
+			lg.clear()
+			Push\setCanvas("main")
+			@tree = nil
+			@running = false
 
 	update: () =>
 		if @tree != nil
 			@tree\update!
-			@awaitinginput = @tree.awaitinginput
-			if @tree.done
-				Push\setCanvas("dialogbox")
-				lg.clear()
-				Push\setCanvas("main")
-				@tree = nil
-				@running = false
+			@updateVars!
 
 	draw: () =>
 		@tree\draw! if @tree != nil

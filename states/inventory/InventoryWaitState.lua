@@ -5,9 +5,15 @@ do
     update = function(self)
       if input:pressed("confirm") then
         self.parent.dialog:advanceInput()
+        if not self.parent.dialog.running then
+          self.parent.state:changeState(InventoryItemState)
+        end
       end
-      if not self.parent.dialog.running then
-        return self.parent.state:changeState(InventoryItemState)
+      if input:pressed("back") then
+        self.parent.dialog:cancelInput()
+        if not self.parent.dialog.running then
+          return self.parent.state:changeState(InventoryItemState)
+        end
       end
     end,
     draw = function(self) end

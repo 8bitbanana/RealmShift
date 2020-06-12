@@ -52,6 +52,16 @@ do
         end
       end
     end,
+    cancelInput = function(self)
+      if self.modal and self.waitingForModal then
+        self.modal:cancelInput()
+        if self.modal.done then
+          self.done = true
+          self.modalresult = self.modal.result
+          self.waitingForModal = false
+        end
+      end
+    end,
     tokenise = function(self)
       self.chars = { }
       self.tokens = { }

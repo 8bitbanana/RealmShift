@@ -8,7 +8,7 @@ class UseItemMenuItem extends MenuItem
 		for player in *game.party
 			if item\is_usable_on_target(player)
 				table.insert(player_options, "#{player.name} (#{player.hp}/#{player.stats.hp})")
-		table.insert(player_options, "Cancel")
+		table.insert(player_options, "[CANCEL]Cancel")
 
 		callback = nil
 		switch item.use_target
@@ -57,7 +57,7 @@ class TossItemMenuItem extends MenuItem
 		itemname = @parent.parent\selectedItem!.name
 		@parent.parent.dialog\setTree(DialogTree(
 			{
-				DialogBox("Are you sure you want to toss\nthe #{itemname}?", {"Yes", "No"})
+				DialogBox("Are you sure you want to toss\nthe #{itemname}?", {"Yes", "[CANCEL]No"})
 				DialogBox("You tossed the #{itemname}.")
 			},
 			{

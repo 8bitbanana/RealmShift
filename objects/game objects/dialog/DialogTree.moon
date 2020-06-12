@@ -30,6 +30,12 @@ export class DialogTree
 			@lastOption = @current!.modalresult
 			@nextup!
 
+	cancelInput: () =>
+		@current!\cancelInput! if @current!
+		if @current!.done
+			@lastOption = @current!.modalresult
+			@nextup!
+
 	finish: =>
 		@done = true
 

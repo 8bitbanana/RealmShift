@@ -10,8 +10,11 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, text)
-      self.text = text
+    __init = function(self, text, cancel)
+      if cancel == nil then
+        cancel = false
+      end
+      self.text, self.cancel = text, cancel
       self.pos = {
         x = 0,
         y = 0
@@ -41,6 +44,11 @@ do
       self.result = nil
       self.done = false
       self.selected = 1
+      for i, option in pairs(self.options) do
+        if option.cancel then
+          self.selected = i
+        end
+      end
       local optionCount = #self.options
       assert(optionCount > 0)
       local maxW = 0
@@ -83,6 +91,15 @@ do
     end,
     advanceInput = function(self)
       return self:select()
+    end,
+    cancelInput = function(self)
+      for i, option in pairs(self.options) do
+        if option.cancel then
+          self.selected = i
+          self:select()
+          return 
+        end
+      end
     end,
     updateCursorPos = function(self)
       local option = self:selectedOption()
@@ -137,12 +154,16 @@ do
       if self.options == nil then
         self.options = {
           ModalOption("Sure!"),
-          ModalOption("Wait a second...")
+          ModalOption("Wait a second...", true)
         }
       else
         for i, option in pairs(self.options) do
           if type(option) == "string" then
-            self.options[i] = ModalOption(option)
+            if string.sub(option, 1, 8) == "[CANCEL]" then
+              self.options[i] = ModalOption(string.sub(option, 9), true)
+            else
+              self.options[i] = ModalOption(option)
+            end
           end
         end
       end

@@ -25,6 +25,15 @@ do
         return self:nextup()
       end
     end,
+    cancelInput = function(self)
+      if self:current() then
+        self:current():cancelInput()
+      end
+      if self:current().done then
+        self.lastOption = self:current().modalresult
+        return self:nextup()
+      end
+    end,
     finish = function(self)
       self.done = true
     end,

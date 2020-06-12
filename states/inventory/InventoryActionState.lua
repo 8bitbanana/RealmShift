@@ -18,7 +18,7 @@ do
           table.insert(player_options, tostring(player.name) .. " (" .. tostring(player.hp) .. "/" .. tostring(player.stats.hp) .. ")")
         end
       end
-      table.insert(player_options, "Cancel")
+      table.insert(player_options, "[CANCEL]Cancel")
       local callback = nil
       local _exp_0 = item.use_target
       if "player" == _exp_0 then
@@ -155,7 +155,7 @@ do
       self.parent.parent.dialog:setTree(DialogTree({
         DialogBox("Are you sure you want to toss\nthe " .. tostring(itemname) .. "?", {
           "Yes",
-          "No"
+          "[CANCEL]No"
         }),
         DialogBox("You tossed the " .. tostring(itemname) .. ".")
       }, {

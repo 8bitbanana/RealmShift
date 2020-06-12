@@ -54,7 +54,16 @@ do
             if input:pressed("talk") then
               print(("advancing text"))
               gd:advanceInput()
-              if gd.tree and gd.tree.done then
+              if not gd.running then
+                print("dialog done")
+                self.state:changeState(NPCWanderState)
+                p.state:changeState(PlayerIdleState)
+              end
+            end
+            if input:pressed("back") then
+              print(("sending back to text"))
+              gd:cancelInput()
+              if not gd.running then
                 print("dialog done")
                 self.state:changeState(NPCWanderState)
                 return p.state:changeState(PlayerIdleState)

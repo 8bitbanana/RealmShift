@@ -60,7 +60,14 @@ export class NPC extends Player
 					if input\pressed "talk"
 						print ("advancing text")
 						gd\advanceInput!
-						if gd.tree and gd.tree.done
+						if not gd.running
+							print("dialog done")
+							@state\changeState(NPCWanderState)
+							p.state\changeState(PlayerIdleState)
+					if input\pressed "back"
+						print ("sending back to text")
+						gd\cancelInput!
+						if not gd.running
 							print("dialog done")
 							@state\changeState(NPCWanderState)
 							p.state\changeState(PlayerIdleState)

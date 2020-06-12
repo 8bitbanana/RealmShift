@@ -53,6 +53,14 @@ export class DialogBox
 				@modalresult = @modal.result
 				@waitingForModal = false
 
+	cancelInput: =>
+		if @modal and @waitingForModal
+			@modal\cancelInput!
+			if @modal.done
+				@done = true
+				@modalresult = @modal.result
+				@waitingForModal = false
+
 	tokenise: =>
 		@chars = {}
 		@tokens = {}

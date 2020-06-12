@@ -14,20 +14,30 @@ do
     end,
     advanceInput = function(self)
       if self.tree ~= nil then
-        return self.tree:advanceInput()
+        self.tree:advanceInput()
+        return self:updateVars()
+      end
+    end,
+    cancelInput = function(self)
+      if self.tree ~= nil then
+        self.tree:cancelInput()
+        return self:updateVars()
+      end
+    end,
+    updateVars = function(self)
+      self.awaitinginput = self.tree.awaitinginput
+      if self.tree.done then
+        Push:setCanvas("dialogbox")
+        lg.clear()
+        Push:setCanvas("main")
+        self.tree = nil
+        self.running = false
       end
     end,
     update = function(self)
       if self.tree ~= nil then
         self.tree:update()
-        self.awaitinginput = self.tree.awaitinginput
-        if self.tree.done then
-          Push:setCanvas("dialogbox")
-          lg.clear()
-          Push:setCanvas("main")
-          self.tree = nil
-          self.running = false
-        end
+        return self:updateVars()
       end
     end,
     draw = function(self)

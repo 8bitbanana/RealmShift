@@ -1,6 +1,6 @@
 Inspect = require "lib/inspect"
 export class ModalOption
-	new: (@text) =>
+	new: (@text, @cancel=false) =>
 		@pos = {x:0, y:0}
 		@size = {
 			w:dialogfont\getWidth(@text)
@@ -17,18 +17,24 @@ export class DialogModal
 		if @options == nil
 			@options = {
 				ModalOption("Sure!"),
-				ModalOption("Wait a second...")
+				ModalOption("Wait a second...", true)
 			}
 		else
 			for i,option in pairs @options
 				if type(option) == "string"
-					@options[i] = ModalOption(option)
+					if string.sub(option, 1, 8) == "[CANCEL]"
+						@options[i] = ModalOption(string.sub(option, 9), true)
+
+					else
+						@options[i] = ModalOption(option)
 		@reset!
 
 	reset: =>
 		@result = nil
 		@done = false
 		@selected = 1
+		for i,option in pairs @options
+			@selected = i if option.cancel
 
 		optionCount = #@options
 		assert(optionCount>0)
@@ -59,6 +65,13 @@ export class DialogModal
 		@updateCursorPos!
 
 	advanceInput: => @select!
+
+	cancelInput: =>
+		for i, option in pairs @options
+			if option.cancel
+				@selected = i
+				@select!
+				return
 
 	updateCursorPos: =>
 		option = @selectedOption!
