@@ -84,10 +84,10 @@ AABB = (b1, b2) ->
 	return b1.pos.x < (b2.pos.x+b2.width) and (b1.pos.x+b1.width) > b2.pos.x and
 	b1.pos.y < (b2.pos.y+b2.height) and (b1.pos.y+b1.height) > b2.pos.y
 
-shadowPrint = (text="empty_text", x=0, y=0) ->
+shadowPrint = (text="empty_text", x=0, y=0, col=WHITE) ->
 	lg.setColor(WHITE)
 	lg.print({BLACK, text}, x+1, y+1)
-	lg.print(text, x, y)
+	lg.print({col, text}, x, y)
 
 ------------------------------------------
 

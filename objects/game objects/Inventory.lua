@@ -125,6 +125,12 @@ do
     end,
     removeItem = function(self, index)
       return table.remove(self.items, index)
+    end,
+    addGold = function(self, amt)
+      if amt == nil then
+        amt = 0
+      end
+      self.gold = self.gold + amt
     end
   }
   _base_0.__index = _base_0
@@ -137,6 +143,7 @@ do
         Potion(self.parent),
         InventoryItem(self.parent)
       }
+      self.gold = 0
     end,
     __base = _base_0,
     __name = "Inventory"

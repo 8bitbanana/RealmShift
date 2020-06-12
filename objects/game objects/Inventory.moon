@@ -23,7 +23,7 @@ class Potion extends InventoryItem
 		for player in *game.party
 			return true if @is_usable_on_target(player)
 		return false
-		
+
 	is_usable_on_target: (target) =>
 		return false if target == nil
 		return target.hp < target.stats.hp
@@ -33,7 +33,7 @@ class Potion extends InventoryItem
 		target.hp += 50
 		target.hp = target.stats.hp if target.hp > target.stats.hp
 		return "#{target.name} restored #{target.hp - oldhp} HP."
-		
+
 
 export class Inventory
 	new: (@parent) => -- @parent expects the game class
@@ -43,6 +43,7 @@ export class Inventory
 			Potion(@parent)
 			InventoryItem(@parent)
 		}
+		@gold = 0
 
 	addItem: (item, index) =>
 		item.root = @parent if item.root == nil
@@ -63,3 +64,6 @@ export class Inventory
 
 	removeItem: (index) =>
 		table.remove(@items, index)
+
+	addGold: (amt=0) =>
+		@gold += amt

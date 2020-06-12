@@ -12,6 +12,7 @@ require "utils_new"
 require "graphics"
 require "font"
 require "image"
+require "sound"
 require "input"
 require "game"
 
@@ -28,6 +29,7 @@ love.load = ->
 		setupFonts!
 		setupWindow!
 		loadSprites!
+		loadSounds!
 
 		-- Exporting variables makes them global so they can be accessed from anywhere else
 		export input = setupInput!

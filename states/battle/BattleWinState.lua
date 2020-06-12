@@ -12,7 +12,7 @@ do
         end
       end)(), 4, (function()
         local _base_1 = self
-        local _fn_0 = _base_1.endBattleSummary
+        local _fn_0 = _base_1.startGoldCounter
         return function(...)
           return _fn_0(_base_1, ...)
         end
@@ -21,9 +21,36 @@ do
     increasePlayerCount = function(self)
       self.pcount = self.pcount + 1
     end,
+    startGoldCounter = function(self)
+      return self.timer:during(self.gcount_len, (function()
+        local _base_1 = self
+        local _fn_0 = _base_1.increaseGoldCount
+        return function(...)
+          return _fn_0(_base_1, ...)
+        end
+      end)(), (function()
+        local _base_1 = self
+        local _fn_0 = _base_1.endBattleSummary
+        return function(...)
+          return _fn_0(_base_1, ...)
+        end
+      end)(), 'gold_reveal')
+    end,
+    increaseGoldCount = function(self)
+      self.last_gcount = self.gcount
+      self.gcount = self.gcount + ((self.gold / self.gcount_len) * dt)
+      if floor(self.gcount) > floor(self.last_gcount) then
+        sounds.coin:stop()
+        if round(self.gcount) == self.gold then
+          return sounds.coin_final:play()
+        else
+          return sounds.coin:play()
+        end
+      end
+    end,
     skipAnimation = function(self)
       self.timer:cancel('player_reveal')
-      self.pcount = 4
+      self.timer:cancel('gold_reveal')
       return self:endBattleSummary()
     end,
     checkSkip = function(self)
@@ -32,10 +59,13 @@ do
       end
     end,
     endBattleSummary = function(self)
+      self.pcount = 4
+      self.gcount = self.gold
       self.can_return = true
     end,
     checkReturn = function(self)
       if self.can_return and input:pressed("confirm") then
+        game.inventory:addGold(self.gold)
         game.next_state = {
           state = GameOverworldState,
           params = {
@@ -99,6 +129,16 @@ do
         end
       end
     end,
+    drawGoldCount = function(self)
+      local x = 96
+      local y = GAME_HEIGHT - self.padding
+      if self.gcount > 0 then
+        shadowPrint("+" .. tostring(self.gold), x + 24, y - 12)
+        shadowPrint("Gold:", x, y, GOLD)
+        local current_gold = game.inventory.gold
+        return shadowPrint(current_gold + floor(self.gcount), x + 32, y, GOLD)
+      end
+    end,
     drawButtonPrompt = function(self)
       if self.blink_timer <= self.blink_len / 2 then
         local x = 176
@@ -118,6 +158,7 @@ do
     draw = function(self)
       self:drawScreenBackground()
       self:drawPlayerPortraits()
+      self:drawGoldCount()
       return self:drawButtonPrompt()
     end
   }
@@ -136,7 +177,10 @@ do
       self.height = GAME_HEIGHT - self.padding
       self.opacity = 0
       self.pcount = 0
+      self.gold = args.gold or 0
       self.gcount = 0
+      self.last_gcount = 0
+      self.gcount_len = 1
       self.can_skip = false
       self.can_return = false
       return self.timer:tween(0.5, self, {

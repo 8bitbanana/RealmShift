@@ -98,7 +98,7 @@ end
 AABB = function(b1, b2)
   return b1.pos.x < (b2.pos.x + b2.width) and (b1.pos.x + b1.width) > b2.pos.x and b1.pos.y < (b2.pos.y + b2.height) and (b1.pos.y + b1.height) > b2.pos.y
 end
-shadowPrint = function(text, x, y)
+shadowPrint = function(text, x, y, col)
   if text == nil then
     text = "empty_text"
   end
@@ -108,12 +108,18 @@ shadowPrint = function(text, x, y)
   if y == nil then
     y = 0
   end
+  if col == nil then
+    col = WHITE
+  end
   lg.setColor(WHITE)
   lg.print({
     BLACK,
     text
   }, x + 1, y + 1)
-  return lg.print(text, x, y)
+  return lg.print({
+    col,
+    text
+  }, x, y)
 end
 recursiveEnumerate = function(folder, file_list)
   local items = love.filesystem.getDirectoryItems(folder)

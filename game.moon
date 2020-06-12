@@ -16,6 +16,7 @@ export class Game
 		}
 		@party[1].hp /= 2
 		@party[2].hp /= 2
+		-- Gold is stored in the Inventory
 		@inventory = Inventory(@)
 
 		@transitioning = false
