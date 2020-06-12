@@ -19,6 +19,8 @@ export class DialogBox
 		@modalresult = nil -- Result of the optional modal
 		@waitingForModal = false
 
+		@skipping = false
+
 		@waitingForInput = false -- The dialog is waiting for input
 		@waitingForClose = false -- The dialog is waiting for the final input
 		@done = false -- The dialog is finished: the manager should close it
@@ -37,6 +39,8 @@ export class DialogBox
 		@incText!
 
 	advanceInput: () =>
+		if not @waitingForInput
+			@skipping = true
 		if @waitingForInput
 			@waitingForInput = false
 		if @waitingForClose
@@ -129,8 +133,13 @@ export class DialogBox
 			@scrollFlag = false
 		if @targetscrollOffset != @scrollOffset
 			@scrollOffset += math.sign(@targetscrollOffset - @scrollOffset)
-		if @framecount % FRAME_MOD == 0 and @skipcount == 0
-			@incText!
+		if @skipping
+			while not @waitingForInput
+				@incText!
+			@skipping = false
+		else
+			if @framecount % FRAME_MOD == 0 and @skipcount == 0
+				@incText!
 		@modal\update! if @modal and @waitingForModal
 
 	draw: =>
