@@ -1,3 +1,4 @@
+-- require "objects/game objects/Inventory"
 
 export class BattleWinState extends State
 	new: (@parent, args) =>
@@ -14,7 +15,10 @@ export class BattleWinState extends State
 		@opacity     = 0
 
 		@pcount      = 0
+		@drops       = args.drops or nil
+		@dcount      = 0
 		@gold        = args.gold or 0
+		@show_gold   = false
 		@gcount      = 0
 		@last_gcount = 0
 		@gcount_len  = 1
@@ -27,29 +31,49 @@ export class BattleWinState extends State
 	startAnimation: =>
 		@can_skip = true
 -- 		@timer\every(0.5, @\increasePlayerCount, 4, @\endBattleSummary, 'player_reveal')
-		@timer\every(0.5, @\increasePlayerCount, 4, @\startGoldCounter, 'player_reveal')
+		@timer\every(0.5, @\increasePlayerCount, 4, @\startDropCounter, 'player_reveal')
 
 	increasePlayerCount: =>
 		-- Increases the number of player portraits to be drawn
 		@pcount += 1
+		-- Play basic bleep sound
+		sounds.ui_wah_1\play!
+
+	startDropCounter: =>
+		-- @timer\during(@gcount_len, @\increaseGoldCount, @\endBattleSummary, 'gold_reveal')
+		@timer\every(0.5, @\increaseDropCount, #@drops, @\startGoldCounter, 'drops_reveal')
+
+	increaseDropCount: =>
+		@dcount += 1
+		-- Play item-pocketted sound
+		sounds.item_pocket\setPitch(random( 0.75, 1.25))
+		sounds.item_pocket\stop!
+		sounds.item_pocket\play!
 
 	startGoldCounter: =>
-		@timer\during(@gcount_len, @\increaseGoldCount, @\endBattleSummary, 'gold_reveal')
+		@timer\after(0.5, ()->
+			@timer\during(@gcount_len, @\increaseGoldCount, @\endBattleSummary, 'gold_reveal')
+		)
 
 	increaseGoldCount: =>
+		@show_gold = true
+
 		@last_gcount = @gcount
 		@gcount += (@gold/@gcount_len)*dt
 
 		-- Play coin-get sound for each integer gcount increase
 		if floor(@gcount) > floor(@last_gcount)
 			sounds.coin\stop()
-			if round(@gcount) == @gold
+			if abs(@gold-round(@gcount)) < 1
+-- 				sounds.coin_final\setPitch(random( 0.75, 1.25))
+				sounds.coin_final\stop()
 				sounds.coin_final\play()
 			else
 				sounds.coin\play()
 
 	skipAnimation: =>
 		@timer\cancel('player_reveal')
+		@timer\cancel('drops_reveal')
 		@timer\cancel('gold_reveal')
 		@\endBattleSummary!
 
@@ -58,21 +82,29 @@ export class BattleWinState extends State
 			@\skipAnimation!
 
 	endBattleSummary: =>
+		print("endBattleSummary")
 		@pcount = 4
+		@dcount = #@drops
 		@gcount = @gold
+		@show_gold = true
 		@can_return = true
 
 	checkReturn: =>
 		if @can_return and input\pressed("confirm")
+			-- Add gold and item drops to persistent inventory
 			game.inventory\addGold(@gold)
+			if @drops
+				game.inventory\addItems(@drops)
+
+			-- Set next game state to return to overworld
 			game.next_state = {state: GameOverworldState, params: {@rx, @ry}}
 
 	update: =>
-		@timer\update(dt)
-		@blink_timer = (@blink_timer + dt)%@blink_len
-
 		@\checkReturn!
 		@\checkSkip!
+
+		@timer\update(dt)
+		@blink_timer = (@blink_timer + dt)%@blink_len
 
 	drawScreenBackground: =>
 		dx = (GAME_WIDTH-@width)/2
@@ -108,7 +140,7 @@ export class BattleWinState extends State
 		for i=1, @pcount
 			p = players[i]
 			x = 32+(floor((i-1)/2)*104)
-			y = 112-((i%2)*40)
+			y = 104-((i%2)*40)
 
 			@\drawPortraitBorder(x, y)
 
@@ -116,12 +148,26 @@ export class BattleWinState extends State
 				p.sprite\draw(x, y)
 				@\drawHealthBar(p, x, y-6)
 
+	drawDrops: =>
+		x = 32
+
+		for i=1, @dcount
+			y = GAME_HEIGHT-64 + (i*16)
+
+			item = @drops[i]
+			if item
+				if item.sprite
+					item.sprite\draw(x, y)
+				shadowPrint(item.name, x+10, y-4)
+
 	drawGoldCount: =>
 		x = 96
-		y = GAME_HEIGHT-@padding
+		y = GAME_HEIGHT-@padding-4
 
-		if @gcount > 0
-			shadowPrint("+#{@gold}", x+24, y-12)
+		if @show_gold
+			if @gcount > 0
+				shadowPrint("+#{@gold}", x+24, y-12)
+
 			shadowPrint("Gold:", x, y, GOLD)
 			current_gold = game.inventory.gold
 			shadowPrint(current_gold + floor(@gcount), x+32, y, GOLD)
@@ -142,7 +188,11 @@ export class BattleWinState extends State
 				sprites.gui.cursor\draw(x, y)
 
 	draw: =>
+-- 		print("dcount: #{@dcount}")
+
 		@\drawScreenBackground!
 		@\drawPlayerPortraits!
+		if @drops then
+			@\drawDrops!
 		@\drawGoldCount!
 		@\drawButtonPrompt!

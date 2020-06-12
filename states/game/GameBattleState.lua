@@ -258,10 +258,15 @@ do
       self.aniObjs:checkDestroyed()
       if self:checkWon() then
         local gold = math.random(0, 100)
+        local drops = {
+          Potion(),
+          Potion()
+        }
         return self.state:changeState(BattleWinState, {
           rx = self.rx,
           ry = self.ry,
-          gold = gold
+          gold = gold,
+          drops = drops
         })
       elseif self:checkLost() then
         print("You died chump")

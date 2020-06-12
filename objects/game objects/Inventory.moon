@@ -13,12 +13,14 @@ export class InventoryItem
 
 	draw_sprite: (pos) =>
 
-class Potion extends InventoryItem
+export class Potion extends InventoryItem
 	name: "Potion"
 	desc: "Restores some health for an ally"
 	consumable: true
 	use_prompt: "Who would you like to\nuse the potion on?"
 	use_target: "player"
+	sprite: sprites.items.potion
+
 	is_usable: =>
 		for player in *game.party
 			return true if @is_usable_on_target(player)
@@ -38,10 +40,10 @@ class Potion extends InventoryItem
 export class Inventory
 	new: (@parent) => -- @parent expects the game class
 		@items = {
-			InventoryItem(@parent)
-			InventoryItem(@parent)
-			Potion(@parent)
-			InventoryItem(@parent)
+-- 			InventoryItem(@parent)
+-- 			InventoryItem(@parent)
+-- 			Potion(@parent)
+-- 			InventoryItem(@parent)
 		}
 		@gold = 0
 
@@ -51,6 +53,10 @@ export class Inventory
 			table.insert(@items, item)
 		else
 			table.insert(@items, index, item)
+
+	addItems: (item_list) =>
+		for i in *item_list
+			@\addItem(i)
 
 	swapItems: (index1, index2) =>
 		item1 = @items[index1]

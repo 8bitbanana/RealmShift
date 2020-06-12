@@ -12,7 +12,7 @@ do
         end
       end)(), 4, (function()
         local _base_1 = self
-        local _fn_0 = _base_1.startGoldCounter
+        local _fn_0 = _base_1.startDropCounter
         return function(...)
           return _fn_0(_base_1, ...)
         end
@@ -20,28 +20,54 @@ do
     end,
     increasePlayerCount = function(self)
       self.pcount = self.pcount + 1
+      return sounds.ui_wah_1:play()
+    end,
+    startDropCounter = function(self)
+      return self.timer:every(0.5, (function()
+        local _base_1 = self
+        local _fn_0 = _base_1.increaseDropCount
+        return function(...)
+          return _fn_0(_base_1, ...)
+        end
+      end)(), #self.drops, (function()
+        local _base_1 = self
+        local _fn_0 = _base_1.startGoldCounter
+        return function(...)
+          return _fn_0(_base_1, ...)
+        end
+      end)(), 'drops_reveal')
+    end,
+    increaseDropCount = function(self)
+      self.dcount = self.dcount + 1
+      sounds.item_pocket:setPitch(random(0.75, 1.25))
+      sounds.item_pocket:stop()
+      return sounds.item_pocket:play()
     end,
     startGoldCounter = function(self)
-      return self.timer:during(self.gcount_len, (function()
-        local _base_1 = self
-        local _fn_0 = _base_1.increaseGoldCount
-        return function(...)
-          return _fn_0(_base_1, ...)
-        end
-      end)(), (function()
-        local _base_1 = self
-        local _fn_0 = _base_1.endBattleSummary
-        return function(...)
-          return _fn_0(_base_1, ...)
-        end
-      end)(), 'gold_reveal')
+      return self.timer:after(0.5, function()
+        return self.timer:during(self.gcount_len, (function()
+          local _base_1 = self
+          local _fn_0 = _base_1.increaseGoldCount
+          return function(...)
+            return _fn_0(_base_1, ...)
+          end
+        end)(), (function()
+          local _base_1 = self
+          local _fn_0 = _base_1.endBattleSummary
+          return function(...)
+            return _fn_0(_base_1, ...)
+          end
+        end)(), 'gold_reveal')
+      end)
     end,
     increaseGoldCount = function(self)
+      self.show_gold = true
       self.last_gcount = self.gcount
       self.gcount = self.gcount + ((self.gold / self.gcount_len) * dt)
       if floor(self.gcount) > floor(self.last_gcount) then
         sounds.coin:stop()
-        if round(self.gcount) == self.gold then
+        if abs(self.gold - round(self.gcount)) < 1 then
+          sounds.coin_final:stop()
           return sounds.coin_final:play()
         else
           return sounds.coin:play()
@@ -50,6 +76,7 @@ do
     end,
     skipAnimation = function(self)
       self.timer:cancel('player_reveal')
+      self.timer:cancel('drops_reveal')
       self.timer:cancel('gold_reveal')
       return self:endBattleSummary()
     end,
@@ -59,13 +86,19 @@ do
       end
     end,
     endBattleSummary = function(self)
+      print("endBattleSummary")
       self.pcount = 4
+      self.dcount = #self.drops
       self.gcount = self.gold
+      self.show_gold = true
       self.can_return = true
     end,
     checkReturn = function(self)
       if self.can_return and input:pressed("confirm") then
         game.inventory:addGold(self.gold)
+        if self.drops then
+          game.inventory:addItems(self.drops)
+        end
         game.next_state = {
           state = GameOverworldState,
           params = {
@@ -76,10 +109,10 @@ do
       end
     end,
     update = function(self)
+      self:checkReturn()
+      self:checkSkip()
       self.timer:update(dt)
       self.blink_timer = (self.blink_timer + dt) % self.blink_len
-      self:checkReturn()
-      return self:checkSkip()
     end,
     drawScreenBackground = function(self)
       local dx = (GAME_WIDTH - self.width) / 2
@@ -121,7 +154,7 @@ do
       for i = 1, self.pcount do
         local p = players[i]
         local x = 32 + (floor((i - 1) / 2) * 104)
-        local y = 112 - ((i % 2) * 40)
+        local y = 104 - ((i % 2) * 40)
         self:drawPortraitBorder(x, y)
         if p then
           p.sprite:draw(x, y)
@@ -129,11 +162,26 @@ do
         end
       end
     end,
+    drawDrops = function(self)
+      local x = 32
+      for i = 1, self.dcount do
+        local y = GAME_HEIGHT - 64 + (i * 16)
+        local item = self.drops[i]
+        if item then
+          if item.sprite then
+            item.sprite:draw(x, y)
+          end
+          shadowPrint(item.name, x + 10, y - 4)
+        end
+      end
+    end,
     drawGoldCount = function(self)
       local x = 96
-      local y = GAME_HEIGHT - self.padding
-      if self.gcount > 0 then
-        shadowPrint("+" .. tostring(self.gold), x + 24, y - 12)
+      local y = GAME_HEIGHT - self.padding - 4
+      if self.show_gold then
+        if self.gcount > 0 then
+          shadowPrint("+" .. tostring(self.gold), x + 24, y - 12)
+        end
         shadowPrint("Gold:", x, y, GOLD)
         local current_gold = game.inventory.gold
         return shadowPrint(current_gold + floor(self.gcount), x + 32, y, GOLD)
@@ -158,6 +206,9 @@ do
     draw = function(self)
       self:drawScreenBackground()
       self:drawPlayerPortraits()
+      if self.drops then
+        self:drawDrops()
+      end
       self:drawGoldCount()
       return self:drawButtonPrompt()
     end
@@ -177,7 +228,10 @@ do
       self.height = GAME_HEIGHT - self.padding
       self.opacity = 0
       self.pcount = 0
+      self.drops = args.drops or nil
+      self.dcount = 0
       self.gold = args.gold or 0
+      self.show_gold = false
       self.gcount = 0
       self.last_gcount = 0
       self.gcount_len = 1

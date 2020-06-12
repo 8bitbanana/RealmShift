@@ -7,6 +7,9 @@ function loadSprites()
 		overworld = {
 			enemy = Soda.newSprite(lg.newImage("images/sprites/overworld/enemy_icon.png"), 4, 4),
 		},
+		items = {
+			potion = Soda.newSprite(lg.newImage("images/sprites/item/potion.png"), 4, 4),
+		},
 		battle = {
 			cursor_right = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_right.png"), 8, 12),
 			cursor_down = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_down.png"), 12, 8),
