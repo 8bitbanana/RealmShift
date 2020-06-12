@@ -53,6 +53,9 @@ do
       end
     end,
     cancelInput = function(self)
+      if not self.waitingForInput then
+        self.skipping = true
+      end
       if self.modal and self.waitingForModal then
         self.modal:cancelInput()
         if self.modal.done then

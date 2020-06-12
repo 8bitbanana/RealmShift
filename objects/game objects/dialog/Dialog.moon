@@ -54,6 +54,8 @@ export class DialogBox
 				@waitingForModal = false
 
 	cancelInput: =>
+		if not @waitingForInput
+			@skipping = true
 		if @modal and @waitingForModal
 			@modal\cancelInput!
 			if @modal.done
