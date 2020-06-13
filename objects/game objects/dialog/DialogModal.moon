@@ -3,12 +3,12 @@ export class ModalOption
 	new: (@text, @cancel=false) =>
 		@pos = {x:0, y:0}
 		@size = {
-			w:dialogfont\getWidth(@text)
-			h:dialogfont\getHeight(@text)
+			w:dialog_font\getWidth(@text)
+			h:dialog_font\getHeight(@text)
 		}
 
 	draw: =>
-		lg.setFont(dialogfont)
+		lg.setFont(dialog_font)
 		lg.setColor(0,0,0)
 		lg.print(@text, @pos.x, @pos.y)
 

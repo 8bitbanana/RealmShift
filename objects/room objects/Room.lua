@@ -61,7 +61,6 @@ do
           y = 0
         }
       end
-      lg.setColor(WHITE)
       local _list_0 = self.map.layers
       for _index_0 = 1, #_list_0 do
         local layer = _list_0[_index_0]

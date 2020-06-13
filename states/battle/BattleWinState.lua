@@ -180,11 +180,11 @@ do
       local y = GAME_HEIGHT - self.padding - 4
       if self.show_gold then
         if self.gcount > 0 then
-          shadowPrint("+" .. tostring(self.gold), x + 24, y - 12)
+          shadowPrint("+" .. tostring(self.gold), x + 34, y - 12)
         end
         shadowPrint("Gold:", x, y, GOLD)
         local current_gold = game.inventory.gold
-        return shadowPrint(current_gold + floor(self.gcount), x + 32, y, GOLD)
+        return shadowPrint(current_gold + floor(self.gcount), x + 40, y, GOLD)
       end
     end,
     drawButtonPrompt = function(self)
@@ -192,11 +192,11 @@ do
         local x = 176
         local y = GAME_HEIGHT - self.padding
         if self.can_skip and not self.can_return then
-          x = 176
+          x = 168
           shadowPrint("Skip", x + 20, y)
         elseif self.can_skip and self.can_return then
           x = 160
-          shadowPrint("Confirm", x + 20, y)
+          shadowPrint("Conf.", x + 20, y)
         end
         if self.can_skip then
           return sprites.gui.cursor:draw(x, y)

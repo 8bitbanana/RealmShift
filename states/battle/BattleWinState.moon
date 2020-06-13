@@ -166,11 +166,11 @@ export class BattleWinState extends State
 
 		if @show_gold
 			if @gcount > 0
-				shadowPrint("+#{@gold}", x+24, y-12)
+				shadowPrint("+#{@gold}", x+34, y-12)
 
 			shadowPrint("Gold:", x, y, GOLD)
 			current_gold = game.inventory.gold
-			shadowPrint(current_gold + floor(@gcount), x+32, y, GOLD)
+			shadowPrint(current_gold + floor(@gcount), x+40, y, GOLD)
 
 	drawButtonPrompt: =>
 		if @blink_timer <= @blink_len/2
@@ -178,11 +178,11 @@ export class BattleWinState extends State
 			y = GAME_HEIGHT-@padding
 
 			if @can_skip and not @can_return
-				x = 176
+				x = 168
 				shadowPrint("Skip", x+20, y)
 			elseif @can_skip and @can_return
 				x = 160
-				shadowPrint("Confirm", x+20, y)
+				shadowPrint("Conf.", x+20, y)
 
 			if @can_skip
 				sprites.gui.cursor\draw(x, y)

@@ -121,7 +121,7 @@ export class BattlePlayer
 		lg.rectangle("fill", x-1, y+4, len, 2)
 		lg.setColor(WHITE)
 
-		shadowPrint(max_hp, x+12, y+12)
+		shadowPrint(max_hp, x+12, y+16)
 -- 		shadowPrint("/", x+6, y+10)
 		shadowPrint(hp, x, y+8)
 

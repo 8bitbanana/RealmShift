@@ -2,7 +2,9 @@ do
   local _class_0
   local _base_0 = {
     init = function(self)
-      return self.state:init()
+      if self.state.init then
+        return self.state:init()
+      end
     end,
     startStateTransitionIn = function(self)
       self.state:destroy()
@@ -109,7 +111,7 @@ do
           self.state:draw()
         end
         self.dialog:draw()
-        if self.state.__class.__name ~= "GameBattleState" then
+        if self.state.__class.__name == "GameExploreState" or self.state.__class.__name == "GameOverworldState" then
           return self:drawButtonPrompts()
         end
       end
@@ -119,7 +121,7 @@ do
   _class_0 = setmetatable({
     __init = function(self)
       self.timer = Timer()
-      self.state = GameExploreState(self)
+      self.state = GameTitleState(self)
       self.next_state = nil
       self.button_prompts = {
         z = "",

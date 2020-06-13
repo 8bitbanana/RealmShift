@@ -406,11 +406,11 @@ do
           y = 30
         }),
         SkillMenuItem(self, {
-          x = 195,
+          x = 189,
           y = 11
         }),
         ItemMenuItem(self, {
-          x = 195,
+          x = 189,
           y = 30
         })
       }

@@ -201,7 +201,7 @@ do
         self.skipcount = self.skipcount - 1
       end
       if self.scrollFlag and not self.waitingForInput then
-        self.targetscrollOffset = self.targetscrollOffset - dialogfont:getHeight()
+        self.targetscrollOffset = self.targetscrollOffset - dialog_font:getHeight()
         self.scrollFlag = false
       end
       if self.targetscrollOffset ~= self.scrollOffset then
@@ -230,7 +230,7 @@ do
       lg.clear()
       local width = 0
       local height = 0
-      lg.setFont(dialogfont)
+      lg.setFont(dialog_font)
       for index = 1, self.currentIndex do
         lg.setColor(0, 0, 0)
         local xoffset = width
@@ -248,11 +248,11 @@ do
           end
         end
         if self.chars[index] == "\n" then
-          height = height + (dialogfont:getHeight() + Y_SPACING)
+          height = height + (dialog_font:getHeight() + Y_SPACING)
           width = 0
         else
           lg.print(self.chars[index], 3 + xoffset, 3 + yoffset + self.scrollOffset, 0)
-          width = width + (dialogfont:getWidth(self.chars[index]) + X_SPACING)
+          width = width + (dialog_font:getWidth(self.chars[index]) + X_SPACING)
         end
       end
       Push:setCanvas("main")
@@ -260,8 +260,9 @@ do
         sprites.gui.cursor:draw(216, 142)
       end
       if self.modal and self.waitingForModal then
-        return self.modal:draw()
+        self.modal:draw()
       end
+      return lg.setFont(default_font)
     end
   }
   _base_0.__index = _base_0

@@ -2,7 +2,7 @@
 export class Game
 	new: () =>
 		@timer = Timer!
-		@state = GameExploreState(@)
+		@state = GameTitleState(@) --GameExploreState(@)
 		@next_state = nil
 		@button_prompts = {z: "", x: ""}
 
@@ -24,7 +24,8 @@ export class Game
 		@transition_length = 0.25
 
 	init: =>
-		@state\init!
+		if @state.init
+			@state\init!
 
 	-----------------------------------------------
 
@@ -139,5 +140,5 @@ export class Game
 				@state\draw!
 
 			@dialog\draw!
-			if @state.__class.__name ~= "GameBattleState"
+			if @state.__class.__name == "GameExploreState" or @state.__class.__name == "GameOverworldState"
 				@drawButtonPrompts!

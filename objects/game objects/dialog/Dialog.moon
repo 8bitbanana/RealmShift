@@ -137,7 +137,7 @@ export class DialogBox
 		@framecount += 1
 		@skipcount -= 1 if @skipcount > 0
 		if @scrollFlag and not @waitingForInput
-			@targetscrollOffset -= dialogfont\getHeight!
+			@targetscrollOffset -= dialog_font\getHeight!
 			@scrollFlag = false
 		if @targetscrollOffset != @scrollOffset
 			@scrollOffset += math.sign(@targetscrollOffset - @scrollOffset)
@@ -159,7 +159,7 @@ export class DialogBox
 		lg.clear()
 		width = 0
 		height = 0
-		lg.setFont(dialogfont)
+		lg.setFont(dialog_font)
 		for index=1, @currentIndex
 			lg.setColor(0, 0, 0)
 			xoffset = width
@@ -172,12 +172,14 @@ export class DialogBox
 						when "wave"
 							yoffset += 6*math.sin((@framecount + token.index*3) / 10)
 			if @chars[index] == "\n"
-				height += dialogfont\getHeight! + Y_SPACING
+				height += dialog_font\getHeight! + Y_SPACING
 				width = 0
 			else
 				lg.print(@chars[index], 3+xoffset, 3+yoffset+@scrollOffset, 0)
-				width += dialogfont\getWidth(@chars[index]) + X_SPACING
+				width += dialog_font\getWidth(@chars[index]) + X_SPACING
 		Push\setCanvas("main")
 		if @waitingForInput and not @waitingForModal and (@framecount - @cursorBlinkFrameOffset) % CURSOR_BLINK_MOD > CURSOR_BLINK_MOD / 2
 			sprites.gui.cursor\draw(216, 142)
 		@modal\draw! if @modal and @waitingForModal
+
+		lg.setFont(default_font)
