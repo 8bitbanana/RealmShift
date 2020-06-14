@@ -163,7 +163,7 @@ do
       end
     end,
     drawDrops = function(self)
-      local x = 32
+      local x = 24
       for i = 1, self.dcount do
         local y = GAME_HEIGHT - 64 + (i * 16)
         local item = self.drops[i]
@@ -176,7 +176,7 @@ do
       end
     end,
     drawGoldCount = function(self)
-      local x = 96
+      local x = 102
       local y = GAME_HEIGHT - self.padding - 4
       if self.show_gold then
         if self.gcount > 0 then
@@ -190,12 +190,12 @@ do
     drawButtonPrompt = function(self)
       if self.blink_timer <= self.blink_len / 2 then
         local x = 176
-        local y = GAME_HEIGHT - self.padding
+        local y = GAME_HEIGHT - self.padding - 4
         if self.can_skip and not self.can_return then
           x = 168
           shadowPrint("Skip", x + 20, y)
         elseif self.can_skip and self.can_return then
-          x = 160
+          x = 164
           shadowPrint("Conf.", x + 20, y)
         end
         if self.can_skip then

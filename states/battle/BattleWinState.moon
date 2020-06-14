@@ -149,7 +149,7 @@ export class BattleWinState extends State
 				@\drawHealthBar(p, x, y-6)
 
 	drawDrops: =>
-		x = 32
+		x = 24
 
 		for i=1, @dcount
 			y = GAME_HEIGHT-64 + (i*16)
@@ -161,7 +161,7 @@ export class BattleWinState extends State
 				shadowPrint(item.name, x+10, y-4)
 
 	drawGoldCount: =>
-		x = 96
+		x = 102
 		y = GAME_HEIGHT-@padding-4
 
 		if @show_gold
@@ -175,13 +175,13 @@ export class BattleWinState extends State
 	drawButtonPrompt: =>
 		if @blink_timer <= @blink_len/2
 			x = 176
-			y = GAME_HEIGHT-@padding
+			y = GAME_HEIGHT-@padding-4
 
 			if @can_skip and not @can_return
 				x = 168
 				shadowPrint("Skip", x+20, y)
 			elseif @can_skip and @can_return
-				x = 160
+				x = 164
 				shadowPrint("Conf.", x+20, y)
 
 			if @can_skip
