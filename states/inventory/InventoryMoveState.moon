@@ -1,10 +1,13 @@
 export class InventoryMoveState extends State
 	new: (@parent) =>
-		@cursorStart = Cursor({x:6, y:(@parent.selectedIndex*16)-9}, "right")
+		@cursorStart = Cursor({x:0,y:0}, "right")
 		@cursorEnd = Cursor({x:0,y:0}, "right")
 		@items = game.inventory.items
-		@selected = 0
-		@moveItemCursor(1)
+		if @parent.selectedIndex >= #@items
+			@selected = @parent.selectedIndex - 1
+		else
+			@selected = @parent.selectedIndex + 1
+		@parent\scrollTo(@selected)
 
 	init: =>
 		@updateCursorPos!
@@ -25,19 +28,27 @@ export class InventoryMoveState extends State
 			break if newindex != @parent.selectedIndex
 		if @items[newindex] != nil
 			@selected = newindex
+			@parent\scrollTo(@selected)
 			@updateCursorPos!
 
 	updateCursorPos: =>
+		@cursorStart.pos = {
+			x:6,
+			y:(@parent\getScrolledIndex!*16)-9
+		}
 		@cursorEnd.pos = {
 			x: 6
-			y: (@selected*16)-9
+			y: (@parent\getScrolledIndex(@selected)*16)-9
 		}
 
 	select: =>
 		@parent\swapCurrentItem(@selected)
+		@parent.selectedIndex = @selected
+		@parent\scrollTo!
 		@changeState(InventoryItemState)
 
 	back: =>
+		@parent\scrollTo!
 		@changeState(InventoryActionState)
 
 	draw: =>

@@ -20,6 +20,8 @@ export class InventoryItemState extends State
 		@selected += dir
 		@selected = 1 if @selected < 1
 		@selected = #@items if @selected > #@items
+		@parent.selectedIndex = @selected
+		@parent\scrollTo!
 		@updateCursorPos!
 		
 	select: =>
@@ -27,9 +29,10 @@ export class InventoryItemState extends State
 			@parent.state\changeState(InventoryActionState)
 
 	updateCursorPos: =>
+		relIndex = @parent\getScrolledIndex(@selected)
 		@cursor.pos = {
 			x: 6
-			y: (@selected*16)-9
+			y: (relIndex*16)-9
 		}
 		@parent.selectedIndex = @selected
 

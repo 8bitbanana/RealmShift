@@ -36,20 +36,28 @@ do
       end
       if self.items[newindex] ~= nil then
         self.selected = newindex
+        self.parent:scrollTo(self.selected)
         return self:updateCursorPos()
       end
     end,
     updateCursorPos = function(self)
+      self.cursorStart.pos = {
+        x = 6,
+        y = (self.parent:getScrolledIndex() * 16) - 9
+      }
       self.cursorEnd.pos = {
         x = 6,
-        y = (self.selected * 16) - 9
+        y = (self.parent:getScrolledIndex(self.selected) * 16) - 9
       }
     end,
     select = function(self)
       self.parent:swapCurrentItem(self.selected)
+      self.parent.selectedIndex = self.selected
+      self.parent:scrollTo()
       return self:changeState(InventoryItemState)
     end,
     back = function(self)
+      self.parent:scrollTo()
       return self:changeState(InventoryActionState)
     end,
     draw = function(self)
@@ -63,16 +71,20 @@ do
     __init = function(self, parent)
       self.parent = parent
       self.cursorStart = Cursor({
-        x = 6,
-        y = (self.parent.selectedIndex * 16) - 9
+        x = 0,
+        y = 0
       }, "right")
       self.cursorEnd = Cursor({
         x = 0,
         y = 0
       }, "right")
       self.items = game.inventory.items
-      self.selected = 0
-      return self:moveItemCursor(1)
+      if self.parent.selectedIndex >= #self.items then
+        self.selected = self.parent.selectedIndex - 1
+      else
+        self.selected = self.parent.selectedIndex + 1
+      end
+      return self.parent:scrollTo(self.selected)
     end,
     __base = _base_0,
     __name = "InventoryMoveState",

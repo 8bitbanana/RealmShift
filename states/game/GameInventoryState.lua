@@ -3,6 +3,28 @@ do
   local _class_0
   local _parent_0 = State
   local _base_0 = {
+    scrollTo = function(self, index)
+      if index == nil then
+        index = self.selectedIndex
+      end
+      if index < self.scrollWindow.top then
+        local difference = self.scrollWindow.top - index
+        self.scrollWindow.top = self.scrollWindow.top - difference
+        self.scrollWindow.bottom = self.scrollWindow.bottom - difference
+      else
+        if index > self.scrollWindow.bottom then
+          local difference = index - self.scrollWindow.bottom
+          self.scrollWindow.top = self.scrollWindow.top + difference
+          self.scrollWindow.bottom = self.scrollWindow.bottom + difference
+        end
+      end
+    end,
+    getScrolledIndex = function(self, index)
+      if index == nil then
+        index = self.selectedIndex
+      end
+      return index - self.scrollWindow.top + 1
+    end,
     selectedItem = function(self)
       return self.parent.inventory.items[self.selectedIndex]
     end,
@@ -14,6 +36,7 @@ do
       if self.selectedIndex > #self.parent.inventory.items then
         self.selectedIndex = #self.parent.inventory.items
       end
+      return self:scrollTo()
     end,
     swapCurrentItem = function(self, index)
       local temp = game.inventory.items[self.selectedIndex]
@@ -25,6 +48,7 @@ do
       if self.selectedIndex > #self.parent.inventory.items then
         self.selectedIndex = #self.parent.inventory.items
       end
+      return self:scrollTo()
     end,
     update = function(self)
       self.state:update()
@@ -36,8 +60,13 @@ do
       lg.rectangle("fill", 8, 8, GAME_WIDTH / 2 - 12, GAME_HEIGHT - 16)
       lg.setColor(0, 0, 0)
       lg.rectangle("line", 8, 8, GAME_WIDTH / 2 - 12, GAME_HEIGHT - 16)
-      for i, item in pairs(self.parent.inventory.items) do
-        lg.print(item.name, 21, 11 + ((i - 1) * 16))
+      local currentIndex = 0
+      for i = self.scrollWindow.top, self.scrollWindow.bottom do
+        local item = self.parent.inventory.items[i]
+        if item then
+          lg.print(item.name, 21, 11 + (currentIndex * 16))
+          currentIndex = currentIndex + 1
+        end
       end
       lg.setColor(1, 1, 1)
       lg.rectangle("fill", GAME_WIDTH / 2 + 4, 8, GAME_WIDTH / 2 - 12, GAME_HEIGHT / 2 - 12)
@@ -58,6 +87,10 @@ do
       self.dialog = DialogManager()
       self.state = State(self)
       self.selectedIndex = 1
+      self.scrollWindow = {
+        top = 1,
+        bottom = 8
+      }
     end,
     __base = _base_0,
     __name = "GameInventoryState",

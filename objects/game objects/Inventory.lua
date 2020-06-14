@@ -34,11 +34,12 @@ do
   local _class_0
   local _parent_0 = InventoryItem
   local _base_0 = {
-    name = "Potion",
-    desc = "Restores some health for an ally",
+    name = "M. Potion",
+    desc = "Heals an ally for 50 HP",
     consumable = true,
     use_prompt = "Who would you like to\nuse the potion on?",
     use_target = "player",
+    heal = 50,
     sprite = sprites.items.potion,
     is_usable = function(self)
       local _list_0 = game.party
@@ -58,7 +59,7 @@ do
     end,
     use = function(self, target)
       local oldhp = target.hp
-      target.hp = target.hp + 50
+      target.hp = target.hp + self.heal
       if target.hp > target.stats.hp then
         target.hp = target.stats.hp
       end
@@ -97,6 +98,47 @@ do
     _parent_0.__inherited(_parent_0, _class_0)
   end
   Potion = _class_0
+end
+do
+  local _class_0
+  local _parent_0 = Potion
+  local _base_0 = {
+    heal = 30,
+    name = "S. Potion",
+    desc = "Heals an ally for 30 HP"
+  }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self, ...)
+      return _class_0.__parent.__init(self, ...)
+    end,
+    __base = _base_0,
+    __name = "LesserPotion",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  LesserPotion = _class_0
 end
 do
   local _class_0
@@ -143,7 +185,22 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent)
       self.parent = parent
-      self.items = { }
+      self.items = {
+        LesserPotion(self.parent),
+        Potion(self.parent),
+        LesserPotion(self.parent),
+        Potion(self.parent),
+        LesserPotion(self.parent),
+        Potion(self.parent),
+        LesserPotion(self.parent),
+        Potion(self.parent),
+        LesserPotion(self.parent),
+        Potion(self.parent),
+        LesserPotion(self.parent),
+        Potion(self.parent),
+        LesserPotion(self.parent),
+        Potion(self.parent)
+      }
       self.gold = 0
     end,
     __base = _base_0,

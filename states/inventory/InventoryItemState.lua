@@ -28,6 +28,8 @@ do
       if self.selected > #self.items then
         self.selected = #self.items
       end
+      self.parent.selectedIndex = self.selected
+      self.parent:scrollTo()
       return self:updateCursorPos()
     end,
     select = function(self)
@@ -36,9 +38,10 @@ do
       end
     end,
     updateCursorPos = function(self)
+      local relIndex = self.parent:getScrolledIndex(self.selected)
       self.cursor.pos = {
         x = 6,
-        y = (self.selected * 16) - 9
+        y = (relIndex * 16) - 9
       }
       self.parent.selectedIndex = self.selected
     end,

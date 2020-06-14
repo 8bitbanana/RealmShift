@@ -14,11 +14,12 @@ export class InventoryItem
 	draw_sprite: (pos) =>
 
 export class Potion extends InventoryItem
-	name: "Potion"
-	desc: "Restores some health for an ally"
+	name: "M. Potion"
+	desc: "Heals an ally for 50 HP"
 	consumable: true
 	use_prompt: "Who would you like to\nuse the potion on?"
 	use_target: "player"
+	heal: 50
 	sprite: sprites.items.potion
 
 	is_usable: =>
@@ -32,18 +33,32 @@ export class Potion extends InventoryItem
 
 	use: (target) =>
 		oldhp = target.hp
-		target.hp += 50
+		target.hp += @heal
 		target.hp = target.stats.hp if target.hp > target.stats.hp
 		return "#{target.name} restored #{target.hp - oldhp} HP."
 
+export class LesserPotion extends Potion
+	heal: 30
+	name: "S. Potion"
+	desc: "Heals an ally for 30 HP"
 
 export class Inventory
 	new: (@parent) => -- @parent expects the game class
 		@items = {
--- 			InventoryItem(@parent)
--- 			InventoryItem(@parent)
--- 			Potion(@parent)
--- 			InventoryItem(@parent)
+			LesserPotion(@parent)
+			Potion(@parent)
+			LesserPotion(@parent)
+			Potion(@parent)
+			LesserPotion(@parent)
+			Potion(@parent)
+			LesserPotion(@parent)
+			Potion(@parent)
+			LesserPotion(@parent)
+			Potion(@parent)
+			LesserPotion(@parent)
+			Potion(@parent)
+			LesserPotion(@parent)
+			Potion(@parent)
 		}
 		@gold = 0
 
