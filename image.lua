@@ -7,6 +7,9 @@ function loadSprites()
 		overworld = {
 			enemy = Soda.newSprite(lg.newImage("images/sprites/overworld/enemy_icon.png"), 4, 4),
 		},
+		items = {
+			potion = Soda.newSprite(lg.newImage("images/sprites/item/potion.png"), 4, 4),
+		},
 		battle = {
 			cursor_right = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_right.png"), 8, 12),
 			cursor_down = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_down.png"), 12, 8),
@@ -19,6 +22,20 @@ function loadSprites()
 		  x_button = Soda.newSprite(lg.newImage("images/sprites/gui/x_button.png"), 13, 13),
 		  cursor = Soda.newSprite(lg.newImage("images/sprites/gui/cursor.png"), 12, 8),
 		  cursor_small = Soda.newSprite(lg.newImage("images/sprites/gui/cursor_small.png"), 8, 8),
+		  banner_strip = Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip.png"), 0, 0),
+		  banner_strip_end = {
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_1.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_2.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_3.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_4.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_5.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_6.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_7.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_8.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_9.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_10.png"), 0, 0),
+		  	Soda.newSprite(lg.newImage("images/sprites/gui/banner_strip_end_11.png"), 0, 0),
+		  },
 		},
 	}
 end

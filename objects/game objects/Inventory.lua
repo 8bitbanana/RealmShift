@@ -30,7 +30,6 @@ do
   _base_0.__class = _class_0
   InventoryItem = _class_0
 end
-local Potion
 do
   local _class_0
   local _parent_0 = InventoryItem
@@ -40,6 +39,7 @@ do
     consumable = true,
     use_prompt = "Who would you like to\nuse the potion on?",
     use_target = "player",
+    sprite = sprites.items.potion,
     is_usable = function(self)
       local _list_0 = game.party
       for _index_0 = 1, #_list_0 do
@@ -111,6 +111,12 @@ do
         return table.insert(self.items, index, item)
       end
     end,
+    addItems = function(self, item_list)
+      for _index_0 = 1, #item_list do
+        local i = item_list[_index_0]
+        self:addItem(i)
+      end
+    end,
     swapItems = function(self, index1, index2)
       local item1 = self.items[index1]
       self.items[index1] = self.items[index2]
@@ -125,18 +131,20 @@ do
     end,
     removeItem = function(self, index)
       return table.remove(self.items, index)
+    end,
+    addGold = function(self, amt)
+      if amt == nil then
+        amt = 0
+      end
+      self.gold = self.gold + amt
     end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
     __init = function(self, parent)
       self.parent = parent
-      self.items = {
-        InventoryItem(self.parent),
-        InventoryItem(self.parent),
-        Potion(self.parent),
-        InventoryItem(self.parent)
-      }
+      self.items = { }
+      self.gold = 0
     end,
     __base = _base_0,
     __name = "Inventory"

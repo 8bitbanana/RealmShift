@@ -12,8 +12,16 @@ require "utils_new"
 require "graphics"
 require "font"
 require "image"
+require "sound"
 require "input"
 require "game"
+
+setupGraphics!
+setupFonts!
+loadSprites!
+loadSounds!
+-- ^^^ Moved here to avoid objects referencing
+-- sprites and sounds that haven't been loaded yet
 
 requireFolder("states")
 requireFolder("objects")
@@ -24,11 +32,7 @@ math.randomseed(os.time())
 math.random()
 
 love.load = ->
-		setupGraphics!
-		setupFonts!
 		setupWindow!
-		loadSprites!
-
 		-- Exporting variables makes them global so they can be accessed from anywhere else
 		export input = setupInput!
 		export game = Game!

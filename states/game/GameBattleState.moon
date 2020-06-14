@@ -224,10 +224,14 @@ export class GameBattleState extends State
 
 		-- Check if battle has been won, then return to the overworld if true
 		if @\checkWon!
-			--game.next_state = {state: GameOverworldState, params: {@rx, @ry}}
-			print(@rx, @ry)
-			print(@state.parent)
-			@state\changeState(BattleWinState, {rx: @rx, ry: @ry})
+			-- Gold drops currently random
+			gold = math.random(0, 100)
+			-- Item drops currently fixed
+			drops = {Potion!, Potion!}
+			-- Random gold drops feels fine but maybe we want
+			-- certain percentage drop rates for items per enemy type
+			@state\changeState(BattleWinState,
+			{rx:@rx, ry:@ry, gold:gold, drops:drops})
 
 		-- To-do: what happens if the player loses?
 		-- Suggestion: They lose gold and return to previous town

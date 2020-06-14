@@ -3,7 +3,7 @@ do
   local _class_0
   local _base_0 = {
     draw = function(self)
-      lg.setFont(dialogfont)
+      lg.setFont(dialog_font)
       lg.setColor(0, 0, 0)
       return lg.print(self.text, self.pos.x, self.pos.y)
     end
@@ -20,8 +20,8 @@ do
         y = 0
       }
       self.size = {
-        w = dialogfont:getWidth(self.text),
-        h = dialogfont:getHeight(self.text)
+        w = dialog_font:getWidth(self.text),
+        h = dialog_font:getHeight(self.text)
       }
     end,
     __base = _base_0,

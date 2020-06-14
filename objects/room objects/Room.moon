@@ -69,7 +69,7 @@ export class Room
 		@map\update(dt)
 
 	draw: (pos={x: 0, y: 0}) =>
-		lg.setColor(WHITE)
+-- 		lg.setColor(WHITE)
 		for layer in *@map.layers
 			if layer.type == "tilelayer"
 				layer.x = -pos.x

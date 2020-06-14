@@ -9,11 +9,11 @@ export class MenuItem
 
 	clicked: ()=>
 		@activate! if @valid!
-	
+
 	activate: ()=>
 	valid: ()=>false
 	draw: ()=>
-		if @valid!                
+		if @valid!
 			lg.setColor(BLACK)
 		else
 			lg.setColor(GRAY)
@@ -61,16 +61,16 @@ export class BattleMenuState extends State
 		@items = {
 			AttackMenuItem(@, {x:130,y:11}),
 			WaitMenuItem(@,   {x:130,y:30}),
-			SkillMenuItem(@,  {x:195,y:11}),
-			ItemMenuItem(@,   {x:195,y:30})
+			SkillMenuItem(@,  {x:189,y:11}),
+			ItemMenuItem(@,   {x:189,y:30})
 		}
 		@selectedIndex = 1
-		@cursor = Cursor({x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}, "right")   
+		@cursor = Cursor({x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}, "right")
 
 	drawMenu: () =>
 		for index, item in pairs @items
 			item\draw!
-			
+
 	selectedItem: () =>
 		return @items[@selectedIndex]
 
@@ -112,4 +112,4 @@ export class BattleMenuState extends State
 		@drawMenu!
 		@cursor\draw!
 
-	
+
