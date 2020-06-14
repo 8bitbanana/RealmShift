@@ -29,6 +29,14 @@ do
     die = function(self)
       self.hp = 0
       self.dead = true
+      return self.timer:tween(1, self, {
+        color = {
+          1,
+          0,
+          0,
+          0
+        }
+      }, 'out-sine')
     end,
     attack = function(self, target, damageOverride)
       local damage = nil
@@ -103,26 +111,45 @@ do
       shadowPrint(max_hp, x + 12, y + 16)
       return shadowPrint(hp, x, y + 8)
     end,
-    draw_alive = function(self, overwrite)
-      if overwrite == nil then
-        overwrite = false
+    draw_alive = function(self)
+      if self.sprite then
+        self.sprite.color = self.color
+        return self.sprite:draw(self.pos.x, self.pos.y)
+      else
+        lg.setColor(RED)
+        lg.rectangle("fill", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
+        lg.setColor(BLACK)
+        return lg.rectangle("line", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
       end
-      return self.sprite:draw(self.pos.x, self.pos.y)
     end,
     draw_dead = function(self)
-      lg.setColor(GRAY)
-      lg.rectangle("fill", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
-      lg.setColor(BLACK)
-      return lg.rectangle("line", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
+      if self.sprite then
+        lg.setBlendMode("add")
+        self.sprite.color = self.color
+        self.sprite:draw(self.pos.x, self.pos.y)
+        return lg.setBlendMode("alpha")
+      else
+        lg.setColor(GRAY)
+        lg.rectangle("fill", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
+        lg.setColor(BLACK)
+        return lg.rectangle("line", self.pos.x, self.pos.y - self.size.h, self.size.w, self.size.h)
+      end
     end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
     __init = function(self)
       self.parent = nil
+      self.timer = Timer()
       self.pos = {
         x = 0,
         y = 0
+      }
+      self.color = {
+        1,
+        1,
+        1,
+        1
       }
       self.basestats = {
         hp = 0,

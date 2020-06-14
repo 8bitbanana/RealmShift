@@ -12,7 +12,9 @@ export class BattlePlayer
 	name: "BattlePlayer"
 	new: ()=>
 		@parent = nil
+		@timer = Timer!
 		@pos = {x:0,y:0}
+		@color = {1,1,1, 1}
 		@basestats = {
 			hp: 0,
 			attack: 0,
@@ -47,6 +49,9 @@ export class BattlePlayer
 	die: =>
 		@hp = 0
 		@dead = true
+
+		-- Animate death fade-out
+		@timer\tween(1, @, {color: {1,0,0, 0}}, 'out-sine')
 
 	-- Run @takedamage on target, according to attack
 	-- Override the damage if needed for a skill
@@ -128,19 +133,27 @@ export class BattlePlayer
 		shadowPrint(hp, x, y+8)
 
 	-- Draw call if alive
-	draw_alive: (overwrite=false) =>
-		@sprite\draw(@pos.x, @pos.y)
--- 		lg.setColor(ORANGE) if overwrite
--- 		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
--- 		lg.setColor(BLACK)
--- 		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+	draw_alive: () =>
+		if @sprite
+			@sprite.color = @color
+			@sprite\draw(@pos.x, @pos.y)
+		else
+			lg.setColor(RED)
+			lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+			lg.setColor(BLACK)
+			lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 
-	-- Draw call if dead
 	draw_dead: () =>
-		lg.setColor(GRAY)
-		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
-		lg.setColor(BLACK)
-		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+		if @sprite
+			lg.setBlendMode("add")
+			@sprite.color = @color
+			@sprite\draw(@pos.x, @pos.y)
+			lg.setBlendMode("alpha")
+		else
+			lg.setColor(GRAY)
+			lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+			lg.setColor(BLACK)
+			lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 
 
 export class Mage extends BattlePlayer

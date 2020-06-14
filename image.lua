@@ -16,6 +16,8 @@ function loadSprites()
 			main_char = Soda.newSprite(lg.newImage("images/sprites/battle/main_char.png"), 8, -16),
 			paladin_char = Soda.newSprite(lg.newImage("images/sprites/battle/paladin_char.png"), 8, -16),
 			artificer_char = Soda.newSprite(lg.newImage("images/sprites/battle/artificer_char.png"), 8, -16),
+			archer_enemy = Soda.newSprite(lg.newImage("images/sprites/battle/archer_enemy.png"), 14, -23),
+			lancer_enemy = Soda.newSprite(lg.newImage("images/sprites/battle/lancer_enemy.png"), 14, -23),
 		},
 		gui = {
 		  z_button = Soda.newSprite(lg.newImage("images/sprites/gui/z_button.png"), 13, 13),

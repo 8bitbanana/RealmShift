@@ -55,9 +55,8 @@ do
       end
       self:calculatePlayerPos()
       self.enemies = {
-        BattleEnemy(),
-        BattleEnemy(),
-        BattleEnemy()
+        BattleEnemyArcher(),
+        BattleEnemyLancer()
       }
       local _list_1 = self.enemies
       for _index_0 = 1, #_list_1 do
@@ -251,7 +250,28 @@ do
     checkLost = function(self)
       return self:checkDead(self.players)
     end,
+    updateTimers = function(self)
+      local _list_0 = self.players
+      for _index_0 = 1, #_list_0 do
+        local p = _list_0[_index_0]
+        if p then
+          if p.timer then
+            p.timer:update(dt)
+          end
+        end
+      end
+      local _list_1 = self.enemies
+      for _index_0 = 1, #_list_1 do
+        local e = _list_1[_index_0]
+        if e then
+          if e.timer then
+            e.timer:update(dt)
+          end
+        end
+      end
+    end,
     update = function(self)
+      self:updateTimers()
       self.state:update()
       self.cutscenes:update()
       self.aniObjs:updateObjects()

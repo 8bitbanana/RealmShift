@@ -68,9 +68,11 @@ export class GameBattleState extends State
 		@calculatePlayerPos!
 
 		@enemies = {
-			BattleEnemy!
-			BattleEnemy!
-			BattleEnemy!
+-- 			BattleEnemy!
+-- 			BattleEnemy!
+-- 			BattleEnemy!
+			BattleEnemyArcher!
+			BattleEnemyLancer!
 		}
 		for enemy in *@enemies
 			enemy.parent = @ if enemy != nil
@@ -216,7 +218,21 @@ export class GameBattleState extends State
 	checkLost: =>
 		@\checkDead(@players)
 
+	updateTimers: =>
+		-- Update Player's and Enemie's Timers
+		-- Used for animating opacity & other tweens
+		for p in *@players
+			if p
+				if p.timer
+					p.timer\update(dt)
+		for e in *@enemies
+			if e
+				if e.timer
+					e.timer\update(dt)
+
 	update: =>
+		@\updateTimers!
+
 		@state\update!
 		@cutscenes\update!
 		@aniObjs\updateObjects!

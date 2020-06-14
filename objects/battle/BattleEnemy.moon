@@ -32,14 +32,34 @@ export class BattleEnemy extends BattlePlayer
 			y:@pos.y-68
 		}
 
-	draw_alive: () =>
-		lg.setColor(RED)
-		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
-		lg.setColor(BLACK)
-		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+-- 	draw_alive: () =>
+-- 		if @sprite
+-- 			@sprite\draw(@pos.x, @pos.y)
+-- 		else
+-- 			lg.setColor(RED)
+-- 			lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+-- 			lg.setColor(BLACK)
+-- 			lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
 
-	draw_dead: () =>
-		lg.setColor(GRAY)
-		lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
-		lg.setColor(BLACK)
-		lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+-- 	draw_dead: () =>
+-- 		if @sprite
+-- 			lg.setColor({1,1,1,@opacity})
+-- 			@sprite\draw(@pos.x, @pos.y)
+-- 		else
+-- 			lg.setColor(GRAY)
+-- 			lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+-- 			lg.setColor(BLACK)
+-- 			lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
+
+
+export class BattleEnemyArcher extends BattleEnemy
+	name: "Archer"
+	new: (...) =>
+		super ...
+		@sprite = sprites.battle.archer_enemy
+
+export class BattleEnemyLancer extends BattleEnemy
+	name: "Lancer"
+	new: (...) =>
+		super ...
+		@sprite = sprites.battle.lancer_enemy
