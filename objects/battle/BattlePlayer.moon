@@ -115,12 +115,14 @@ export class BattlePlayer
 		x = @pos.x
 		y = @pos.y
 
+		-- Health Bar
 		lg.setColor(BLACK)
 		lg.rectangle("fill", x, y+5, max_len, 2)
 		lg.setColor(RED)
 		lg.rectangle("fill", x-1, y+4, len, 2)
 		lg.setColor(WHITE)
 
+		-- Health Numbers
 		shadowPrint(max_hp, x+12, y+16)
 -- 		shadowPrint("/", x+6, y+10)
 		shadowPrint(hp, x, y+8)

@@ -38,6 +38,11 @@ function loadSprites()
 		  },
 		},
 	}
+
+	backgrounds = {
+		-- May change to use Sodapop library if backgrounds get animated
+		desert = lg.newImage("images/backgrounds/desert.png")
+	}
 end
 
 -- function imgToQuads(img, w, h)

@@ -4,7 +4,7 @@ Inspect = require "lib/inspect"
 WRAP_PLAYER_CURSOR = false
 
 export class GameBattleState extends State
-	new: (@parent, @rx=0, @ry=0) =>
+	new: (@parent, @rx=0, @ry=0, @bg=backgrounds.desert) =>
 		-- @rx and @ry are the return positions for the player to return to
 		-- on the overworld map after the battle is won
 		print(@rx, @ry)
@@ -241,11 +241,20 @@ export class GameBattleState extends State
 			-- ^^^^^ This will be changed to transition to a game over state
 			-- or save game reload state etc.
 
+	drawBackground: =>
+		lg.draw(@bg, 0,0)
+
+		-- Translucent background bar
+		lg.setColor({0,0,0,0.5})
+		lg.rectangle("fill", 0,GAME_HEIGHT-24, GAME_WIDTH,24)
+
 	draw: =>
-		lg.setColor(0.28,0.81,0.81,1)
-		lg.rectangle("fill",0,0,GAME_WIDTH,GAME_HEIGHT) -- sky
-		lg.setColor(0.25,0.63,0.22,1)
-		lg.rectangle("fill",0,127,GAME_WIDTH, 53) -- grass
+-- 		lg.setColor(0.28,0.81,0.81,1)
+-- 		lg.rectangle("fill",0,0,GAME_WIDTH,GAME_HEIGHT) -- sky
+-- 		lg.setColor(0.25,0.63,0.22,1)
+-- 		lg.rectangle("fill",0,127,GAME_WIDTH, 53) -- grass
+		@\drawBackground!
+
 		for player in *@players
 				player\draw! if player
 		for enemy in *@enemies

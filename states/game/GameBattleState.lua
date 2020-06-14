@@ -279,11 +279,18 @@ do
         }
       end
     end,
+    drawBackground = function(self)
+      lg.draw(self.bg, 0, 0)
+      lg.setColor({
+        0,
+        0,
+        0,
+        0.5
+      })
+      return lg.rectangle("fill", 0, GAME_HEIGHT - 24, GAME_WIDTH, 24)
+    end,
     draw = function(self)
-      lg.setColor(0.28, 0.81, 0.81, 1)
-      lg.rectangle("fill", 0, 0, GAME_WIDTH, GAME_HEIGHT)
-      lg.setColor(0.25, 0.63, 0.22, 1)
-      lg.rectangle("fill", 0, 127, GAME_WIDTH, 53)
+      self:drawBackground()
       local _list_0 = self.players
       for _index_0 = 1, #_list_0 do
         local player = _list_0[_index_0]
@@ -305,14 +312,17 @@ do
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self, parent, rx, ry)
+    __init = function(self, parent, rx, ry, bg)
       if rx == nil then
         rx = 0
       end
       if ry == nil then
         ry = 0
       end
-      self.parent, self.rx, self.ry = parent, rx, ry
+      if bg == nil then
+        bg = backgrounds.desert
+      end
+      self.parent, self.rx, self.ry, self.bg = parent, rx, ry, bg
       print(self.rx, self.ry)
       self.players = {
         nil,
