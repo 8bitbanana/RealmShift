@@ -247,8 +247,11 @@ do
   local _parent_0 = MenuItem
   local _base_0 = {
     text = "ITEM",
+    activate = function(self)
+      return self.parent.parent:itemAction()
+    end,
     valid = function(self)
-      return false
+      return #game.inventory.items > 0
     end
   }
   _base_0.__index = _base_0

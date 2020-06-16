@@ -28,10 +28,10 @@ export class GameInventoryState extends State
 	init: =>
 		@state\changeState(InventoryItemState)
 
-	useCurrentItem: =>
-		game.inventory\useItem(@selectedIndex)
-		@selectedIndex = #@parent.inventory.items if @selectedIndex > #@parent.inventory.items
-		@scrollTo!
+	-- useCurrentItem: =>
+	-- 	game.inventory\useItem(@selectedIndex)
+	-- 	@selectedIndex = #@parent.inventory.items if @selectedIndex > #@parent.inventory.items
+	-- 	@scrollTo!
 
 	swapCurrentItem: (index) =>
 		temp = game.inventory.items[@selectedIndex]

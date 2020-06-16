@@ -4,11 +4,9 @@ export class InventoryWaitState extends State
 	update: =>
 		if input\pressed "confirm"
 			@parent.dialog\advanceInput!
-			if not @parent.dialog.running
-				@parent.state\changeState(InventoryItemState)
 		if input\pressed "back"
 			@parent.dialog\cancelInput!
-			if not @parent.dialog.running
-				@parent.state\changeState(InventoryItemState)
+		if not @parent.dialog.running
+			@parent.state\changeState(InventoryItemState)
 
 	draw: =>

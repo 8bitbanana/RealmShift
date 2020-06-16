@@ -11,6 +11,25 @@ export class BattleTurnState extends State
 			@done = true
 			@parent\turnEnd!
 
+export class BattleDialogState extends State
+	new: (@parent, @args) =>
+
+	init: () =>
+		@dialog = DialogManager!
+		@dialog\setTree(@args.tree)
+
+	update: () =>
+		@dialog\update!
+		if input\pressed "confirm"
+			@dialog\advanceInput!
+		if input\pressed "back"
+			@parent.dialog\cancelInput!
+		if not @dialog.running
+			@parent\dialogCallback!
+
+	draw: () =>
+		@dialog\draw!
+
 export class TurnIntroState extends State
 	new: (@parent, @args={}) =>
 

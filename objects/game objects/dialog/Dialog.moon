@@ -152,6 +152,11 @@ export class DialogBox
 				@incText!
 		@modal\update! if @modal and @waitingForModal
 
+	clearCanvas: =>
+		Push\setCanvas("dialogbox")
+		lg.clear()
+		Push\setCanvas("main")
+
 	draw: =>
 		lg.setColor(1, 1, 1)
 		lg.rectangle("fill", 3, 107, 234, 50)

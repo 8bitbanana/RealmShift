@@ -227,6 +227,50 @@ do
         selectedspace = self.currentTurnIndex.index
       })
     end,
+    itemAction = function(self)
+      self.selectionCallback = function(self, index)
+        local item = game.inventory.items[index]
+        self.indexItemToUse = index
+        local _exp_0 = item.use_target
+        if "player" == _exp_0 then
+          self.selectionCallback = function(self, index)
+            local target = self.players[index]
+            item = game.inventory.items[self.indexItemToUse]
+            local usable, message = item:is_usable_on_target(target)
+            if usable then
+              message = game.inventory:useItem(self.indexItemToUse, target)
+              local dialogScene = CutsceneDialog({
+                tts = 0.1,
+                ttl = 2,
+                text = message
+              })
+              self.cutscenes:addCutscene(dialogScene)
+              return self.state:changeState(BattleTurnState, {
+                ttl = 2.5
+              })
+            else
+              local tree = DialogTree({
+                DialogBox(message)
+              })
+              self.dialogCallback = function(self)
+                return self.state:changeState(BattlePlayerSelectState)
+              end
+              return self.state:changeState(BattleDialogState, {
+                tree = tree
+              })
+            end
+          end
+          return self.state:changeState(BattlePlayerSelectState)
+        elseif "none" == _exp_0 then
+          item = game.inventory.items[self.indexItemToUse]
+          local message = game.inventory:useItem(self.indexItemToUse)
+          return self.state:changeState(BattleTurnState, {
+            ttl = 0.5
+          })
+        end
+      end
+      return self.state:changeState(BattleItemSelectState)
+    end,
     selectedPlayer = function(self)
       return self.players[self.selectedSpace]
     end,
@@ -326,7 +370,8 @@ do
         end
       end
       self.state:draw()
-      return self.aniObjs:drawObjects()
+      self.aniObjs:drawObjects()
+      return self.cutscenes:draw()
     end
   }
   _base_0.__index = _base_0
@@ -356,6 +401,7 @@ do
       self.selectedSpace = 1
       self.state = nil
       self.enemyPosData = { }
+      self.indexItemToUse = nil
       self.aniObjs = ObjectManager()
       self.cutscenes = BattleCutsceneManager(self)
       self.turndata = {
@@ -365,7 +411,7 @@ do
       self.initiative = { }
       self.initiativeIndex = 0
       self.selectionCallback = function() end
-      self.cutsceneCallback = function() end
+      self.dialogCallback = function() end
     end,
     __base = _base_0,
     __name = "GameBattleState",

@@ -31,13 +31,6 @@ do
     init = function(self)
       return self.state:changeState(InventoryItemState)
     end,
-    useCurrentItem = function(self)
-      game.inventory:useItem(self.selectedIndex)
-      if self.selectedIndex > #self.parent.inventory.items then
-        self.selectedIndex = #self.parent.inventory.items
-      end
-      return self:scrollTo()
-    end,
     swapCurrentItem = function(self, index)
       local temp = game.inventory.items[self.selectedIndex]
       game.inventory.items[self.selectedIndex] = game.inventory.items[index]

@@ -15,6 +15,13 @@ do
           cutscene:update()
         end
       end
+    end,
+    draw = function(self)
+      local _list_0 = self.cutscenes
+      for _index_0 = 1, #_list_0 do
+        local cutscene = _list_0[_index_0]
+        cutscene:draw()
+      end
     end
   }
   _base_0.__index = _base_0
@@ -62,6 +69,7 @@ do
     sceneStart = function(self) end,
     sceneUpdate = function(self) end,
     sceneFinish = function(self) end,
+    draw = function(self) end,
     update = function(self)
       if self.started then
         self.ttl = self.ttl - dt
@@ -103,6 +111,62 @@ do
   })
   _base_0.__class = _class_0
   BattleCutscene = _class_0
+end
+do
+  local _class_0
+  local _parent_0 = BattleCutscene
+  local _base_0 = {
+    sceneStart = function(self)
+      self.dialog = DialogBox(self.args.text)
+    end,
+    sceneUpdate = function(self)
+      if self.dialog then
+        return self.dialog:update()
+      end
+    end,
+    sceneFinish = function(self)
+      self.dialog:clearCanvas()
+      self.dialog = nil
+    end,
+    draw = function(self)
+      if self.dialog then
+        return self.dialog:draw()
+      end
+    end
+  }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self, ...)
+      _class_0.__parent.__init(self, ...)
+      self.ttl_max = 1
+    end,
+    __base = _base_0,
+    __name = "CutsceneDialog",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  CutsceneDialog = _class_0
 end
 do
   local _class_0

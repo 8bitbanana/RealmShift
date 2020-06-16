@@ -16,6 +16,7 @@ export class GameBattleState extends State
 		@state = nil
 
 		@enemyPosData = {}
+		@indexItemToUse = nil
 
 		@aniObjs = ObjectManager!
 		@cutscenes = BattleCutsceneManager(@)
@@ -26,7 +27,7 @@ export class GameBattleState extends State
 		@initiativeIndex = 0
 
 		@selectionCallback = ()->
-		@cutsceneCallback = ()->
+		@dialogCallback = ()->
 
 	updateEntityIndexes: (type, oldindex, newindex) =>
 		if @turndata.type == type and oldindex == @turndata.index
@@ -200,6 +201,37 @@ export class GameBattleState extends State
 			@state\changeState(BattleTurnState, {ttl:0.5})
 		@state\changeState(BattleSpaceSelectState, {selectedspace:@currentTurnIndex.index})
 
+	itemAction: () =>
+		@selectionCallback = (index) =>
+			item = game.inventory.items[index]
+			@indexItemToUse = index
+			switch item.use_target
+				when "player"
+					@selectionCallback = (index) =>
+						target = @players[index]
+						item = game.inventory.items[@indexItemToUse]
+						usable, message = item\is_usable_on_target(target)
+						if usable
+							message = game.inventory\useItem(@indexItemToUse, target)
+							dialogScene = CutsceneDialog({tts:0.1, ttl:2, text:message})
+							@cutscenes\addCutscene(dialogScene)
+							@state\changeState(BattleTurnState, {ttl:2.5})
+						else
+							tree = DialogTree({
+								DialogBox(message)
+							})
+							@dialogCallback = () =>
+								-- @selectionCallback is still this function, goes back
+								@state\changeState(BattlePlayerSelectState)
+							@state\changeState(BattleDialogState, {tree:tree})
+					@state\changeState(BattlePlayerSelectState)
+				when "none"
+					--stub
+					item = game.inventory.items[@indexItemToUse]
+					message = game.inventory\useItem(@indexItemToUse)
+					@state\changeState(BattleTurnState, {ttl:0.5})
+		@state\changeState(BattleItemSelectState)
+
 	selectedPlayer: =>
 		return @players[@selectedSpace]
 
@@ -277,3 +309,4 @@ export class GameBattleState extends State
 				enemy\draw! if enemy
 		@state\draw!
 		@aniObjs\drawObjects!
+		@cutscenes\draw!

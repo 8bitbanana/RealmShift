@@ -1,4 +1,8 @@
+-- Use targets
 
+-- player
+-- enemy
+-- none
 
 export class InventoryItem
 	name: "Missingno"
@@ -9,7 +13,7 @@ export class InventoryItem
 
 	is_usable: => return false
 
-	use: (@target) =>
+	use: (target) =>
 
 	draw_sprite: (pos) =>
 
@@ -28,8 +32,13 @@ export class Potion extends InventoryItem
 		return false
 
 	is_usable_on_target: (target) =>
-		return false if target == nil
-		return target.hp < target.stats.hp
+		if target == nil
+			return false, "No target"
+		if target.hp >= target.stats.hp
+			return false, "#{target.name} is already at full health."
+		if target.hp == 0
+			return false, "#{target.name} is knocked out!"
+		return true
 
 	use: (target) =>
 		oldhp = target.hp
@@ -78,10 +87,10 @@ export class Inventory
 		@items[index1] = @items[index2]
 		@items[index2] = item1
 
-	useItem: (index) =>
+	useItem: (index, target) =>
 		item = @items[index]
 		table.remove(@items, index) if item.consumable
-		item\use!
+		return item\use(target)
 
 	removeItem: (index) =>
 		table.remove(@items, index)

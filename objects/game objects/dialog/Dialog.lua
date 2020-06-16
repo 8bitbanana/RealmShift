@@ -224,6 +224,11 @@ do
         return self.modal:update()
       end
     end,
+    clearCanvas = function(self)
+      Push:setCanvas("dialogbox")
+      lg.clear()
+      return Push:setCanvas("main")
+    end,
     draw = function(self)
       lg.setColor(1, 1, 1)
       lg.rectangle("fill", 3, 107, 234, 50)

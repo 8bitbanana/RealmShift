@@ -16,6 +16,10 @@ export class BattleCutsceneManager
 			else
 				cutscene\update!
 
+	draw: =>
+		for cutscene in *@cutscenes
+			cutscene\draw!
+
 export class BattleCutscene
 	new: (@args) =>
 		@root = nil
@@ -42,6 +46,8 @@ export class BattleCutscene
 
 	sceneFinish: =>
 
+	draw: =>
+
 	update: ()=>
 		if @started
 			@ttl-=dt
@@ -55,6 +61,26 @@ export class BattleCutscene
 			if @tts <= 0
 				@started = true
 				@sceneStart!
+
+-- Display a single dialog box
+-- Visual only
+export class CutsceneDialog extends BattleCutscene
+	new: (...) =>
+		super ...
+		@ttl_max = 1
+
+	sceneStart: =>
+		@dialog = DialogBox(@args.text)
+	
+	sceneUpdate: =>
+		@dialog\update! if @dialog
+
+	sceneFinish: =>
+		@dialog\clearCanvas!
+		@dialog = nil
+
+	draw: =>
+		@dialog\draw! if @dialog
 
 -- currentTurn attacks player/enemy at @args.index
 export class CutsceneAttack extends BattleCutscene

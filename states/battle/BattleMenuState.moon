@@ -51,7 +51,8 @@ class SkillMenuItem extends MenuItem
 
 class ItemMenuItem extends MenuItem
 	text: "ITEM"
-	valid: () => false
+	activate: () => @parent.parent\itemAction!
+	valid: () => #game.inventory.items > 0
 class EmptyMenuItem extends MenuItem
 	text: ""
 	valid: () => false

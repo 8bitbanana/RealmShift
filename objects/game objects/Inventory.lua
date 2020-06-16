@@ -7,9 +7,7 @@ do
     is_usable = function(self)
       return false
     end,
-    use = function(self, target)
-      self.target = target
-    end,
+    use = function(self, target) end,
     draw_sprite = function(self, pos) end
   }
   _base_0.__index = _base_0
@@ -53,9 +51,15 @@ do
     end,
     is_usable_on_target = function(self, target)
       if target == nil then
-        return false
+        return false, "No target"
       end
-      return target.hp < target.stats.hp
+      if target.hp >= target.stats.hp then
+        return false, tostring(target.name) .. " is already at full health."
+      end
+      if target.hp == 0 then
+        return false, tostring(target.name) .. " is knocked out!"
+      end
+      return true
     end,
     use = function(self, target)
       local oldhp = target.hp
@@ -164,12 +168,12 @@ do
       self.items[index1] = self.items[index2]
       self.items[index2] = item1
     end,
-    useItem = function(self, index)
+    useItem = function(self, index, target)
       local item = self.items[index]
       if item.consumable then
         table.remove(self.items, index)
       end
-      return item:use()
+      return item:use(target)
     end,
     removeItem = function(self, index)
       return table.remove(self.items, index)
