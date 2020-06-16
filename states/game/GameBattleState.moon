@@ -213,26 +213,32 @@ export class GameBattleState extends State
 						usable, message = item\is_usable_on_target(target)
 						if usable
 							message = game.inventory\useItem(@indexItemToUse, target)
-							tree = DialogTree({
-								DialogBox(message)
-							})
 							@dialogCallback = () =>
 								@turnEnd!
-							@state\changeState(BattleDialogState, {tree:tree})
 						else
-							tree = DialogTree({
-								DialogBox(message)
-							})
 							@dialogCallback = () =>
-								-- @selectionCallback is still this function, goes back
-								@state\changeState(BattlePlayerSelectState)
-							@state\changeState(BattleDialogState, {tree:tree})
+								@state\changeState(BattlePlayerSelectState) -- @selectionCallback is still this function, goes back
+						tree = DialogTree({
+							DialogBox(message)
+						})
+						@state\changeState(BattleDialogState, {tree:tree})
 					@state\changeState(BattlePlayerSelectState)
 				when "none"
-					--stub
 					item = game.inventory.items[@indexItemToUse]
 					message = game.inventory\useItem(@indexItemToUse)
-					@state\changeState(BattleTurnState, {ttl:0.5})
+					usable, message = item\is_usable!
+					if usable
+						message = game.inventory\useItem(@indexItemToUse)
+						@dialogCallback = () =>
+							@turnEnd!
+						@state\changeState(BattleDialogState, {tree:tree})
+					else
+						@dialogCallback = () =>
+							@state\changeState(BattleItemSelectState)
+					tree = DialogTree({
+						DialogBox(message)
+					})
+					@state\changeState(BattleDialogState, {tree:tree})
 		@state\changeState(BattleItemSelectState)
 
 	selectedPlayer: =>

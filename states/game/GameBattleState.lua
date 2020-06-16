@@ -239,33 +239,45 @@ do
             local usable, message = item:is_usable_on_target(target)
             if usable then
               message = game.inventory:useItem(self.indexItemToUse, target)
-              local tree = DialogTree({
-                DialogBox(message)
-              })
               self.dialogCallback = function(self)
                 return self:turnEnd()
               end
-              return self.state:changeState(BattleDialogState, {
-                tree = tree
-              })
             else
-              local tree = DialogTree({
-                DialogBox(message)
-              })
               self.dialogCallback = function(self)
                 return self.state:changeState(BattlePlayerSelectState)
               end
-              return self.state:changeState(BattleDialogState, {
-                tree = tree
-              })
             end
+            local tree = DialogTree({
+              DialogBox(message)
+            })
+            return self.state:changeState(BattleDialogState, {
+              tree = tree
+            })
           end
           return self.state:changeState(BattlePlayerSelectState)
         elseif "none" == _exp_0 then
           item = game.inventory.items[self.indexItemToUse]
           local message = game.inventory:useItem(self.indexItemToUse)
-          return self.state:changeState(BattleTurnState, {
-            ttl = 0.5
+          local usable
+          usable, message = item:is_usable()
+          if usable then
+            message = game.inventory:useItem(self.indexItemToUse)
+            self.dialogCallback = function(self)
+              return self:turnEnd()
+            end
+            self.state:changeState(BattleDialogState, {
+              tree = tree
+            })
+          else
+            self.dialogCallback = function(self)
+              return self.state:changeState(BattleItemSelectState)
+            end
+          end
+          local tree = DialogTree({
+            DialogBox(message)
+          })
+          return self.state:changeState(BattleDialogState, {
+            tree = tree
           })
         end
       end
