@@ -42,10 +42,14 @@ export class BattleItemSelectState extends State
 	select: =>
 		@parent\selectionCallback(@selectedIndex)
 
+	back: =>
+		@parent\turnStart!
+
 	update: =>
 		@moveItemCursor(-1) if input\pressed("up")
 		@moveItemCursor(1)  if input\pressed("down")
 		@select! if input\pressed("confirm")
+		@back! if input\pressed("back")
 		@cursor\update!
 
 	draw: =>

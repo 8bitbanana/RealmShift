@@ -50,6 +50,9 @@ do
     select = function(self)
       return self.parent:selectionCallback(self.selectedIndex)
     end,
+    back = function(self)
+      return self.parent:turnStart()
+    end,
     update = function(self)
       if input:pressed("up") then
         self:moveItemCursor(-1)
@@ -59,6 +62,9 @@ do
       end
       if input:pressed("confirm") then
         self:select()
+      end
+      if input:pressed("back") then
+        self:back()
       end
       return self.cursor:update()
     end,
