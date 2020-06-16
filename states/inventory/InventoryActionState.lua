@@ -6,28 +6,19 @@ do
   local _base_0 = {
     text = "Use",
     valid = function(self)
-      return self.parent.parent:selectedItem():is_usable()
+      return true
     end,
     activate = function(self)
       local item = self.parent.parent:selectedItem()
-      local player_options = { }
-      local _list_0 = game.party
-      for _index_0 = 1, #_list_0 do
-        local player = _list_0[_index_0]
-        if item:is_usable_on_target(player) then
-          table.insert(player_options, tostring(player.name) .. " (" .. tostring(player.hp) .. "/" .. tostring(player.stats.hp) .. ")")
-        end
-      end
-      table.insert(player_options, "[CANCEL]Cancel")
       local callback = nil
       local _exp_0 = item.use_target
       if "player" == _exp_0 then
         callback = function(self, option)
           local players = { }
-          local _list_1 = game.party
-          for _index_0 = 1, #_list_1 do
-            local player = _list_1[_index_0]
-            if self:selectedItem():is_usable_on_target(player) then
+          local _list_0 = game.party
+          for _index_0 = 1, #_list_0 do
+            local player = _list_0[_index_0]
+            if player ~= nil then
               table.insert(players, player)
             end
           end
@@ -35,16 +26,36 @@ do
           if player == nil then
             return 
           end
-          local response = self:selectedItem():use(player)
-          self.dialog:setTree(DialogTree({
-            DialogBox(response)
+          local usable, message = self:selectedItem():is_usable_on_target(player)
+          if usable then
+            message = self:selectedItem():use(player)
+            if self:selectedItem().consumable then
+              self:tossCurrentItem()
+            end
+          end
+          return self.dialog:setTree(DialogTree({
+            DialogBox(message)
           }))
-          if self:selectedItem().consumable then
-            return self:tossCurrentItem()
+        end
+        local player_options = { }
+        local _list_0 = game.party
+        for _index_0 = 1, #_list_0 do
+          local player = _list_0[_index_0]
+          if player ~= nil then
+            table.insert(player_options, tostring(player.name) .. " (" .. tostring(player.hp) .. "/" .. tostring(player.stats.hp) .. ")")
           end
         end
+        table.insert(player_options, "[CANCEL]Cancel")
+        self.parent.parent.dialog:setTree(DialogTree({
+          DialogBox("Who would you like to\nuse the " .. tostring(item.name) .. " on?", player_options)
+        }, { }, {
+          [1] = callback
+        }, self.parent.parent))
       elseif nil == _exp_0 then
-        callback = function(self)
+        callback = function(self, option)
+          if option ~= 1 then
+            return 
+          end
           local response = self:selectedItem():use()
           self.dialog:setTree(DialogTree({
             DialogBox(response)
@@ -53,12 +64,15 @@ do
             return self:tossCurrentItem()
           end
         end
+        self.parent.parent.dialog:setTree(DialogTree({
+          DialogBox("Are you sure you want\nto use the " .. tostring(item.name) .. "?", {
+            "Yes",
+            "[CANCEL]No"
+          })
+        }, { }, {
+          [1] = callback
+        }, self.parent.parent))
       end
-      self.parent.parent.dialog:setTree(DialogTree({
-        DialogBox(item.use_prompt, player_options)
-      }, { }, {
-        [1] = callback
-      }, self.parent.parent))
       return self.parent.parent.state:changeState(InventoryWaitState)
     end
   }

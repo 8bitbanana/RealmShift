@@ -2,7 +2,7 @@
 
 -- player
 -- enemy
--- none
+-- nil
 
 export class InventoryItem
 	name: "Missingno"
@@ -17,19 +17,37 @@ export class InventoryItem
 
 	draw_sprite: (pos) =>
 
-export class Potion extends InventoryItem
-	name: "M. Potion"
-	desc: "Heals an ally for 50 HP"
+export class PartyHeal extends InventoryItem
+	name: "F. Heal"
+	desc: "Fully heals your party"
 	consumable: true
-	use_prompt: "Who would you like to\nuse the potion on?"
-	use_target: "player"
-	heal: 50
+	use_target: nil
 	sprite: sprites.items.potion
 
 	is_usable: =>
 		for player in *game.party
-			return true if @is_usable_on_target(player)
-		return false
+			continue if not player
+			return true if player.hp < player.stats.hp
+		return false, "Everyone is already at full health!"
+
+	use: =>
+		for player in *game.party
+			continue if not player
+			player.hp = player.stats.hp
+		return "The whole party was healed!"
+
+export class Potion extends InventoryItem
+	name: "M. Potion"
+	desc: "Heals an ally for 50 HP"
+	consumable: true
+	use_target: "player"
+	heal: 50
+	sprite: sprites.items.potion
+
+	-- is_usable: =>
+	-- 	for player in *game.party
+	-- 		return true if @is_usable_on_target(player)
+	-- 	return false, "There isn't anyone to use this on."
 
 	is_usable_on_target: (target) =>
 		if target == nil
@@ -56,18 +74,7 @@ export class Inventory
 		@items = {
 			LesserPotion(@parent)
 			Potion(@parent)
-			LesserPotion(@parent)
-			Potion(@parent)
-			LesserPotion(@parent)
-			Potion(@parent)
-			LesserPotion(@parent)
-			Potion(@parent)
-			LesserPotion(@parent)
-			Potion(@parent)
-			LesserPotion(@parent)
-			Potion(@parent)
-			LesserPotion(@parent)
-			Potion(@parent)
+			PartyHeal(@parent)
 		}
 		@gold = 0
 

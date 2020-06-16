@@ -1,47 +1,55 @@
 Inspect = require("lib/inspect")
 class UseItemMenuItem extends MenuItem
 	text: "Use"
-	valid: => return @parent.parent\selectedItem!\is_usable!
+	valid: => return true
 	activate: =>
 		item = @parent.parent\selectedItem!
-		player_options = {}
-		for player in *game.party
-			if item\is_usable_on_target(player)
-				table.insert(player_options, "#{player.name} (#{player.hp}/#{player.stats.hp})")
-		table.insert(player_options, "[CANCEL]Cancel")
-
 		callback = nil
+		
 		switch item.use_target
 			when "player"
 				callback = (option) =>
 					players = {}
 					for player in *game.party
-						table.insert(players, player) if @selectedItem!\is_usable_on_target(player)
+						table.insert(players, player) if player != nil
 					player = players[option]
 					if player == nil
 						return
-					response = @selectedItem!\use(player)
+
+					usable, message = @selectedItem!\is_usable_on_target(player)
+					if usable
+						message = @selectedItem!\use(player)
+						if @selectedItem!.consumable
+							@tossCurrentItem!
 					@dialog\setTree(DialogTree(
-						{DialogBox(response)}
+						{DialogBox(message)}
 					))
-					if @selectedItem!.consumable
-						@tossCurrentItem!
+				player_options = {}
+				for player in *game.party
+					if player != nil
+						table.insert(player_options, "#{player.name} (#{player.hp}/#{player.stats.hp})")
+				table.insert(player_options, "[CANCEL]Cancel")
+				@parent.parent.dialog\setTree(DialogTree(
+					{DialogBox("Who would you like to\nuse the #{item.name} on?", player_options)},
+					{},
+					{[1]: callback},
+					@parent.parent
+				))
 			when nil
-				callback = () =>
+				callback = (option) =>
+					return if option != 1
 					response = @selectedItem!\use!
 					@dialog\setTree(DialogTree(
 						{DialogBox(response)}
 					))
 					if @selectedItem!.consumable
 						@tossCurrentItem!
-
-		@parent.parent.dialog\setTree(DialogTree(
-			{DialogBox(item.use_prompt, player_options)},
-			{},
-			{[1]: callback},
-			@parent.parent
-		))
-
+				@parent.parent.dialog\setTree(DialogTree(
+					{DialogBox("Are you sure you want\nto use the #{item.name}?", {"Yes", "[CANCEL]No"})},
+					{},
+					{[1]: callback},
+					@parent.parent
+				))
 		@parent.parent.state\changeState(InventoryWaitState)
 	
 class MoveItemMenuItem extends MenuItem

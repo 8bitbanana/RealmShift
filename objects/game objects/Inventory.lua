@@ -32,23 +32,95 @@ do
   local _class_0
   local _parent_0 = InventoryItem
   local _base_0 = {
-    name = "M. Potion",
-    desc = "Heals an ally for 50 HP",
+    name = "F. Heal",
+    desc = "Fully heals your party",
     consumable = true,
-    use_prompt = "Who would you like to\nuse the potion on?",
-    use_target = "player",
-    heal = 50,
+    use_target = nil,
     sprite = sprites.items.potion,
     is_usable = function(self)
       local _list_0 = game.party
       for _index_0 = 1, #_list_0 do
-        local player = _list_0[_index_0]
-        if self:is_usable_on_target(player) then
-          return true
+        local _continue_0 = false
+        repeat
+          local player = _list_0[_index_0]
+          if not player then
+            _continue_0 = true
+            break
+          end
+          if player.hp < player.stats.hp then
+            return true
+          end
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
         end
       end
-      return false
+      return false, "Everyone is already at full health!"
     end,
+    use = function(self)
+      local _list_0 = game.party
+      for _index_0 = 1, #_list_0 do
+        local _continue_0 = false
+        repeat
+          local player = _list_0[_index_0]
+          if not player then
+            _continue_0 = true
+            break
+          end
+          player.hp = player.stats.hp
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
+        end
+      end
+      return "The whole party was healed!"
+    end
+  }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self, ...)
+      return _class_0.__parent.__init(self, ...)
+    end,
+    __base = _base_0,
+    __name = "PartyHeal",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  PartyHeal = _class_0
+end
+do
+  local _class_0
+  local _parent_0 = InventoryItem
+  local _base_0 = {
+    name = "M. Potion",
+    desc = "Heals an ally for 50 HP",
+    consumable = true,
+    use_target = "player",
+    heal = 50,
+    sprite = sprites.items.potion,
     is_usable_on_target = function(self, target)
       if target == nil then
         return false, "No target"
@@ -192,18 +264,7 @@ do
       self.items = {
         LesserPotion(self.parent),
         Potion(self.parent),
-        LesserPotion(self.parent),
-        Potion(self.parent),
-        LesserPotion(self.parent),
-        Potion(self.parent),
-        LesserPotion(self.parent),
-        Potion(self.parent),
-        LesserPotion(self.parent),
-        Potion(self.parent),
-        LesserPotion(self.parent),
-        Potion(self.parent),
-        LesserPotion(self.parent),
-        Potion(self.parent)
+        PartyHeal(self.parent)
       }
       self.gold = 0
     end,

@@ -223,15 +223,14 @@ export class GameBattleState extends State
 						})
 						@state\changeState(BattleDialogState, {tree:tree})
 					@state\changeState(BattlePlayerSelectState)
-				when "none"
+				when nil
 					item = game.inventory.items[@indexItemToUse]
-					message = game.inventory\useItem(@indexItemToUse)
 					usable, message = item\is_usable!
+					print(usable)
 					if usable
 						message = game.inventory\useItem(@indexItemToUse)
 						@dialogCallback = () =>
 							@turnEnd!
-						@state\changeState(BattleDialogState, {tree:tree})
 					else
 						@dialogCallback = () =>
 							@state\changeState(BattleItemSelectState)
