@@ -239,14 +239,14 @@ do
             local usable, message = item:is_usable_on_target(target)
             if usable then
               message = game.inventory:useItem(self.indexItemToUse, target)
-              local dialogScene = CutsceneDialog({
-                tts = 0.1,
-                ttl = 2,
-                text = message
+              local tree = DialogTree({
+                DialogBox(message)
               })
-              self.cutscenes:addCutscene(dialogScene)
-              return self.state:changeState(BattleTurnState, {
-                ttl = 2.5
+              self.dialogCallback = function(self)
+                return self:turnEnd()
+              end
+              return self.state:changeState(BattleDialogState, {
+                tree = tree
               })
             else
               local tree = DialogTree({

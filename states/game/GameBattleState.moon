@@ -213,9 +213,12 @@ export class GameBattleState extends State
 						usable, message = item\is_usable_on_target(target)
 						if usable
 							message = game.inventory\useItem(@indexItemToUse, target)
-							dialogScene = CutsceneDialog({tts:0.1, ttl:2, text:message})
-							@cutscenes\addCutscene(dialogScene)
-							@state\changeState(BattleTurnState, {ttl:2.5})
+							tree = DialogTree({
+								DialogBox(message)
+							})
+							@dialogCallback = () =>
+								@turnEnd!
+							@state\changeState(BattleDialogState, {tree:tree})
 						else
 							tree = DialogTree({
 								DialogBox(message)
