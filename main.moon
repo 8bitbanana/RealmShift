@@ -27,6 +27,8 @@ requireFolder("states")
 requireFolder("objects")
 requireFolder("rooms")
 
+require "serialisation"
+
 -- Seed RNG once when game launches
 math.randomseed(os.time())
 math.random()
