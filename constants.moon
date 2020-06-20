@@ -13,6 +13,8 @@ abs = math.abs
 sin = math.sin
 cos = math.cos
 floor = math.floor
+max = math.max
+min = math.min
 
 PI = 3.14
 TWO_PI = PI * 2

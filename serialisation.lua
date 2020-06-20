@@ -70,5 +70,7 @@ deserialise = function(game, serial)
     file:close()
   end
   local ok, data = Serpent.load(serial)
-  return print(Inspect(data))
+  if not ok then
+    return error("Error serialising")
+  end
 end

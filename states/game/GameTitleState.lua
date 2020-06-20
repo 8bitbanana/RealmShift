@@ -13,20 +13,12 @@ do
         banner_opacity = 1
       }, 'in-out-cubic')
     end,
-    checkPlay = function(self)
-      if self.active then
-        if input:pressed('confirm') then
-          game.next_state = {
-            state = GameExploreState,
-            params = { }
-          }
-        end
-      end
-    end,
     update = function(self)
       self.timer:update(dt)
       self.count = self.count + dt
-      return self:checkPlay()
+      if self.active then
+        return self.menu:update()
+      end
     end,
     drawBackground = function(self)
       lg.setColor({
@@ -82,19 +74,14 @@ do
       end
       return lg.setFont(default_font)
     end,
-    drawPlayButton = function(self)
-      if self.active then
-        if (self.count % 2) < 1 then
-          return shadowPrint("Z - Play", 96, GAME_HEIGHT - 32)
-        end
-      end
-    end,
     draw = function(self)
       lg.clear(BLACK)
       self:drawBackground()
       self:drawBanner()
       self:drawTitle()
-      return self:drawPlayButton()
+      if self.active then
+        return self.menu:draw()
+      end
     end
   }
   _base_0.__index = _base_0
@@ -111,6 +98,7 @@ do
       self.title_opacity = -0.5
       self.title_wobble_factor = 0
       self.active = false
+      self.menu = MainMenu()
       self.timer:tween(3, self, {
         title_opacity = 1
       }, 'out-cubic')

@@ -15,6 +15,8 @@ export class GameTitleState extends State
 
 		@active = false
 
+		@menu = MainMenu!
+
 		@timer\tween(3, @, {title_opacity: 1}, 'out-cubic')
 		@timer\tween(3, @, {title_y: 32}, 'out-cubic', @\activate)
 
@@ -25,16 +27,18 @@ export class GameTitleState extends State
 		@timer\tween(2, @, {title_wobble_factor: 1}, 'in-out-cubic')
 		@timer\tween(2, @, {banner_opacity: 1}, 'in-out-cubic')
 
-	checkPlay: =>
-		if @active
-			if input\pressed('confirm')
-				game.next_state = {state: GameExploreState, params: {}}
+-- 	checkPlay: =>
+-- 		if @active
+-- 			if input\pressed('confirm')
+-- 				game.next_state = {state: GameExploreState, params: {}}
 
 	update: =>
 		@timer\update(dt)
 		@count += dt
 
-		@\checkPlay!
+		if @active then
+			@menu\update!
+-- 		@\checkPlay!
 
 	drawBackground: =>
 		lg.setColor({1,1,1,@banner_opacity})
@@ -73,16 +77,19 @@ export class GameTitleState extends State
 
 		lg.setFont(default_font)
 
-	drawPlayButton: =>
-		if @active
-			if (@count % 2) < 1
-				shadowPrint("Z - Play", 96, GAME_HEIGHT-32)
+-- 	drawPlayButton: =>
+-- 		if @active
+-- 			if (@count % 2) < 1
+-- 				shadowPrint("Z - Play", 96, GAME_HEIGHT-32)
 
 	draw: =>
 		lg.clear(BLACK)
 		@\drawBackground()
 		@\drawBanner()
 		@\drawTitle()
-		@\drawPlayButton()
+
+		if @active then
+			@menu\draw!
+-- 		@\drawPlayButton()
 -- 		lg.setFont(title_font)
 -- 		lg.print(@title, 16, 32)
