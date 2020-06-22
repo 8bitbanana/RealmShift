@@ -66,11 +66,29 @@ deserialise = function(game, serial)
   if serial == nil then
     local file = io.open("save.dat", "rb")
     serial = file:read("*all")
-    print(serial)
     file:close()
   end
   local ok, data = Serpent.load(serial)
   if not ok then
-    return error("Error serialising")
+    error("Error serialising")
+  end
+  game.inventory.gold = data.inventory.gold
+  game.inventory.items = { }
+  for i, itemid in pairs(data.inventory.items) do
+    local itemclass = classmap[itemid]
+    if itemclass == nil then
+      error("Unknown item class id " .. tostring(itemclass))
+    end
+    table.insert(game.inventory.items, itemclass())
+  end
+  for i, plsave in pairs(data.party) do
+    local playerclass = classmap[plsave.id]
+    if playerclass == nil then
+      error("Unknown player class id " .. tostring(plsave.id))
+    end
+    local player = playerclass()
+    player.hp = plsave.hp
+    player.stats = plsave.stats
+    game.party[i] = player
   end
 end
