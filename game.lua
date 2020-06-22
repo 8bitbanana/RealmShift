@@ -2,6 +2,26 @@ do
   local _class_0
   local _base_0 = {
     init = function(self)
+      self.timer = Timer()
+      self.state = GameTitleState(self)
+      self.next_state = nil
+      self.button_prompts = {
+        z = "",
+        x = ""
+      }
+      self.dialog = DialogManager()
+      self.party = {
+        Paladin(),
+        Fighter(),
+        nil,
+        Mage()
+      }
+      self.party[1].hp = self.party[1].hp / 2
+      self.party[2].hp = self.party[2].hp / 2
+      self.inventory = Inventory(self)
+      self.transitioning = false
+      self.transition_progress = 0.0
+      self.transition_length = 0.25
       if self.state.init then
         return self.state:init()
       end
@@ -79,6 +99,12 @@ do
           }
         }
       end
+      if input:pressed("gameoverdebug") then
+        self.next_state = {
+          state = GameOverState,
+          params = { }
+        }
+      end
       if self.next_state and not self.transitioning then
         return self:startStateTransitionIn()
       end
@@ -119,28 +145,7 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self)
-      self.timer = Timer()
-      self.state = GameTitleState(self)
-      self.next_state = nil
-      self.button_prompts = {
-        z = "",
-        x = ""
-      }
-      self.dialog = DialogManager()
-      self.party = {
-        Paladin(),
-        Fighter(),
-        nil,
-        Mage()
-      }
-      self.party[1].hp = self.party[1].hp / 2
-      self.party[2].hp = self.party[2].hp / 2
-      self.inventory = Inventory(self)
-      self.transitioning = false
-      self.transition_progress = 0.0
-      self.transition_length = 0.25
-    end,
+    __init = function(self) end,
     __base = _base_0,
     __name = "Game"
   }, {

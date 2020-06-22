@@ -27,6 +27,7 @@ function setupInput()
 	input:bind("3", "battledebug")
 	input:bind("4", "overworlddebug")
 	input:bind("5", "inventorydebug")
+	input:bind("6", "gameoverdebug")
 
 	input:bind("r", function() le.quit("restart") end)
 	input:bind("escape", le.quit)

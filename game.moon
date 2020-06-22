@@ -1,6 +1,9 @@
 
 export class Game
 	new: () =>
+
+
+	init: =>
 		@timer = Timer!
 		@state = GameTitleState(@) --GameExploreState(@)
 		@next_state = nil
@@ -23,7 +26,6 @@ export class Game
 		@transition_progress = 0.0
 		@transition_length = 0.25
 
-	init: =>
 		if @state.init
 			@state\init!
 
@@ -109,6 +111,9 @@ export class Game
 
 		if input\pressed "overworlddebug"
 			@next_state = {state: GameOverworldState, params: {12*8, 8*8}}
+
+		if input\pressed "gameoverdebug"
+			@next_state = {state: GameOverState, params: {}}
 
 		-----------------------------------
 

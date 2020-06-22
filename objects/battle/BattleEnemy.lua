@@ -25,7 +25,6 @@ do
         end
       end
       local targetindex = indexes[love.math.random(#indexes)]
-      print("Attacking target " .. targetindex)
       local attackScene = CutsceneAttack({
         tts = 0.33,
         index = targetindex

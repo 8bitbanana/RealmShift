@@ -341,13 +341,9 @@ do
           drops = drops
         })
       elseif self:checkLost() then
-        print("You died chump")
         game.next_state = {
-          state = GameOverworldState,
-          params = {
-            self.rx,
-            self.ry
-          }
+          state = GameOverState,
+          params = { }
         }
       end
     end,

@@ -292,8 +292,8 @@ export class GameBattleState extends State
 		-- To-do: what happens if the player loses?
 		-- Suggestion: They lose gold and return to previous town
 		elseif @\checkLost!
-			print("You died chump")
-			game.next_state = {state: GameOverworldState, params: {@rx, @ry}}
+-- 			@state\changeState(BattleLoseState, {})
+			game.next_state = {state: GameOverState, params: {}}
 			-- ^^^^^ This will be changed to transition to a game over state
 			-- or save game reload state etc.
 

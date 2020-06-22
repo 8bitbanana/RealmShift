@@ -197,7 +197,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.basestats.hp = 50
+      self.basestats.hp = 1
       self.basestats.attack = 100
       self.basestats.defence = 2
       self.basestats.speed = 5
@@ -318,7 +318,7 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.sprite = sprites.battle.artificer_char
-      self.basestats.hp = 50
+      self.basestats.hp = 1
       self.basestats.attack = 100
       self.basestats.defence = 4
       self.basestats.speed = 7
@@ -374,7 +374,7 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.sprite = sprites.battle.paladin_char
-      self.basestats.hp = 50
+      self.basestats.hp = 1
       self.basestats.attack = 100
       self.basestats.defence = 8
       self.basestats.speed = 3
@@ -423,7 +423,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.basestats.hp = 50
+      self.basestats.hp = 1
       self.basestats.attack = 9
       self.basestats.defence = 2
       self.basestats.speed = 8

@@ -160,7 +160,7 @@ export class Mage extends BattlePlayer
 	name: "Mage"
 	new: (...) =>
 		super ...
-		@basestats.hp = 50
+		@basestats.hp = 1--50
 		@basestats.attack = 100--3
 		@basestats.defence = 2
 		@basestats.speed = 5
@@ -177,7 +177,7 @@ export class Fighter extends BattlePlayer
 		super ...
 		@sprite = sprites.battle.artificer_char
 		-- Sprite does not match class but is temporary until classes are finalised
-		@basestats.hp = 50
+		@basestats.hp = 1--50
 		@basestats.attack = 100--8
 		@basestats.defence = 4
 		@basestats.speed = 7
@@ -235,7 +235,7 @@ export class Paladin extends BattlePlayer
 	new: (...) =>
 		super ...
 		@sprite = sprites.battle.paladin_char
-		@basestats.hp = 50
+		@basestats.hp = 1--50
 		@basestats.attack = 100--5
 
 		@basestats.defence = 8
@@ -257,7 +257,7 @@ export class Rogue extends BattlePlayer
 	name: "Rogue"
 	new: (...) =>
 		super ...
-		@basestats.hp = 50
+		@basestats.hp = 1--50
 		@basestats.attack = 9
 		@basestats.defence = 2
 		@basestats.speed = 8

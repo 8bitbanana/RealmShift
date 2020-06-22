@@ -21,7 +21,7 @@ export class BattleEnemy extends BattlePlayer
 			continue if not target\isValidTarget("attack")
 			table.insert(indexes, i)
 		targetindex = indexes[love.math.random(#indexes)]
-		print("Attacking target " .. targetindex)
+-- 		print("Attacking target " .. targetindex)
 		attackScene = CutsceneAttack({tts:0.33, index:targetindex})
 		@parent.cutscenes\addCutscene(attackScene)
 		@parent.state\changeState(BattleTurnState, {ttl:0.66})
