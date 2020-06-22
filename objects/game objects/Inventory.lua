@@ -12,9 +12,7 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, root)
-      self.root = root
-    end,
+    __init = function(self) end,
     __base = _base_0,
     __name = "InventoryItem"
   }, {
@@ -259,12 +257,12 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, parent)
-      self.parent = parent
+    __init = function(self)
       self.items = {
-        LesserPotion(self.parent),
-        Potion(self.parent),
-        PartyHeal(self.parent)
+        LesserPotion(),
+        Potion(),
+        PartyHeal(),
+        PartyHeal()
       }
       self.gold = 0
     end,

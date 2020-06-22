@@ -9,7 +9,7 @@ export class InventoryItem
 	desc: "The base item class"
 	consumable: true
 
-	new: (@root) => -- @root expects the game class
+	new: () =>
 
 	is_usable: => return false
 
@@ -70,11 +70,12 @@ export class LesserPotion extends Potion
 	desc: "Heals an ally for 30 HP"
 
 export class Inventory
-	new: (@parent) => -- @parent expects the game class
+	new: =>
 		@items = {
-			LesserPotion(@parent)
-			Potion(@parent)
-			PartyHeal(@parent)
+			LesserPotion!
+			Potion!
+			PartyHeal!
+			PartyHeal!
 		}
 		@gold = 0
 
