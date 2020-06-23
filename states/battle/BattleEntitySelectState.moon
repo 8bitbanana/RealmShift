@@ -1,5 +1,4 @@
 require "states/state"
-require "utils_vector"
 Inspect = require "lib/inspect"
 
 -- NOTE

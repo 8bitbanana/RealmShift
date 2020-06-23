@@ -13,6 +13,14 @@ do
     init = function(self)
       self.stats = table.shallow_copy(self.basestats)
       self.hp = self.stats.hp
+      if self.hp < 0 then
+        self.hp = 0
+      end
+      self.buffs = {
+        rally = false,
+        poison = false
+      }
+      self.dead = self.hp == 0
     end,
     takeDamage = function(self, incomingattack)
       local damage = math.floor((DAMAGE_FORMULA.va + (DAMAGE_FORMULA.vm * ((incomingattack * DAMAGE_FORMULA.aw) - (self.stats.defence * DAMAGE_FORMULA.dw)))) * DAMAGE_FORMULA.bd)
@@ -46,28 +54,21 @@ do
         damage = self.stats.attack
       end
       if self.buffs.rally then
-        damage = damage * 1.1
+        damage = damage * 1.2
+        self.buffs.rally = false
       end
       return target:takeDamage(damage)
     end,
-    skillPrimaryInfo = function(self)
-      return {
-        name = "SKILLPRIMARY",
-        desc = "Base primary skill",
-        valid = function(self)
-          return false
-        end
-      }
-    end,
-    skillSecondaryInfo = function(self)
-      return {
-        name = "SKILLSECONDARY",
-        desc = "Base secondary skill",
-        valid = function(self)
-          return false
-        end
-      }
-    end,
+    skillPrimaryInfo = {
+      name = "SKILLPRIMARY",
+      desc = "Base primary skill",
+      unset = true
+    },
+    skillSecondaryInfo = {
+      name = "SKILLSECONDARY",
+      desc = "Base secondary skill",
+      unset = true
+    },
     skillPrimary = function(self) end,
     skillSecondary = function(self) end,
     isValidTarget = function(self, targetType)
@@ -95,7 +96,8 @@ do
         return self:draw_dead()
       else
         self:draw_alive()
-        return self:draw_health()
+        self:draw_health()
+        return self:draw_buffs()
       end
     end,
     draw_health = function(self)
@@ -112,6 +114,29 @@ do
       lg.setColor(WHITE)
       shadowPrint(max_hp, x + 12, y + 16)
       return shadowPrint(hp, x, y + 8)
+    end,
+    draw_buffs = function(self)
+      local icon_size = {
+        w = 10,
+        h = 10
+      }
+      local start_offset = {
+        x = -5,
+        y = -8
+      }
+      local position = vector.add(self.pos, start_offset)
+      for buff, active in pairs(self.buffs) do
+        if active then
+          local sprite = sprites.battle.buffs[buff]
+          if sprite == nil then
+            lg.setColor(RED)
+            lg.rectangle("fill", position.x, position.y, icon_size.w, icon_size.h)
+          else
+            sprite:draw(position.x, position.y)
+          end
+          position.x = position.x + (icon_size.w + 1)
+        end
+      end
     end,
     draw_alive = function(self)
       if self.sprite then
@@ -160,11 +185,6 @@ do
         speed = 0,
         magic = 0
       }
-      self.buffs = {
-        rally = false,
-        poison = false
-      }
-      self.dead = false
       self.size = {
         w = 24,
         h = 32
@@ -188,18 +208,14 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    name = "Mage",
-    draw_alive = function(self)
-      lg.setColor(MAGE_COL)
-      return _class_0.__parent.__base.draw_alive(self, false)
-    end
+    name = "Mage"
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.basestats.hp = 1
+      self.basestats.hp = 50
       self.basestats.attack = 100
       self.basestats.defence = 2
       self.basestats.speed = 5
@@ -238,12 +254,10 @@ do
   local _parent_0 = BattlePlayer
   local _base_0 = {
     name = "Fighter",
-    skillPrimaryInfo = function(self)
-      return {
-        name = "LUNGE",
-        desc = "Lunge forward as far as you can, dealing more damage with a bigger lunge."
-      }
-    end,
+    skillPrimaryInfo = {
+      name = "LUNGE",
+      desc = "Lunge forward as far as you can, dealing more damage with a bigger lunge."
+    },
     skillPrimary = function(self)
       local myindex = nil
       for i, player in pairs(self.parent.players) do
@@ -271,12 +285,10 @@ do
       end
       return self.parent.state:changeState(BattleEnemySelectState)
     end,
-    skillSecondaryInfo = function(self)
-      return {
-        name = "REPOSITION",
-        desc = "Swap the position of two allies, or move an ally to an empty space."
-      }
-    end,
+    skillSecondaryInfo = {
+      name = "REPOSITION",
+      desc = "Swap the position of two allies, or move an ally to an empty space."
+    },
     skillSecondary = function(self)
       local myindex = nil
       for i, player in pairs(self.parent.players) do
@@ -309,10 +321,6 @@ do
         selectedIndex = myindex,
         targetType = "move"
       })
-    end,
-    draw_alive = function(self)
-      lg.setColor(FIGHTER_COL)
-      return _class_0.__parent.__base.draw_alive(self, false)
     end
   }
   _base_0.__index = _base_0
@@ -321,7 +329,7 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.sprite = sprites.battle.artificer_char
-      self.basestats.hp = 1
+      self.basestats.hp = 50
       self.basestats.attack = 100
       self.basestats.defence = 4
       self.basestats.speed = 7
@@ -360,15 +368,18 @@ do
   local _parent_0 = BattlePlayer
   local _base_0 = {
     name = "Paladin",
-    skillPrimaryInfo = function(self)
-      return {
-        name = "RALLY"
-      }
-    end,
-    skillPrimary = function(self) end,
-    draw_alive = function(self)
-      lg.setColor(PALADIN_COL)
-      return _class_0.__parent.__base.draw_alive(self, false)
+    skillPrimaryInfo = {
+      name = "RALLY",
+      desc = "Boosts the damage of the next attack from each ally."
+    },
+    skillPrimary = function(self)
+      local rallyScene = CutsceneRally({
+        type = "player"
+      })
+      self.parent.cutscenes:addCutscene(rallyScene)
+      return self.parent.state:changeState(BattleTurnState, {
+        ttl = 1.2
+      })
     end
   }
   _base_0.__index = _base_0
@@ -377,7 +388,7 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.sprite = sprites.battle.paladin_char
-      self.basestats.hp = 1
+      self.basestats.hp = 50
       self.basestats.attack = 100
       self.basestats.defence = 8
       self.basestats.speed = 3
@@ -415,18 +426,14 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    name = "Rogue",
-    draw_alive = function(self)
-      lg.setColor(ROGUE_COL)
-      return _class_0.__parent.__base.draw_alive(self, false)
-    end
+    name = "Rogue"
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.basestats.hp = 1
+      self.basestats.hp = 50
       self.basestats.attack = 9
       self.basestats.defence = 2
       self.basestats.speed = 8

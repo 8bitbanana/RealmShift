@@ -17,7 +17,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.text = self.parent.parent:currentTurn():skillPrimaryInfo().name
+      self.text = self.parent.parent:currentTurn().skillPrimaryInfo.name
     end,
     __base = _base_0,
     __name = "PrimaryMenuItem",
@@ -63,7 +63,7 @@ do
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
-      self.text = self.parent.parent:currentTurn():skillSecondaryInfo().name
+      self.text = self.parent.parent:currentTurn().skillSecondaryInfo.name
     end,
     __base = _base_0,
     __name = "SecondaryMenuItem",
@@ -124,7 +124,7 @@ do
       if newindex < 1 then
         return 
       end
-      if newindex > 2 then
+      if newindex > #self.items then
         return 
       end
       self.selectedIndex = newindex
@@ -148,16 +148,19 @@ do
   _class_0 = setmetatable({
     __init = function(self, parent)
       self.parent = parent
-      self.items = {
-        PrimaryMenuItem(self, {
+      self.items = { }
+      if not self.parent:currentTurn().skillPrimaryInfo.unset then
+        table.insert(self.items, PrimaryMenuItem(self, {
           x = 130,
           y = 11
-        }),
-        SecondaryMenuItem(self, {
+        }))
+      end
+      if not self.parent:currentTurn().skillSecondaryInfo.unset then
+        table.insert(self.items, SecondaryMenuItem(self, {
           x = 130,
           y = 30
-        })
-      }
+        }))
+      end
       self.selectedIndex = 1
       self.cursor = Cursor({
         x = self:selectedItem().pos.x - 15,

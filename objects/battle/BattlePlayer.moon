@@ -62,20 +62,21 @@ export class BattlePlayer
 			damage = damageOverride
 		else
 			damage = @stats.attack
-		damage *= 1.1 if @buffs.rally
-
+		if @buffs.rally
+			damage *= 1.2
+			@buffs.rally = false
 		target\takeDamage(damage)
 
 	-- Skill metadata, to be overridden
-	skillPrimaryInfo: () => return {
+	skillPrimaryInfo: {
 		name: "SKILLPRIMARY"
 		desc: "Base primary skill"
-		valid: () => return false
+		unset: true
 	}
-	skillSecondaryInfo: () => return {
+	skillSecondaryInfo: {
 		name: "SKILLSECONDARY"
 		desc: "Base secondary skill"
-		valid: () => return false
+		unset: true
 	}
 
 	-- Do primary/secondary skills, to be overridden
@@ -110,6 +111,7 @@ export class BattlePlayer
 		else
 			@draw_alive!
 			@draw_health!
+			@draw_buffs!
 
 	-- Draw a health tracker below me
 	draw_health: () =>
@@ -133,6 +135,20 @@ export class BattlePlayer
 		shadowPrint(max_hp, x+12, y+16)
 -- 		shadowPrint("/", x+6, y+10)
 		shadowPrint(hp, x, y+8)
+
+	draw_buffs: => 
+		icon_size = {w:10,h:10}
+		start_offset = {x:-5,y:-8}
+		position = vector.add(@pos, start_offset)
+		for buff, active in pairs @buffs
+			if active
+				sprite = sprites.battle.buffs[buff]
+				if sprite == nil
+					lg.setColor(RED)
+					lg.rectangle("fill", position.x, position.y, icon_size.w, icon_size.h)
+				else
+					sprite\draw(position.x, position.y)
+				position.x += icon_size.w + 1
 
 	-- Draw call if alive
 	draw_alive: () =>
@@ -162,16 +178,12 @@ export class Mage extends BattlePlayer
 	name: "Mage"
 	new: (...) =>
 		super ...
-		@basestats.hp = 1--50
+		@basestats.hp = 50
 		@basestats.attack = 100--3
 		@basestats.defence = 2
 		@basestats.speed = 5
 		@basestats.magic = 10
 		@init!
-
-	draw_alive: () =>
-		lg.setColor(MAGE_COL)
-		super false
 
 export class Fighter extends BattlePlayer
 	name: "Fighter"
@@ -179,7 +191,7 @@ export class Fighter extends BattlePlayer
 		super ...
 		@sprite = sprites.battle.artificer_char
 		-- Sprite does not match class but is temporary until classes are finalised
-		@basestats.hp = 1--50
+		@basestats.hp = 50
 		@basestats.attack = 100--8
 		@basestats.defence = 4
 		@basestats.speed = 7
@@ -188,7 +200,7 @@ export class Fighter extends BattlePlayer
 
 	-- Lunge - shoves forwards as far as you can,
 	-- dealing more damage with a bigger lunge
-	skillPrimaryInfo: => return {
+	skillPrimaryInfo: {
 		name:"LUNGE",
 		desc:"Lunge forward as far as you can, dealing more damage with a bigger lunge."
 	}
@@ -208,7 +220,7 @@ export class Fighter extends BattlePlayer
 		@parent.state\changeState(BattleEnemySelectState)
 
 	-- Reposition - swap two allies places
-	skillSecondaryInfo: () => return {
+	skillSecondaryInfo: {
 		name:"REPOSITION",
 		desc:"Swap the position of two allies, or move an ally to an empty space."
 	}
@@ -228,16 +240,12 @@ export class Fighter extends BattlePlayer
 			@state\changeState(BattleSpaceSelectState, {selectedspace:firstindex})
 		@parent.state\changeState(BattlePlayerSelectState, {selectedIndex:myindex, targetType:"move"})
 
-	draw_alive: () =>
-		lg.setColor(FIGHTER_COL)
-		super false
-
 export class Paladin extends BattlePlayer
 	name: "Paladin"
 	new: (...) =>
 		super ...
 		@sprite = sprites.battle.paladin_char
-		@basestats.hp = 1--50
+		@basestats.hp = 50
 		@basestats.attack = 100--5
 
 		@basestats.defence = 8
@@ -247,25 +255,22 @@ export class Paladin extends BattlePlayer
 
 	-- Rally - apply a small damage and speed buff
 	-- to all allies
-	skillPrimaryInfo: () => return {name:"RALLY"}
+	skillPrimaryInfo: {
+		name:"RALLY"
+		desc: "Boosts the damage of the next attack from each ally."
+	}
 	skillPrimary: () =>
-
-
-	draw_alive: () =>
-		lg.setColor(PALADIN_COL)
-		super false
+		rallyScene = CutsceneRally({type:"player"})
+		@parent.cutscenes\addCutscene(rallyScene)
+		@parent.state\changeState(BattleTurnState, {ttl:1.2})
 
 export class Rogue extends BattlePlayer
 	name: "Rogue"
 	new: (...) =>
 		super ...
-		@basestats.hp = 1--50
+		@basestats.hp = 50
 		@basestats.attack = 9
 		@basestats.defence = 2
 		@basestats.speed = 8
 		@basestats.magic = 2
 		@init!
-
-	draw_alive: () =>
-		lg.setColor(ROGUE_COL)
-		super false

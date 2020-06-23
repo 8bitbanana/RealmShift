@@ -55,9 +55,19 @@ do
       self.players = self.parent.party
       local _list_0 = self.players
       for _index_0 = 1, #_list_0 do
-        local player = _list_0[_index_0]
-        if player ~= nil then
+        local _continue_0 = false
+        repeat
+          local player = _list_0[_index_0]
+          if not player then
+            _continue_0 = true
+            break
+          end
           player.parent = self
+          player:init()
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
         end
       end
       self:calculatePlayerPos()

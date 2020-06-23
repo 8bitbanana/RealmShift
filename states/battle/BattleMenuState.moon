@@ -47,7 +47,11 @@ class WaitMenuItem extends MenuItem
 class SkillMenuItem extends MenuItem
 	text: "SKILL"
 	activate: () => @parent.parent\skillAction!
-	valid: () => @parent.parent\currentTurn!.__class == Fighter
+	valid: () =>
+		player = @parent.parent\currentTurn!
+		return true if not player.skillPrimaryInfo.unset
+		return true if not player.skillSecondaryInfo.unset
+		return false
 
 class ItemMenuItem extends MenuItem
 	text: "ITEM"

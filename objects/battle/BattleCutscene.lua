@@ -223,6 +223,74 @@ do
   local _parent_0 = BattleCutscene
   local _base_0 = {
     sceneStart = function(self)
+      self.entities = nil
+      if self.args.type == "player" then
+        self.entities = self.root.players
+      end
+      if self.args.type == "enemy" then
+        self.entities = self.root.enemies
+      end
+      return assert(self.entities ~= nil)
+    end,
+    sceneUpdate = function(self) end,
+    sceneFinish = function(self)
+      local _list_0 = self.entities
+      for _index_0 = 1, #_list_0 do
+        local _continue_0 = false
+        repeat
+          local entity = _list_0[_index_0]
+          if not entity then
+            _continue_0 = true
+            break
+          end
+          entity.buffs.rally = true
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
+        end
+      end
+    end
+  }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self, ...)
+      _class_0.__parent.__init(self, ...)
+      self.ttl = 0.16
+    end,
+    __base = _base_0,
+    __name = "CutsceneRally",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  CutsceneRally = _class_0
+end
+do
+  local _class_0
+  local _parent_0 = BattleCutscene
+  local _base_0 = {
+    sceneStart = function(self)
       assert(self.root.turndata.type == "player")
       local oldindex = self.root.turndata.index
       local newindex = oldindex + self.args.dir

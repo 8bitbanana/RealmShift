@@ -205,7 +205,14 @@ do
       return self.parent.parent:skillAction()
     end,
     valid = function(self)
-      return self.parent.parent:currentTurn().__class == Fighter
+      local player = self.parent.parent:currentTurn()
+      if not player.skillPrimaryInfo.unset then
+        return true
+      end
+      if not player.skillSecondaryInfo.unset then
+        return true
+      end
+      return false
     end
   }
   _base_0.__index = _base_0

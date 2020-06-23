@@ -18,6 +18,10 @@ function loadSprites()
 			artificer_char = Soda.newSprite(lg.newImage("images/sprites/battle/artificer_char.png"), 8, -16),
 			archer_enemy = Soda.newSprite(lg.newImage("images/sprites/battle/archer_enemy.png"), 14, -23),
 			lancer_enemy = Soda.newSprite(lg.newImage("images/sprites/battle/lancer_enemy.png"), 14, -23),
+			buffs = {
+				rally = Soda.newSprite(lg.newImage("images/sprites/battle/buffs/boost_golden.png"), 5, 5),
+				poison = Soda.newSprite(lg.newImage("images/sprites/battle/buffs/poison.png"), 5, 5)
+			}
 		},
 		gui = {
 		  z_button = Soda.newSprite(lg.newImage("images/sprites/gui/z_button.png"), 13, 13),

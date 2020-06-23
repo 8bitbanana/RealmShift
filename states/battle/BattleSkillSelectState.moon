@@ -4,7 +4,7 @@ Inspect = require "lib/inspect"
 class PrimaryMenuItem extends MenuItem
 	new: (...) =>
 		super ...
-		@text = @parent.parent\currentTurn!\skillPrimaryInfo!.name
+		@text = @parent.parent\currentTurn!.skillPrimaryInfo.name
 		
 	activate: () => @parent.parent\currentTurn!\skillPrimary!
 	valid: () => return true
@@ -12,17 +12,18 @@ class PrimaryMenuItem extends MenuItem
 class SecondaryMenuItem extends MenuItem
 	new: (...) =>
 		super ...
-		@text = @parent.parent\currentTurn!\skillSecondaryInfo!.name
+		@text = @parent.parent\currentTurn!.skillSecondaryInfo.name
 
 	activate: () => @parent.parent\currentTurn!\skillSecondary!
 	valid: () => return true
 
 export class BattleSkillSelectState extends State
 	new: (@parent) =>
-		@items = {
-			PrimaryMenuItem(@, {x:130, y:11}),
-			SecondaryMenuItem(@, {x:130, y:30})
-		}
+		@items = {}
+		if not @parent\currentTurn!.skillPrimaryInfo.unset
+			table.insert(@items, PrimaryMenuItem(@, {x:130, y:11}))
+		if not @parent\currentTurn!.skillSecondaryInfo.unset
+			table.insert(@items, SecondaryMenuItem(@, {x:130, y:30}))
 		@selectedIndex = 1
 		@cursor = Cursor({x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}, "right")
 
@@ -45,7 +46,7 @@ export class BattleSkillSelectState extends State
 	moveItemCursor: (dir) =>
 		newindex = @selectedIndex + dir
 		return if newindex < 1
-		return if newindex > 2
+		return if newindex > #@items
 		@selectedIndex = newindex
 		@cursor.pos = {x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}
 	

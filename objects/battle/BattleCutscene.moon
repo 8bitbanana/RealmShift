@@ -100,6 +100,26 @@ export class CutsceneAttack extends BattleCutscene
 
 	sceneFinish: =>
 
+export class CutsceneRally extends BattleCutscene
+	new: (...) =>
+		super ...
+		@ttl = 0.16
+
+	sceneStart: =>
+		@entities = nil
+		@entities = @root.players if @args.type == "player"
+		@entities = @root.enemies if @args.type == "enemy"
+		assert @entities != nil
+
+	sceneUpdate: =>
+
+	sceneFinish: =>
+		for entity in *@entities
+			continue if not entity
+			entity.buffs.rally = true
+
+
+
 -- currentTurn (player) shoves forwards as far as it can in @args.dir direction
 -- Other players are shoved in the opposite direction to make room
 -- Todo - convert to work on enemies

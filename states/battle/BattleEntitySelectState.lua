@@ -1,5 +1,4 @@
 require("states/state")
-require("utils_vector")
 local Inspect = require("lib/inspect")
 do
   local _class_0
