@@ -115,8 +115,28 @@ do
       return self.enemyPosData[i]
     end,
     turnEnd = function(self)
-      self:getNextInitiative(true)
-      return self.state:changeState(TurnIntroState)
+      print("Checkwon " .. tostring(self:checkWon()))
+      if self:checkWon() then
+        local gold = math.random(0, 100)
+        local drops = {
+          Potion(),
+          Potion()
+        }
+        return self.state:changeState(BattleWinState, {
+          rx = self.rx,
+          ry = self.ry,
+          gold = gold,
+          drops = drops
+        })
+      elseif self:checkLost() then
+        game.next_state = {
+          state = GameOverState,
+          params = { }
+        }
+      else
+        self:getNextInitiative(true)
+        return self.state:changeState(TurnIntroState)
+      end
     end,
     turnStart = function(self)
       local _exp_0 = self.turndata.type
@@ -294,7 +314,7 @@ do
       return true
     end,
     checkWon = function(self)
-      if self.state.__class.__name == "TurnIntroState" and self:checkDead(self.enemies) then
+      if self:checkDead(self.enemies) then
         return true
       end
       return false
@@ -327,25 +347,7 @@ do
       self.state:update()
       self.cutscenes:update()
       self.aniObjs:updateObjects()
-      self.aniObjs:checkDestroyed()
-      if self:checkWon() then
-        local gold = math.random(0, 100)
-        local drops = {
-          Potion(),
-          Potion()
-        }
-        return self.state:changeState(BattleWinState, {
-          rx = self.rx,
-          ry = self.ry,
-          gold = gold,
-          drops = drops
-        })
-      elseif self:checkLost() then
-        game.next_state = {
-          state = GameOverState,
-          params = { }
-        }
-      end
+      return self.aniObjs:checkDestroyed()
     end,
     drawBackground = function(self)
       lg.draw(self.bg, 0, 0)

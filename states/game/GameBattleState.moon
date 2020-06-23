@@ -122,8 +122,27 @@ export class GameBattleState extends State
 		return @enemyPosData[i]
 
 	turnEnd: () =>
-		@getNextInitiative true
-		@state\changeState(TurnIntroState)
+		-- Check if battle has been won, then return to the overworld if true
+		if @\checkWon!
+			-- Gold drops currently random
+			gold = math.random(0, 100)
+			-- Item drops currently fixed
+			drops = {Potion!, Potion!}
+			-- Random gold drops feels fine but maybe we want
+			-- certain percentage drop rates for items per enemy type
+			@state\changeState(BattleWinState,
+			{rx:@rx, ry:@ry, gold:gold, drops:drops})
+
+		-- To-do: what happens if the player loses?
+		-- Suggestion: They lose gold and return to previous town
+		elseif @\checkLost!
+-- 			@state\changeState(BattleLoseState, {})
+			game.next_state = {state: GameOverState, params: {}}
+			-- ^^^^^ This will be changed to transition to a game over state
+			-- or save game reload state etc.
+		else
+			@getNextInitiative true
+			@state\changeState(TurnIntroState)
 
 	turnStart: () =>
 		switch @turndata.type
@@ -251,7 +270,7 @@ export class GameBattleState extends State
 		return true
 
 	checkWon: =>
-		if @state.__class.__name == "TurnIntroState" and @\checkDead(@enemies)
+		if @\checkDead(@enemies)
 			return true
 		return false
 
@@ -277,25 +296,6 @@ export class GameBattleState extends State
 		@cutscenes\update!
 		@aniObjs\updateObjects!
 		@aniObjs\checkDestroyed!
-
-		-- Check if battle has been won, then return to the overworld if true
-		if @\checkWon!
-			-- Gold drops currently random
-			gold = math.random(0, 100)
-			-- Item drops currently fixed
-			drops = {Potion!, Potion!}
-			-- Random gold drops feels fine but maybe we want
-			-- certain percentage drop rates for items per enemy type
-			@state\changeState(BattleWinState,
-			{rx:@rx, ry:@ry, gold:gold, drops:drops})
-
-		-- To-do: what happens if the player loses?
-		-- Suggestion: They lose gold and return to previous town
-		elseif @\checkLost!
--- 			@state\changeState(BattleLoseState, {})
-			game.next_state = {state: GameOverState, params: {}}
-			-- ^^^^^ This will be changed to transition to a game over state
-			-- or save game reload state etc.
 
 	drawBackground: =>
 		lg.draw(@bg, 0,0)
