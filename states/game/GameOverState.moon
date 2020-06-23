@@ -2,8 +2,9 @@
 export class GameOverState extends State
 	new: (@parent) =>
 		@timer = Timer!
+		@menu =	GameOverMenu!
 
-		@timer\after(4, @restartGame, 'restart')
+-- 		@timer\after(4, @restartGame, 'restart')
 
 	init: =>
 		-- do nothing
@@ -14,15 +15,17 @@ export class GameOverState extends State
 
 	update: =>
 		@timer\update(dt)
+		@menu\update!
 
--- 		print(@timer\getTime('restart'))
-
-	draw: =>
+	drawGameOver: =>
 		lg.clear(BLACK)
 		lg.setFont(big_font)
 
 		lg.setColor(WHITE)
-		lg.print("game over", 80, 72)
+		lg.print("game over", 80, 64)
 
 		lg.setFont(default_font)
 
+	draw: =>
+		@\drawGameOver!
+		@menu\draw({0.3, 0.3, 0.3})

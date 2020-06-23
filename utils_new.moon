@@ -127,3 +127,7 @@ getTableLength = (t) ->
 		length = length + 1
 
 	return length
+
+printTable = (tbl) ->
+	for k, v in pairs(tbl)
+		print(k, v)

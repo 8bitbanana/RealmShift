@@ -161,3 +161,8 @@ getTableLength = function(t)
   end
   return length
 end
+printTable = function(tbl)
+  for k, v in pairs(tbl) do
+    print(k, v)
+  end
+end

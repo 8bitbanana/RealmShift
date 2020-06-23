@@ -1,11 +1,9 @@
+require "objects/game objects/Menu"
 
-export class MainMenu
+export class MainMenu extends Menu
 	new: =>
-		@timer = Timer!
-		@count = 0
-		@blink = 0.4
+		super(GAME_HEIGHT + 8)
 
-		@menu_y = GAME_HEIGHT + 8
 		@main_menu = {
 		"Start Game",
 		"Options",
@@ -25,49 +23,36 @@ export class MainMenu
 		}
 		@current_menu = @main_menu
 
-		@cursor = 1
+		@callbacks = {
+			["Start Game"]: @\startGame,
+			["Options"]: @\enterOptions,
+			["Toggle Fullscreen"]: @\toggleFullscreen,
+			["Credits"]: @\enterCredits,
+			["Quit"]: @\quitGame,
+		}
 
 		@timer\after(0.5, @\animateMenu)
 
 	animateMenu: =>
 		@timer\tween(2, @, {menu_y: 64}, 'in-out-cubic')
 
-	moveCursor: =>
-		if input\pressed('up')
--- 			@cursor = max(1, @cursor - 1)
-			if @cursor == 1
-				@cursor = #@current_menu
-			else
-				@cursor -= 1
-		if input\pressed('down')
--- 			@cursor = min(#@current_menu, @cursor + 1)
-			if @cursor == #@current_menu
-				@cursor = 1
-			else
-				@cursor += 1
+-- 	chooseOption: =>
+-- 		if input\pressed('confirm')
+-- 			current = @current_menu[@cursor]
 
-	chooseOption: =>
-		if input\pressed('confirm')
-			current = @current_menu[@cursor]
+-- 			switch(current)
+-- 				when "Start Game"
+-- 					@\startGame!
 
-			switch(current)
-				when "Start Game"
-					@\startGame!
+-- 				when "Options"
+-- 					@\enterOptions!
+-- 				when "Toggle Fullscreen"
+-- 					@\toggleFullscreen!
 
-				when "Options"
-					@\enterOptions!
-				when "Toggle Fullscreen"
-					@\toggleFullscreen!
-
-				when "Credits"
-					@\enterCredits!
-				when "Quit"
-					@\quitGame!
-
-		elseif input\pressed('back')
-			if @current_menu ~= @main_menu
-				@current_menu = @main_menu
-				@cursor = 1
+-- 				when "Credits"
+-- 					@\enterCredits!
+-- 				when "Quit"
+-- 					@\quitGame!
 
 	startGame: =>
 		game.next_state = {state: GameExploreState, params: {}}
@@ -86,53 +71,15 @@ export class MainMenu
 	toggleFullscreen: =>
 		Push\switchFullscreen!
 
+	checkGoBack: =>
+		if input\pressed('back')
+			if @current_menu ~= @main_menu
+				@current_menu = @main_menu
+				@cursor = 1
+
 	update: =>
-		@timer\update(dt)
-		@count += dt
-
-		@\moveCursor!
-		@\chooseOption!
-
-	drawPill: (x, y, w, h, col={0.1, 0.75, 0.85}) =>
-		lg.setColor(col)
-		lg.ellipse("fill", round(x-2), round(y+8), 6, 6)
-		lg.ellipse("fill", round(x+w+2), round(y+8), 6, 6)
-		lg.rectangle("fill", x-2, y+2, w+4, 12)
-		lg.setColor(WHITE)
-
-	drawOptionBackground: (i, x, y, width) =>
-		if i == @cursor
-			@\drawPill(x, y+2, width, 12, BLACK)
-			if (@count % @blink) < @blink/2
-				@\drawPill(x, y, width, 12, {0.4, 0.85, 1.0})
-			else
-				@\drawPill(x, y, width, 12)
-		else
-			@\drawPill(x, y, width, 12)
--- 			lg.setColor({0.1, 0.75, 0.85})
-
--- 		lg.setColor({0.8, 0.8, 0.8})
--- 		lg.ellipse("fill", x-2, y+8, 6, 6)
--- 		lg.ellipse("fill", x+width+2, y+8, 6, 6)
--- 		lg.rectangle("fill", x-2, y+2, width+4, 12)
--- 		lg.setColor(WHITE)
-
-	drawMenuOption: (i, item, x, y) =>
-		font = lg.getFont!
-		width = font\getWidth(item)
-		cx = x - (width/2)
-		@\drawOptionBackground(i, cx, y, width)
-		shadowPrint(item, cx, y)
-
-	drawMenuOptions: (x=0, y=0) =>
-		for i=1, #@current_menu
-			ty = y + i*16
-			@\drawMenuOption(i, @current_menu[i], x, ty)
-
-	drawControls: (x=0, y=0) =>
-		lg.setColor(WHITE)
-		lg.print("z - accept", x, y+82)
-		lg.print("x - back", x+96, y+82)
+		super\update()
+		@\checkGoBack!
 
 	drawCreditsMenu: (x=0, y=0) =>
 		font = lg.getFont!
@@ -148,11 +95,11 @@ export class MainMenu
 			@\drawPill(cx, ty, width, 12, GOLD)
 			shadowPrint(item, cx, ty)
 
-	draw: =>
+	draw: (col={0.1, 0.75, 0.85}) =>
 -- 		@\drawPlayButton!
 		if @current_menu == @credits_menu then
 			@\drawCreditsMenu(64, 64)
 		else
-			@\drawMenuOptions(GAME_WIDTH/2, @menu_y)
+			@\drawMenuOptions(GAME_WIDTH/2, @menu_y, col)
 
 		@\drawControls(42, @menu_y)

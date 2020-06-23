@@ -1,48 +1,12 @@
+require("objects/game objects/Menu")
 do
   local _class_0
+  local _parent_0 = Menu
   local _base_0 = {
     animateMenu = function(self)
       return self.timer:tween(2, self, {
         menu_y = 64
       }, 'in-out-cubic')
-    end,
-    moveCursor = function(self)
-      if input:pressed('up') then
-        if self.cursor == 1 then
-          self.cursor = #self.current_menu
-        else
-          self.cursor = self.cursor - 1
-        end
-      end
-      if input:pressed('down') then
-        if self.cursor == #self.current_menu then
-          self.cursor = 1
-        else
-          self.cursor = self.cursor + 1
-        end
-      end
-    end,
-    chooseOption = function(self)
-      if input:pressed('confirm') then
-        local current = self.current_menu[self.cursor]
-        local _exp_0 = (current)
-        if "Start Game" == _exp_0 then
-          return self:startGame()
-        elseif "Options" == _exp_0 then
-          return self:enterOptions()
-        elseif "Toggle Fullscreen" == _exp_0 then
-          return self:toggleFullscreen()
-        elseif "Credits" == _exp_0 then
-          return self:enterCredits()
-        elseif "Quit" == _exp_0 then
-          return self:quitGame()
-        end
-      elseif input:pressed('back') then
-        if self.current_menu ~= self.main_menu then
-          self.current_menu = self.main_menu
-          self.cursor = 1
-        end
-      end
     end,
     startGame = function(self)
       game.next_state = {
@@ -64,71 +28,17 @@ do
     toggleFullscreen = function(self)
       return Push:switchFullscreen()
     end,
-    update = function(self)
-      self.timer:update(dt)
-      self.count = self.count + dt
-      self:moveCursor()
-      return self:chooseOption()
-    end,
-    drawPill = function(self, x, y, w, h, col)
-      if col == nil then
-        col = {
-          0.1,
-          0.75,
-          0.85
-        }
-      end
-      lg.setColor(col)
-      lg.ellipse("fill", round(x - 2), round(y + 8), 6, 6)
-      lg.ellipse("fill", round(x + w + 2), round(y + 8), 6, 6)
-      lg.rectangle("fill", x - 2, y + 2, w + 4, 12)
-      return lg.setColor(WHITE)
-    end,
-    drawOptionBackground = function(self, i, x, y, width)
-      if i == self.cursor then
-        self:drawPill(x, y + 2, width, 12, BLACK)
-        if (self.count % self.blink) < self.blink / 2 then
-          return self:drawPill(x, y, width, 12, {
-            0.4,
-            0.85,
-            1.0
-          })
-        else
-          return self:drawPill(x, y, width, 12)
+    checkGoBack = function(self)
+      if input:pressed('back') then
+        if self.current_menu ~= self.main_menu then
+          self.current_menu = self.main_menu
+          self.cursor = 1
         end
-      else
-        return self:drawPill(x, y, width, 12)
       end
     end,
-    drawMenuOption = function(self, i, item, x, y)
-      local font = lg.getFont()
-      local width = font:getWidth(item)
-      local cx = x - (width / 2)
-      self:drawOptionBackground(i, cx, y, width)
-      return shadowPrint(item, cx, y)
-    end,
-    drawMenuOptions = function(self, x, y)
-      if x == nil then
-        x = 0
-      end
-      if y == nil then
-        y = 0
-      end
-      for i = 1, #self.current_menu do
-        local ty = y + i * 16
-        self:drawMenuOption(i, self.current_menu[i], x, ty)
-      end
-    end,
-    drawControls = function(self, x, y)
-      if x == nil then
-        x = 0
-      end
-      if y == nil then
-        y = 0
-      end
-      lg.setColor(WHITE)
-      lg.print("z - accept", x, y + 82)
-      return lg.print("x - back", x + 96, y + 82)
+    update = function(self)
+      _class_0.__parent.update(self)
+      return self:checkGoBack()
     end,
     drawCreditsMenu = function(self, x, y)
       if x == nil then
@@ -148,22 +58,27 @@ do
         shadowPrint(item, cx, ty)
       end
     end,
-    draw = function(self)
+    draw = function(self, col)
+      if col == nil then
+        col = {
+          0.1,
+          0.75,
+          0.85
+        }
+      end
       if self.current_menu == self.credits_menu then
         self:drawCreditsMenu(64, 64)
       else
-        self:drawMenuOptions(GAME_WIDTH / 2, self.menu_y)
+        self:drawMenuOptions(GAME_WIDTH / 2, self.menu_y, col)
       end
       return self:drawControls(42, self.menu_y)
     end
   }
   _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
     __init = function(self)
-      self.timer = Timer()
-      self.count = 0
-      self.blink = 0.4
-      self.menu_y = GAME_HEIGHT + 8
+      _class_0.__parent.__init(self, GAME_HEIGHT + 8)
       self.main_menu = {
         "Start Game",
         "Options",
@@ -183,7 +98,43 @@ do
         "Faybia (945607)"
       }
       self.current_menu = self.main_menu
-      self.cursor = 1
+      self.callbacks = {
+        ["Start Game"] = (function()
+          local _base_1 = self
+          local _fn_0 = _base_1.startGame
+          return function(...)
+            return _fn_0(_base_1, ...)
+          end
+        end)(),
+        ["Options"] = (function()
+          local _base_1 = self
+          local _fn_0 = _base_1.enterOptions
+          return function(...)
+            return _fn_0(_base_1, ...)
+          end
+        end)(),
+        ["Toggle Fullscreen"] = (function()
+          local _base_1 = self
+          local _fn_0 = _base_1.toggleFullscreen
+          return function(...)
+            return _fn_0(_base_1, ...)
+          end
+        end)(),
+        ["Credits"] = (function()
+          local _base_1 = self
+          local _fn_0 = _base_1.enterCredits
+          return function(...)
+            return _fn_0(_base_1, ...)
+          end
+        end)(),
+        ["Quit"] = (function()
+          local _base_1 = self
+          local _fn_0 = _base_1.quitGame
+          return function(...)
+            return _fn_0(_base_1, ...)
+          end
+        end)()
+      }
       return self.timer:after(0.5, (function()
         local _base_1 = self
         local _fn_0 = _base_1.animateMenu
@@ -193,9 +144,20 @@ do
       end)())
     end,
     __base = _base_0,
-    __name = "MainMenu"
+    __name = "MainMenu",
+    __parent = _parent_0
   }, {
-    __index = _base_0,
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
     __call = function(cls, ...)
       local _self_0 = setmetatable({}, _base_0)
       cls.__init(_self_0, ...)
@@ -203,5 +165,8 @@ do
     end
   })
   _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
   MainMenu = _class_0
 end

@@ -10,14 +10,23 @@ do
       }
     end,
     update = function(self)
-      return self.timer:update(dt)
+      self.timer:update(dt)
+      return self.menu:update()
     end,
-    draw = function(self)
+    drawGameOver = function(self)
       lg.clear(BLACK)
       lg.setFont(big_font)
       lg.setColor(WHITE)
-      lg.print("game over", 80, 72)
+      lg.print("game over", 80, 64)
       return lg.setFont(default_font)
+    end,
+    draw = function(self)
+      self:drawGameOver()
+      return self.menu:draw({
+        0.3,
+        0.3,
+        0.3
+      })
     end
   }
   _base_0.__index = _base_0
@@ -26,7 +35,7 @@ do
     __init = function(self, parent)
       self.parent = parent
       self.timer = Timer()
-      return self.timer:after(4, self.restartGame, 'restart')
+      self.menu = GameOverMenu()
     end,
     __base = _base_0,
     __name = "GameOverState",
