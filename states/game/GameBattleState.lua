@@ -115,7 +115,6 @@ do
       return self.enemyPosData[i]
     end,
     turnEnd = function(self)
-      print("Checkwon " .. tostring(self:checkWon()))
       if self:checkWon() then
         local gold = math.random(0, 100)
         local drops = {

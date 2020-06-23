@@ -34,9 +34,17 @@ export class MainMenu
 
 	moveCursor: =>
 		if input\pressed('up')
-			@cursor = max(1, @cursor - 1)
+-- 			@cursor = max(1, @cursor - 1)
+			if @cursor == 1
+				@cursor = #@current_menu
+			else
+				@cursor -= 1
 		if input\pressed('down')
-			@cursor = min(#@current_menu, @cursor + 1)
+-- 			@cursor = min(#@current_menu, @cursor + 1)
+			if @cursor == #@current_menu
+				@cursor = 1
+			else
+				@cursor += 1
 
 	chooseOption: =>
 		if input\pressed('confirm')

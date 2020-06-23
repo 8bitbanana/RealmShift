@@ -8,10 +8,18 @@ do
     end,
     moveCursor = function(self)
       if input:pressed('up') then
-        self.cursor = max(1, self.cursor - 1)
+        if self.cursor == 1 then
+          self.cursor = #self.current_menu
+        else
+          self.cursor = self.cursor - 1
+        end
       end
       if input:pressed('down') then
-        self.cursor = min(#self.current_menu, self.cursor + 1)
+        if self.cursor == #self.current_menu then
+          self.cursor = 1
+        else
+          self.cursor = self.cursor + 1
+        end
       end
     end,
     chooseOption = function(self)
