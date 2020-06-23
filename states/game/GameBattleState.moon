@@ -72,7 +72,9 @@ export class GameBattleState extends State
 		@state = State(@)
 		@players = @parent.party
 		for player in *@players
-			player.parent = @ if player != nil
+			continue if not player
+			player.parent = @
+			player\init!
 		@calculatePlayerPos!
 
 		@enemies = {
@@ -83,7 +85,9 @@ export class GameBattleState extends State
 			BattleEnemyLancer!
 		}
 		for enemy in *@enemies
-			enemy.parent = @ if enemy != nil
+			continue if not enemy
+			enemy.parent = @
+			enemy\init!
 		@calculateEnemyPos!
 
 		@calculateInitiative!
@@ -184,7 +188,7 @@ export class GameBattleState extends State
 		for i,v in pairs @initiative
 			icon = "[#{i}]"
 			if i == highlight
-				icon = "{#{i}}"
+				icon = "##{i}#"
 			print("#{icon} T:#{v.type} I:#{v.index} S:#{v.speed}")
 		print!
 

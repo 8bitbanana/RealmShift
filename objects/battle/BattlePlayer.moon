@@ -11,10 +11,11 @@ Inspect = require("lib/inspect")
 export class BattlePlayer
 	name: "BattlePlayer"
 	new: ()=>
+		@initialised = false
 		@parent = nil
 		@timer = Timer!
 		@pos = {x:0,y:0}
-		@color = {1,1,1, 1}
+		@color = {1,1,1,1}
 		@basestats = {
 			hp: 0,
 			attack: 0,
@@ -22,17 +23,22 @@ export class BattlePlayer
 			speed: 0,
 			magic: 0
 		}
-		@buffs = {
-			rally: false,
-			poison: false
-		}
-		@dead = false
+		@stats = table.shallow_copy(@basestats)
+		@hp = @stats.hp
 		@size = {w:24, h:32}
 		@sprite = sprites.battle.main_char
 
 	init: () =>
 		@stats = table.shallow_copy(@basestats)
-		@hp = @stats.hp
+		if not @initialised
+			@hp = @stats.hp
+		@hp = 0 if @hp < 0
+		@buffs = {
+			rally: false,
+			poison: false
+		}
+		@dead = @hp == 0
+		@initialised = true
 
 	-- Using incomingattack, run the damage formula and
 	-- reduce @hp by that amount.

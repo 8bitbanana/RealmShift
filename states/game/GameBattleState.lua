@@ -77,9 +77,19 @@ do
       }
       local _list_1 = self.enemies
       for _index_0 = 1, #_list_1 do
-        local enemy = _list_1[_index_0]
-        if enemy ~= nil then
+        local _continue_0 = false
+        repeat
+          local enemy = _list_1[_index_0]
+          if not enemy then
+            _continue_0 = true
+            break
+          end
           enemy.parent = self
+          enemy:init()
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
         end
       end
       self:calculateEnemyPos()
@@ -192,7 +202,7 @@ do
       for i, v in pairs(self.initiative) do
         local icon = "[" .. tostring(i) .. "]"
         if i == highlight then
-          icon = "{" .. tostring(i) .. "}"
+          icon = "#" .. tostring(i) .. "#"
         end
         print(tostring(icon) .. " T:" .. tostring(v.type) .. " I:" .. tostring(v.index) .. " S:" .. tostring(v.speed))
       end

@@ -12,7 +12,9 @@ do
     name = "BattlePlayer",
     init = function(self)
       self.stats = table.shallow_copy(self.basestats)
-      self.hp = self.stats.hp
+      if not self.initialised then
+        self.hp = self.stats.hp
+      end
       if self.hp < 0 then
         self.hp = 0
       end
@@ -21,6 +23,7 @@ do
         poison = false
       }
       self.dead = self.hp == 0
+      self.initialised = true
     end,
     takeDamage = function(self, incomingattack)
       local damage = math.floor((DAMAGE_FORMULA.va + (DAMAGE_FORMULA.vm * ((incomingattack * DAMAGE_FORMULA.aw) - (self.stats.defence * DAMAGE_FORMULA.dw)))) * DAMAGE_FORMULA.bd)
@@ -166,6 +169,7 @@ do
   _base_0.__index = _base_0
   _class_0 = setmetatable({
     __init = function(self)
+      self.initialised = false
       self.parent = nil
       self.timer = Timer()
       self.pos = {
@@ -185,6 +189,8 @@ do
         speed = 0,
         magic = 0
       }
+      self.stats = table.shallow_copy(self.basestats)
+      self.hp = self.stats.hp
       self.size = {
         w = 24,
         h = 32
