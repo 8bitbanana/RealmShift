@@ -129,5 +129,6 @@ export class BattleSpaceSelectState extends BattleEntitySelectState
 export class BattlePlayerSelectState extends BattleEntitySelectState
 	init: =>
 		@entities = @parent.players
-		@targetType = "move"
+		@targetType = "always"
+		@targetType = @params.targetType if @params.targetType
 		super!

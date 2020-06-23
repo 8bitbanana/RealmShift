@@ -45,7 +45,7 @@ do
             _continue_0 = true
             break
           end
-          if player.hp < player.stats.hp then
+          if player.hp < player.stats.hp and player.hp > 0 then
             return true
           end
           _continue_0 = true

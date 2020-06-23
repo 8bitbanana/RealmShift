@@ -42,7 +42,7 @@ export class BattlePlayer
 		damage = 1 if damage < 1
 		@hp -= damage
 		print("I took " .. damage .. " damage ("..incomingattack.."ATK "..@stats.defence.."DEF)")
-		if @hp < 0
+		if @hp <= 0
 			@\die!
 		return damage
 
@@ -89,6 +89,8 @@ export class BattlePlayer
 				return @hp > 0
 			when "move"
 				return @hp > 0
+			when "heal"
+				return @hp > 0 and @hp < @stats.hp
 			when "always"
 				return true
 			else
@@ -224,7 +226,7 @@ export class Fighter extends BattlePlayer
 				@cutscenes\addCutscene(swapscene)
 				@state\changeState(BattleTurnState, {ttl:0.5})
 			@state\changeState(BattleSpaceSelectState, {selectedspace:firstindex})
-		@parent.state\changeState(BattlePlayerSelectState, {selectedIndex:myindex})
+		@parent.state\changeState(BattlePlayerSelectState, {selectedIndex:myindex, targetType:"move"})
 
 	draw_alive: () =>
 		lg.setColor(FIGHTER_COL)

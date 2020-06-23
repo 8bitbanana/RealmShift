@@ -21,7 +21,7 @@ do
       end
       self.hp = self.hp - damage
       print("I took " .. damage .. " damage (" .. incomingattack .. "ATK " .. self.stats.defence .. "DEF)")
-      if self.hp < 0 then
+      if self.hp <= 0 then
         self:die()
       end
       return damage
@@ -76,6 +76,8 @@ do
         return self.hp > 0
       elseif "move" == _exp_0 then
         return self.hp > 0
+      elseif "heal" == _exp_0 then
+        return self.hp > 0 and self.hp < self.stats.hp
       elseif "always" == _exp_0 then
         return true
       else
@@ -304,7 +306,8 @@ do
         })
       end
       return self.parent.state:changeState(BattlePlayerSelectState, {
-        selectedIndex = myindex
+        selectedIndex = myindex,
+        targetType = "move"
       })
     end,
     draw_alive = function(self)

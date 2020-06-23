@@ -277,7 +277,10 @@ do
   local _base_0 = {
     init = function(self)
       self.entities = self.parent.players
-      self.targetType = "move"
+      self.targetType = "always"
+      if self.params.targetType then
+        self.targetType = self.params.targetType
+      end
       return _class_0.__parent.__base.init(self)
     end
   }

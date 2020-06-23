@@ -17,8 +17,7 @@ export class Game
 			nil,
 			Mage!
 		}
-		@party[1].hp /= 2
-		@party[2].hp /= 2
+		
 		-- Gold is stored in the Inventory
 		@inventory = Inventory(@)
 

@@ -27,7 +27,7 @@ export class PartyHeal extends InventoryItem
 	is_usable: =>
 		for player in *game.party
 			continue if not player
-			return true if player.hp < player.stats.hp
+			return true if player.hp < player.stats.hp and player.hp > 0
 		return false, "Everyone is already at full health!"
 
 	use: =>
