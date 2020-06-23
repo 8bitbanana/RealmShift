@@ -29,7 +29,14 @@ export class GameBattleState extends State
 		@selectionCallback = ()->
 		@dialogCallback = ()->
 
+	swapEntityIndexes: (type, indexA, indexB) =>
+		print("indexSwap")
+		@updateEntityIndexes(type, indexA, 99)
+		@updateEntityIndexes(type, indexB, indexA)
+		@updateEntityIndexes(type, 99, indexB)
+
 	updateEntityIndexes: (type, oldindex, newindex) =>
+		print("indexUpdate t:#{type} old:#{oldindex} new:#{newindex}")
 		if @turndata.type == type and oldindex == @turndata.index
 			@turndata.index = newindex
 		for i,initiative in pairs @initiative
@@ -172,9 +179,14 @@ export class GameBattleState extends State
 		table.sort(@initiative, sortfunc)
 		@printInitiative!
 
-	printInitiative: =>
+	printInitiative: (highlight) =>
+		print("==INITIATIVE==")
 		for i,v in pairs @initiative
-			print("#{i} T:#{v.type} I:#{v.index} S:#{v.speed}")
+			icon = "[#{i}]"
+			if i == highlight
+				icon = "{#{i}}"
+			print("#{icon} T:#{v.type} I:#{v.index} S:#{v.speed}")
+		print!
 
 	getNextInitiative: (apply=false)=>
 		nextIndex = @initiativeIndex + 1
@@ -191,6 +203,7 @@ export class GameBattleState extends State
 				type: nextInitiative.type,
 				index: nextInitiative.index
 			}
+			@printInitiative @initiativeIndex
 		return nextInitiative.entity
 
 
