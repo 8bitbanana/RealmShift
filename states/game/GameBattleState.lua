@@ -5,7 +5,14 @@ do
   local _class_0
   local _parent_0 = State
   local _base_0 = {
+    swapEntityIndexes = function(self, type, indexA, indexB)
+      print("indexSwap")
+      self:updateEntityIndexes(type, indexA, 99)
+      self:updateEntityIndexes(type, indexB, indexA)
+      return self:updateEntityIndexes(type, 99, indexB)
+    end,
     updateEntityIndexes = function(self, type, oldindex, newindex)
+      print("indexUpdate t:" .. tostring(type) .. " old:" .. tostring(oldindex) .. " new:" .. tostring(newindex))
       if self.turndata.type == type and oldindex == self.turndata.index then
         self.turndata.index = newindex
       end
@@ -170,10 +177,16 @@ do
       table.sort(self.initiative, sortfunc)
       return self:printInitiative()
     end,
-    printInitiative = function(self)
+    printInitiative = function(self, highlight)
+      print("==INITIATIVE==")
       for i, v in pairs(self.initiative) do
-        print(tostring(i) .. " T:" .. tostring(v.type) .. " I:" .. tostring(v.index) .. " S:" .. tostring(v.speed))
+        local icon = "[" .. tostring(i) .. "]"
+        if i == highlight then
+          icon = "{" .. tostring(i) .. "}"
+        end
+        print(tostring(icon) .. " T:" .. tostring(v.type) .. " I:" .. tostring(v.index) .. " S:" .. tostring(v.speed))
       end
+      return print()
     end,
     getNextInitiative = function(self, apply)
       if apply == nil then
@@ -199,6 +212,7 @@ do
           type = nextInitiative.type,
           index = nextInitiative.index
         }
+        self:printInitiative(self.initiativeIndex)
       end
       return nextInitiative.entity
     end,

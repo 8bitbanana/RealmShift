@@ -193,9 +193,10 @@ export class CutsceneSwap extends BattleCutscene
 
 	sceneFinish: =>
 		@entities[@args.firstindex], @entities[@args.secondindex] = @entities[@args.secondindex], @entities[@args.firstindex]
-		if @playerA != nil
-			@root\updateEntityIndexes(@args.type, @args.firstindex, @args.secondindex)
-		if @playerB != nil
-			@root\updateEntityIndexes(@args.type, @args.secondindex, @args.firstindex)
+		-- if @playerA != nil
+		-- 	@root\updateEntityIndexes(@args.type, @args.firstindex, @args.secondindex)
+		-- if @playerB != nil
+		-- 	@root\updateEntityIndexes(@args.type, @args.secondindex, @args.firstindex)
+		@root\swapEntityIndexes(@args.type, @args.firstindex, @args.secondindex)
 		@root\calculatePlayerPos! if @args.type == "player"
 		@root\calculateEnemyPos! if @args.type == "enemy"

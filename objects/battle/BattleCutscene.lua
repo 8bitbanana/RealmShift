@@ -396,12 +396,7 @@ do
     end,
     sceneFinish = function(self)
       self.entities[self.args.firstindex], self.entities[self.args.secondindex] = self.entities[self.args.secondindex], self.entities[self.args.firstindex]
-      if self.playerA ~= nil then
-        self.root:updateEntityIndexes(self.args.type, self.args.firstindex, self.args.secondindex)
-      end
-      if self.playerB ~= nil then
-        self.root:updateEntityIndexes(self.args.type, self.args.secondindex, self.args.firstindex)
-      end
+      self.root:swapEntityIndexes(self.args.type, self.args.firstindex, self.args.secondindex)
       if self.args.type == "player" then
         self.root:calculatePlayerPos()
       end
