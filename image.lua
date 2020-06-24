@@ -1,5 +1,6 @@
 
 function loadSprites()
+	-- Static sprites
 	sprites = {
 		player = {
 			idle = Soda.newSprite(lg.newImage("images/sprites/characters/test_char.png"), 8, 8),
@@ -44,6 +45,17 @@ function loadSprites()
 		  },
 		},
 	}
+
+	--Animated Sprites
+	sprites.items.gold_coin = Soda.newAnimatedSprite(8, 8)
+	sprites.items.gold_coin:addAnimation('main', {
+		image = lg.newImage("images/sprites/item/gold_coin.png"),
+		frameWidth = 16,
+		frameHeight = 16,
+		frames = {
+			{1,1,3,1, 0.1}
+		}
+	})
 
 	backgrounds = {
 		-- May change to use Sodapop library if backgrounds get animated

@@ -113,6 +113,7 @@ do
       self:checkSkip()
       self.timer:update(dt)
       self.blink_timer = (self.blink_timer + dt) % self.blink_len
+      return sprites.items.gold_coin:update(dt)
     end,
     drawScreenBackground = function(self)
       local dx = (GAME_WIDTH - self.width) / 2
@@ -154,7 +155,7 @@ do
       for i = 1, self.pcount do
         local p = players[i]
         local x = 32 + (floor((i - 1) / 2) * 104)
-        local y = 104 - ((i % 2) * 40)
+        local y = 96 - ((i % 2) * 40)
         self:drawPortraitBorder(x, y)
         if p then
           p.sprite:draw(x, y)
@@ -163,23 +164,24 @@ do
       end
     end,
     drawDrops = function(self)
-      local x = 24
+      local x = 17
       for i = 1, self.dcount do
-        local y = GAME_HEIGHT - 64 + (i * 16)
+        local y = GAME_HEIGHT - 72 + (i * 16)
         local item = self.drops[i]
         if item then
           if item.sprite then
             item.sprite:draw(x, y)
           end
-          shadowPrint(item.name, x + 10, y - 4)
+          shadowPrint(item.name, x + 14, y - 4)
         end
       end
     end,
     drawGoldCount = function(self)
-      local x = 102
-      local y = GAME_HEIGHT - self.padding - 4
+      local x = 110
+      local y = GAME_HEIGHT - self.padding - 16
       if self.show_gold then
         if self.gcount > 0 then
+          sprites.items.gold_coin:draw(x - 16, y - 1)
           shadowPrint("+" .. tostring(self.gold), x + 34, y - 12)
         end
         shadowPrint("Gold:", x, y, GOLD)
@@ -190,12 +192,12 @@ do
     drawButtonPrompt = function(self)
       if self.blink_timer <= self.blink_len / 2 then
         local x = 176
-        local y = GAME_HEIGHT - self.padding - 4
+        local y = GAME_HEIGHT - self.padding - 16
         if self.can_skip and not self.can_return then
-          x = 168
+          x = 172
           shadowPrint("Skip", x + 20, y)
         elseif self.can_skip and self.can_return then
-          x = 164
+          x = 168
           shadowPrint("Conf.", x + 20, y)
         end
         if self.can_skip then
@@ -223,7 +225,7 @@ do
       self.blink_len = 1
       self.rx = args.rx
       self.ry = args.ry
-      self.padding = 32
+      self.padding = 16
       self.width = GAME_WIDTH - self.padding
       self.height = GAME_HEIGHT - self.padding
       self.opacity = 0

@@ -9,7 +9,7 @@ export class BattleWinState extends State
 		@rx = args.rx
 		@ry = args.ry
 
-		@padding     = 32
+		@padding     = 16
 		@width       = GAME_WIDTH-@padding
 		@height      = GAME_HEIGHT-@padding
 		@opacity     = 0
@@ -106,6 +106,8 @@ export class BattleWinState extends State
 		@timer\update(dt)
 		@blink_timer = (@blink_timer + dt)%@blink_len
 
+		sprites.items.gold_coin\update(dt)
+
 	drawScreenBackground: =>
 		dx = (GAME_WIDTH-@width)/2
 		dy = (GAME_HEIGHT-@height)/2
@@ -140,7 +142,7 @@ export class BattleWinState extends State
 		for i=1, @pcount
 			p = players[i]
 			x = 32+(floor((i-1)/2)*104)
-			y = 104-((i%2)*40)
+			y = 96-((i%2)*40)
 
 			@\drawPortraitBorder(x, y)
 
@@ -149,23 +151,26 @@ export class BattleWinState extends State
 				@\drawHealthBar(p, x, y-6)
 
 	drawDrops: =>
-		x = 24
+		x = 17
 
 		for i=1, @dcount
-			y = GAME_HEIGHT-64 + (i*16)
+			y = GAME_HEIGHT-72 + (i*16)
 
 			item = @drops[i]
 			if item
 				if item.sprite
 					item.sprite\draw(x, y)
-				shadowPrint(item.name, x+10, y-4)
+				shadowPrint(item.name, x+14, y-4)
 
 	drawGoldCount: =>
-		x = 102
-		y = GAME_HEIGHT-@padding-4
+		x = 110
+		y = GAME_HEIGHT-@padding-16
 
 		if @show_gold
 			if @gcount > 0
+				-- Draw spinning gold coin
+				sprites.items.gold_coin\draw(x-16, y-1)
+
 				shadowPrint("+#{@gold}", x+34, y-12)
 
 			shadowPrint("Gold:", x, y, GOLD)
@@ -175,13 +180,13 @@ export class BattleWinState extends State
 	drawButtonPrompt: =>
 		if @blink_timer <= @blink_len/2
 			x = 176
-			y = GAME_HEIGHT-@padding-4
+			y = GAME_HEIGHT-@padding-16
 
 			if @can_skip and not @can_return
-				x = 168
+				x = 172
 				shadowPrint("Skip", x+20, y)
 			elseif @can_skip and @can_return
-				x = 164
+				x = 168
 				shadowPrint("Conf.", x+20, y)
 
 			if @can_skip
