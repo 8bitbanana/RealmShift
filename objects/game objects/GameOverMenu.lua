@@ -4,8 +4,9 @@ do
   local _parent_0 = Menu
   local _base_0 = {
     continueGame = function(self)
+      deserialise(game)
       game.next_state = {
-        state = GameTitleState,
+        state = GameExploreState,
         params = { }
       }
     end,

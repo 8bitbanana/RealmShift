@@ -16,7 +16,8 @@ export class GameOverMenu extends Menu
 		}
 
 	continueGame: =>
-		game.next_state = {state: GameTitleState, params: {}}
+		deserialise(game) -- Load Save Game
+		game.next_state = {state: GameExploreState, params: {}}
 
 	quitToMenu: =>
 		game.next_state = {state: GameTitleState, params: {}}
