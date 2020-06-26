@@ -19,6 +19,20 @@ string.totable = (s) ->
 table.stripKeys = (t) ->
 	return [v for k,v in pairs(t)]
 
+deepcopy = (orig) ->
+    orig_type = type(orig)
+    copy = {}
+    if orig_type == 'table'
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+
+        setmetatable(copy, deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+
+    return copy
+
 table.shallow_copy = (t) ->
     return {k, v for k, v in pairs t}
 

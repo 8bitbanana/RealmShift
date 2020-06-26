@@ -12,6 +12,7 @@ function setupInput()
 	input:bind("z", "talk")
 
 	-- -- MENU
+	input:bind("p", "pause")
 	input:bind("z", "confirm")
 	input:bind("x", "back")
 
@@ -40,10 +41,18 @@ function setupInput()
 
 
 	-- GAMEPAD
--- 	input:bind("dpleft", "left")
--- 	input:bind("dpright", "right")
--- 	input:bind("dpup", "up")
--- 	input:bind("dpdown", "down")
+	input:bind("dpleft", "left")
+	input:bind("dpright", "right")
+	input:bind("dpup", "up")
+	input:bind("dpdown", "down")
+
+	input:bind("fright", "confirm")
+	input:bind("fdown", "back")
+
+	input:bind("fright", "open_door")
+	input:bind("fright", "talk")
+
+	input:bind("start", "pause")
 
 	return input
 end

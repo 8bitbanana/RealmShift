@@ -10,6 +10,8 @@ do
         x = ""
       }
       self.dialog = DialogManager()
+      self.pause_menu = PauseMenu()
+      self.paused = false
       self.party = {
         Paladin(),
         Fighter(),
@@ -66,10 +68,15 @@ do
       if self.transitioning then
         local _ = nil
       else
-        if self.state then
+        if self.paused then
+          self.pause_menu:update()
+        elseif self.state then
           self.state:update()
           self.dialog:update()
         end
+      end
+      if input:pressed("pause") then
+        self.paused = not self.paused
       end
       if input:pressed("dialogdebug") then
         if self.dialog.running then
@@ -133,11 +140,18 @@ do
       else
         if self.state then
           self.state:draw()
+          if self.state.__class.__name == "GameExploreState" or self.state.__class.__name == "GameOverworldState" then
+            self:drawButtonPrompts()
+          end
         end
-        self.dialog:draw()
-        if self.state.__class.__name == "GameExploreState" or self.state.__class.__name == "GameOverworldState" then
-          return self:drawButtonPrompts()
+        if self.paused then
+          self.pause_menu:draw({
+            0.5,
+            0.5,
+            0.5
+          })
         end
+        return self.dialog:draw()
       end
     end
   }

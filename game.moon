@@ -10,6 +10,8 @@ export class Game
 		@button_prompts = {z: "", x: ""}
 
 		@dialog = DialogManager!
+		@pause_menu = PauseMenu!
+		@paused = false
 
 		@party = {
 			Paladin!
@@ -17,7 +19,7 @@ export class Game
 			nil,
 			Mage!
 		}
-		
+
 		-- Gold is stored in the Inventory
 		@inventory = Inventory(@)
 
@@ -71,9 +73,14 @@ export class Game
 			nil
 
 		else
-			if @state
+			if @paused
+				@pause_menu\update!
+			elseif @state
 				@state\update!
 				@dialog\update!
+
+		if input\pressed "pause"
+			@paused = not @paused
 
 		-- DEBUG CODE, NEEDS TO BE MOVED --
 		-----------------------------------
@@ -142,7 +149,10 @@ export class Game
 		else
 			if @state
 				@state\draw!
+				if @state.__class.__name == "GameExploreState" or @state.__class.__name == "GameOverworldState"
+					@drawButtonPrompts!
+			if @paused
+				@pause_menu\draw({0.5, 0.5, 0.5})
 
 			@dialog\draw!
-			if @state.__class.__name == "GameExploreState" or @state.__class.__name == "GameOverworldState"
-				@drawButtonPrompts!
+
