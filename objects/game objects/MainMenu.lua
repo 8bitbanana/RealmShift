@@ -8,11 +8,30 @@ do
         menu_y = 64
       }, 'in-out-cubic')
     end,
-    startGame = function(self)
+    enterPlayMenu = function(self)
+      self.cursor = 1
+      self.current_menu = self.play_menu
+    end,
+    startNewGame = function(self)
       game.next_state = {
         state = GameExploreState,
         params = { }
       }
+    end,
+    loadGame = function(self)
+      local save_data = io.open("save.dat", "rb")
+      if save_data ~= nil then
+        print("save data exists!")
+        deserialise(game, save_data:read("*all"))
+        io.close(save_data)
+        game.next_state = {
+          state = GameExploreState,
+          params = { }
+        }
+      else
+        sounds.negative:stop()
+        return sounds.negative:play()
+      end
     end,
     quitGame = function(self)
       return le.quit()
@@ -80,10 +99,14 @@ do
     __init = function(self)
       _class_0.__parent.__init(self, GAME_HEIGHT + 8)
       self.main_menu = {
-        "Start Game",
+        "Play",
         "Options",
         "Credits",
         "Quit"
+      }
+      self.play_menu = {
+        "New Game",
+        "Load Game"
       }
       self.option_menu = {
         "Toggle Fullscreen"
@@ -99,9 +122,23 @@ do
       }
       self.current_menu = self.main_menu
       self.callbacks = {
-        ["Start Game"] = (function()
+        ["Play"] = (function()
           local _base_1 = self
-          local _fn_0 = _base_1.startGame
+          local _fn_0 = _base_1.enterPlayMenu
+          return function(...)
+            return _fn_0(_base_1, ...)
+          end
+        end)(),
+        ["New Game"] = (function()
+          local _base_1 = self
+          local _fn_0 = _base_1.startNewGame
+          return function(...)
+            return _fn_0(_base_1, ...)
+          end
+        end)(),
+        ["Load Game"] = (function()
+          local _base_1 = self
+          local _fn_0 = _base_1.loadGame
           return function(...)
             return _fn_0(_base_1, ...)
           end

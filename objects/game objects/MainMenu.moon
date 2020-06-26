@@ -5,12 +5,17 @@ export class MainMenu extends Menu
 		super(GAME_HEIGHT + 8)
 
 		@main_menu = {
-		"Start Game",
-		"Options",
-		"Credits",
-		"Quit"}
+			"Play",
+			"Options",
+			"Credits",
+			"Quit",
+		}
+		@play_menu = {
+			"New Game",
+			"Load Game",
+		}
 		@option_menu = {
-			"Toggle Fullscreen"
+			"Toggle Fullscreen",
 		}
 		@credits_menu = {
 			"Ethan (924610)",
@@ -24,7 +29,10 @@ export class MainMenu extends Menu
 		@current_menu = @main_menu
 
 		@callbacks = {
-			["Start Game"]: @\startGame,
+			["Play"]: @\enterPlayMenu,
+			["New Game"]: @\startNewGame,
+			["Load Game"]: @\loadGame,
+
 			["Options"]: @\enterOptions,
 			["Toggle Fullscreen"]: @\toggleFullscreen,
 			["Credits"]: @\enterCredits,
@@ -36,26 +44,27 @@ export class MainMenu extends Menu
 	animateMenu: =>
 		@timer\tween(2, @, {menu_y: 64}, 'in-out-cubic')
 
--- 	chooseOption: =>
--- 		if input\pressed('confirm')
--- 			current = @current_menu[@cursor]
+	enterPlayMenu: =>
+		@cursor = 1
+		@current_menu = @play_menu
 
--- 			switch(current)
--- 				when "Start Game"
--- 					@\startGame!
-
--- 				when "Options"
--- 					@\enterOptions!
--- 				when "Toggle Fullscreen"
--- 					@\toggleFullscreen!
-
--- 				when "Credits"
--- 					@\enterCredits!
--- 				when "Quit"
--- 					@\quitGame!
-
-	startGame: =>
+	startNewGame: =>
 		game.next_state = {state: GameExploreState, params: {}}
+
+	loadGame: =>
+		-- CHECK FOR SAVE GAME DATA, IF EXISTS LOAD GAME, ELSE PLAY INCORRECT BUTTON SOUND
+		save_data = io.open("save.dat", "rb")
+		if save_data ~= nil
+			print("save data exists!")
+			deserialise(game, save_data\read("*all"))
+			io.close(save_data)
+			game.next_state = {state: GameExploreState, params: {}}
+		else
+			sounds.negative\stop!
+			sounds.negative\play!
+
+-- 	startGame: =>
+-- 		game.next_state = {state: GameExploreState, params: {}}
 
 	quitGame: =>
 		le.quit()
