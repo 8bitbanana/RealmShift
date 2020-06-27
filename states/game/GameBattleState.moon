@@ -189,7 +189,9 @@ export class GameBattleState extends State
 			icon = "[#{i}]"
 			if i == highlight
 				icon = "##{i}#"
-			print("#{icon} T:#{v.type} I:#{v.index} S:#{v.speed}")
+			type = v.type
+			type ..= " " if type == "enemy"
+			print("#{icon} T:#{type} I:#{v.index} S:#{v.speed}")
 		print!
 
 	getNextInitiative: (apply=false)=>

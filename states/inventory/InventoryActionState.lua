@@ -32,6 +32,7 @@ do
             if self:selectedItem().consumable then
               self:tossCurrentItem()
             end
+            self:unhighlightSprite()
           end
           return self.dialog:setTree(DialogTree({
             DialogBox(message)
@@ -61,8 +62,9 @@ do
             DialogBox(response)
           }))
           if self:selectedItem().consumable then
-            return self:tossCurrentItem()
+            self:tossCurrentItem()
           end
+          return self:unhighlightSprite()
         end
         self.parent.parent.dialog:setTree(DialogTree({
           DialogBox("Are you sure you want\nto use the " .. tostring(item.name) .. "?", {
@@ -260,6 +262,7 @@ do
       return self:selectedItem():clicked()
     end,
     back = function(self)
+      self.parent:unhighlightSprite()
       return self.parent.state:changeState(InventoryItemState)
     end,
     moveItemCursor = function(self, dir)
@@ -304,6 +307,7 @@ do
         x = 0,
         y = 0
       }, "right")
+      self.parent:highlightSprite()
       return self:updateCursorPos()
     end,
     __base = _base_0,

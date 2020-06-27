@@ -21,6 +21,7 @@ class UseItemMenuItem extends MenuItem
 						message = @selectedItem!\use(player)
 						if @selectedItem!.consumable
 							@tossCurrentItem!
+						@unhighlightSprite!
 					@dialog\setTree(DialogTree(
 						{DialogBox(message)}
 					))
@@ -44,6 +45,7 @@ class UseItemMenuItem extends MenuItem
 					))
 					if @selectedItem!.consumable
 						@tossCurrentItem!
+					@unhighlightSprite!
 				@parent.parent.dialog\setTree(DialogTree(
 					{DialogBox("Are you sure you want\nto use the #{item.name}?", {"Yes", "[CANCEL]No"})},
 					{},
@@ -88,6 +90,7 @@ export class InventoryActionState extends State
 		}
 		@selectedIndex = 1
 		@cursor = Cursor({x:0,y:0}, "right")
+		@parent\highlightSprite!
 		@updateCursorPos!
 	
 	updateCursorPos: =>
@@ -112,6 +115,7 @@ export class InventoryActionState extends State
 		@selectedItem!\clicked!
 
 	back: =>
+		@parent\unhighlightSprite!
 		@parent.state\changeState(InventoryItemState)
 
 	moveItemCursor: (dir) =>

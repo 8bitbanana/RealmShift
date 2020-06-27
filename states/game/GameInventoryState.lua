@@ -3,6 +3,16 @@ do
   local _class_0
   local _parent_0 = State
   local _base_0 = {
+    highlightSprite = function(self, index)
+      index = index or self.selectedIndex
+      return self.timer:tween(0.2, self, {
+        spriteScale = 1.2
+      }, "in-out-cubic")
+    end,
+    unhighlightSprite = function(self, index)
+      index = index or self.selectedIndex
+      self.spriteScale = 1
+    end,
     scrollTo = function(self, index)
       if index == nil then
         index = self.selectedIndex
@@ -32,11 +42,13 @@ do
       return self.state:changeState(InventoryItemState)
     end,
     swapCurrentItem = function(self, index)
+      self:unhighlightSprite()
       local temp = game.inventory.items[self.selectedIndex]
       game.inventory.items[self.selectedIndex] = game.inventory.items[index]
       game.inventory.items[index] = temp
     end,
     tossCurrentItem = function(self)
+      self:unhighlightSprite()
       game.inventory:removeItem(self.selectedIndex)
       if self.selectedIndex > #self.parent.inventory.items then
         self.selectedIndex = #self.parent.inventory.items
@@ -45,7 +57,8 @@ do
     end,
     update = function(self)
       self.state:update()
-      return self.dialog:update()
+      self.dialog:update()
+      return self.timer:update(dt)
     end,
     draw = function(self)
       lg.clear(0, 0, 0)
@@ -57,7 +70,13 @@ do
       for i = self.scrollWindow.top, self.scrollWindow.bottom do
         local item = self.parent.inventory.items[i]
         if item then
+          lg.setColor(0, 0, 0)
           lg.print(item.name, 21, 11 + (currentIndex * 16))
+          local scale = 1
+          if i == self.selectedIndex then
+            scale = self.spriteScale
+          end
+          item.sprite:draw(100, 14 + (currentIndex * 16), nil, scale, scale)
           currentIndex = currentIndex + 1
         end
       end
@@ -80,6 +99,8 @@ do
       self.dialog = DialogManager()
       self.state = State(self)
       self.selectedIndex = 1
+      self.timer = Timer()
+      self.spriteScale = 1
       self.scrollWindow = {
         top = 1,
         bottom = 8

@@ -147,10 +147,10 @@ function Sprite:update(dt)
   end
 end
 
-function Sprite:draw(ox, oy)
+function Sprite:draw(ox, oy, r, sx, sy)
   ox, oy = ox or 0, oy or 0
   love.graphics.setColor(self.color)
-  self.current:draw(self.x + ox, self.y + oy, self.r, self.sx, self.sy,
+  self.current:draw(self.x + ox, self.y + oy, r or self.r, sx or self.sx, sy or self.sy,
     self.flipX, self.flipY)
 end
 

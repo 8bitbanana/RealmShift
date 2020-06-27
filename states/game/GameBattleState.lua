@@ -204,7 +204,11 @@ do
         if i == highlight then
           icon = "#" .. tostring(i) .. "#"
         end
-        print(tostring(icon) .. " T:" .. tostring(v.type) .. " I:" .. tostring(v.index) .. " S:" .. tostring(v.speed))
+        local type = v.type
+        if type == "enemy" then
+          type = type .. " "
+        end
+        print(tostring(icon) .. " T:" .. tostring(type) .. " I:" .. tostring(v.index) .. " S:" .. tostring(v.speed))
       end
       return print()
     end,
