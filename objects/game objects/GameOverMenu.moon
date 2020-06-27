@@ -16,7 +16,12 @@ export class GameOverMenu extends Menu
 		}
 
 	continueGame: =>
-		deserialise(game) -- Load Save Game
+		save_data = io.open("save.dat", "rb")
+		if save_data ~= nil
+			serial = save_data\read("*all")
+			deserialise(game, serial) -- Load Save Game
+			io.close(save_data)
+
 		game.next_state = {state: GameExploreState, params: {}}
 
 	quitToMenu: =>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="../all_area_tiles.tsx"/>
+ <object name="Merchant" type="NPCMerchant" gid="58" width="8" height="8">
+  <properties>
+   <property name="item_list" type="file" value="../../shop_lists/desert_shop.lua"/>
+   <property name="solid" type="bool" value="true"/>
+  </properties>
+ </object>
+</template>

@@ -33,6 +33,22 @@ do
         height = self.height + (self.talk_range * 2)
       }
     end,
+    checkInteract = function(self, prompt)
+      if prompt == nil then
+        prompt = "use"
+      end
+      local talk_zone = self:getTalkZone()
+      local p = game.state.player
+      if p then
+        if AABB(talk_zone, p) then
+          game.button_prompts = {
+            z = prompt,
+            x = ""
+          }
+          return input:pressed("confirm")
+        end
+      end
+    end,
     checkTalk = function(self)
       local talk_zone = self:getTalkZone()
       local p = game.state.player
@@ -80,8 +96,11 @@ do
       return lg.setColor(WHITE)
     end,
     draw = function(self)
-      self:drawTalkZone()
-      return _class_0.__parent.draw(self)
+      _class_0.__parent.draw(self)
+      self.sprite:draw(self.pos.x, self.pos.y)
+      if self.name then
+        return shadowPrint(self.name, self.pos.x, self.pos.y - 16)
+      end
     end
   }
   _base_0.__index = _base_0

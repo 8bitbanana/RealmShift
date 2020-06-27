@@ -18,6 +18,7 @@ export class InventoryItem
 	draw_sprite: (pos) =>
 
 export class PartyHeal extends InventoryItem
+	price: 35
 	name: "F. Heal"
 	desc: "Fully heals your party"
 	consumable: true
@@ -37,6 +38,7 @@ export class PartyHeal extends InventoryItem
 		return "The whole party was healed!"
 
 export class Potion extends InventoryItem
+	price: 10
 	name: "M. Potion"
 	desc: "Heals an ally for 50 HP"
 	consumable: true
@@ -65,6 +67,7 @@ export class Potion extends InventoryItem
 		return "#{target.name} restored #{target.hp - oldhp} HP."
 
 export class LesserPotion extends Potion
+	price: 5
 	heal: 30
 	name: "S. Potion"
 	desc: "Heals an ally for 30 HP"
@@ -73,20 +76,21 @@ export class Inventory
 	new: =>
 		@items = {
 			LesserPotion!
-			Potion!
-			PartyHeal!
-			PartyHeal!
 			LesserPotion!
-			Potion!
-			PartyHeal!
-			LesserPotion!
-			Potion!
-			PartyHeal!
-			LesserPotion!
-			Potion!
-			PartyHeal!
+-- 			Potion!
+-- 			PartyHeal!
+-- 			PartyHeal!
+-- 			LesserPotion!
+-- 			Potion!
+-- 			PartyHeal!
+-- 			LesserPotion!
+-- 			Potion!
+-- 			PartyHeal!
+-- 			LesserPotion!
+-- 			Potion!
+-- 			PartyHeal!
 		}
-		@gold = 0
+		@gold = 25
 
 	addItem: (item, index) =>
 		item.root = @parent if item.root == nil

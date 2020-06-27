@@ -44,13 +44,6 @@ do
         return self.parent:checkTalk()
       end
     end,
-    draw = function(self)
-      local p = self.parent
-      p.sprite:draw(p.pos.x, p.pos.y)
-      if p.name then
-        return shadowPrint(p.name, p.pos.x, p.pos.y - 16)
-      end
-    end,
     destroy = function(self)
       return self.timer:destroy()
     end

@@ -30,6 +30,7 @@ do
   local _class_0
   local _parent_0 = InventoryItem
   local _base_0 = {
+    price = 35,
     name = "F. Heal",
     desc = "Fully heals your party",
     consumable = true,
@@ -113,6 +114,7 @@ do
   local _class_0
   local _parent_0 = InventoryItem
   local _base_0 = {
+    price = 10,
     name = "M. Potion",
     desc = "Heals an ally for 50 HP",
     consumable = true,
@@ -177,6 +179,7 @@ do
   local _class_0
   local _parent_0 = Potion
   local _base_0 = {
+    price = 5,
     heal = 30,
     name = "S. Potion",
     desc = "Heals an ally for 30 HP"
@@ -260,20 +263,9 @@ do
     __init = function(self)
       self.items = {
         LesserPotion(),
-        Potion(),
-        PartyHeal(),
-        PartyHeal(),
-        LesserPotion(),
-        Potion(),
-        PartyHeal(),
-        LesserPotion(),
-        Potion(),
-        PartyHeal(),
-        LesserPotion(),
-        Potion(),
-        PartyHeal()
+        LesserPotion()
       }
-      self.gold = 0
+      self.gold = 25
     end,
     __base = _base_0,
     __name = "Inventory"

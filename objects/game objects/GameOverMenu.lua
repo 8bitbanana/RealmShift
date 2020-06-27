@@ -4,7 +4,12 @@ do
   local _parent_0 = Menu
   local _base_0 = {
     continueGame = function(self)
-      deserialise(game)
+      local save_data = io.open("save.dat", "rb")
+      if save_data ~= nil then
+        local serial = save_data:read("*all")
+        deserialise(game, serial)
+        io.close(save_data)
+      end
       game.next_state = {
         state = GameExploreState,
         params = { }

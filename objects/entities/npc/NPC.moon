@@ -4,7 +4,7 @@ require "objects/game objects/dialog/Dialog"
 Inspect = require "lib/inspect"
 
 export class NPC extends Player
-	new: (@pos = {x: 0, y: 0}) =>
+	new: (@pos = {x: 0, y: 0}) => -- Instance specific data for NPC is loaded my Room's loadMapObjects method
 		@width = 16
 		@height = 16
 		@name = ""
@@ -37,6 +37,15 @@ export class NPC extends Player
 		-- Returns the collision checking box for checking whether player
 		-- is in range to talk to NPC
 		return {pos: {x: @pos.x-@talk_range, y: @pos.y-@talk_range}, width: @width+(@talk_range*2), height: @height+(@talk_range*2)}
+
+	checkInteract: (prompt="use") =>
+		talk_zone = @\getTalkZone!
+		p = game.state.player
+
+		if p
+			if AABB(talk_zone, p)
+				game.button_prompts = {z: prompt, x: ""}
+				return input\pressed("confirm")
 
 	-- Keeping this method in NPC means we can use it in multiple different states
 	-- e.g. wandering state, idle state etc.
@@ -79,6 +88,10 @@ export class NPC extends Player
 		lg.setColor(WHITE)
 
 	draw: =>
-		@\drawTalkZone!
+-- 		@\drawTalkZone!
 		super\draw!
 
+		@sprite\draw(@pos.x, @pos.y)
+
+		if @name
+			shadowPrint(@name, @pos.x, @pos.y-16)
