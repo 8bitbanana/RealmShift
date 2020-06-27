@@ -289,7 +289,9 @@ do
           ttl = 0.5
         })
       end
-      return self.parent.state:changeState(BattleEnemySelectState)
+      return self.parent.state:changeState(BattleEnemySelectState, {
+        prompt = "Which enemy should " .. tostring(self.name) .. " lunge at?"
+      })
     end,
     skillSecondaryInfo = {
       name = "REPOSITION",
@@ -320,11 +322,13 @@ do
           })
         end
         return self.state:changeState(BattleSpaceSelectState, {
-          selectedspace = firstindex
+          selectedspace = firstindex,
+          prompt = "Which space should they swap with?"
         })
       end
       return self.parent.state:changeState(BattlePlayerSelectState, {
         selectedIndex = myindex,
+        prompt = "Who should " .. tostring(self.name) .. " command to reposition?",
         targetType = "move"
       })
     end

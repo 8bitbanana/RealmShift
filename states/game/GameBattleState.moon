@@ -218,7 +218,7 @@ export class GameBattleState extends State
 			attackscene = CutsceneAttack({tts:0.1, index:index})
 			@cutscenes\addCutscene(attackscene)
 			@state\changeState(BattleTurnState, {ttl:0.33})
-		@state\changeState(BattleEnemySelectState)
+		@state\changeState(BattleEnemySelectState, {prompt:"Which enemy should #{@currentTurn!.name} attack?"})
 
 	enemyTurn: () =>
 		@currentTurn!\enemyTurn!
@@ -255,12 +255,13 @@ export class GameBattleState extends State
 								@turnEnd!
 						else
 							@dialogCallback = () =>
-								@state\changeState(BattlePlayerSelectState) -- @selectionCallback is still this function, goes back
+								-- @selectionCallback is still this function, goes back
+								@state\changeState(BattlePlayerSelectState, {prompt:"Who would you like to use the\n#{item.name} on?"})
 						tree = DialogTree({
 							DialogBox(message)
 						})
 						@state\changeState(BattleDialogState, {tree:tree})
-					@state\changeState(BattlePlayerSelectState)
+					@state\changeState(BattlePlayerSelectState, {prompt:"Who would you like to use the\n#{item.name} on?"})
 				when nil
 					item = game.inventory.items[@indexItemToUse]
 					usable, message = item\is_usable!

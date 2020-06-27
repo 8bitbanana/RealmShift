@@ -223,7 +223,7 @@ export class Fighter extends BattlePlayer
 			@cutscenes\addCutscene(shovescene)
 			@cutscenes\addCutscene(attackscene)
 			@state\changeState(BattleTurnState, {ttl:0.5})
-		@parent.state\changeState(BattleEnemySelectState)
+		@parent.state\changeState(BattleEnemySelectState, {prompt:"Which enemy should #{@name} lunge at?"})
 
 	-- Reposition - swap two allies places
 	skillSecondaryInfo: {
@@ -243,8 +243,8 @@ export class Fighter extends BattlePlayer
 				swapscene = CutsceneSwap({tts:0.033, type:"player", firstindex:firstindex, secondindex:secondindex})
 				@cutscenes\addCutscene(swapscene)
 				@state\changeState(BattleTurnState, {ttl:0.5})
-			@state\changeState(BattleSpaceSelectState, {selectedspace:firstindex})
-		@parent.state\changeState(BattlePlayerSelectState, {selectedIndex:myindex, targetType:"move"})
+			@state\changeState(BattleSpaceSelectState, {selectedspace:firstindex, prompt:"Which space should they swap with?"})
+		@parent.state\changeState(BattlePlayerSelectState, {selectedIndex:myindex, prompt:"Who should #{@name} command to reposition?", targetType:"move"})
 
 export class Paladin extends BattlePlayer
 	name: "Paladin"

@@ -74,6 +74,15 @@ do
       end
     end,
     draw = function(self)
+      if self.params.prompt then
+        lg.setFont(dialog_font)
+        lg.setColor(1, 1, 1)
+        lg.rectangle("fill", 3, 3, GAME_WIDTH - 6, 50)
+        lg.setColor(0, 0, 0)
+        lg.rectangle("line", 3, 3, GAME_WIDTH - 6, 50)
+        lg.printf(self.params.prompt, 6, 6, GAME_WIDTH - 12)
+        lg.setFont(default_font)
+      end
       return self.cursor:draw()
     end
   }
@@ -231,10 +240,10 @@ do
       return lg.line(points)
     end,
     draw = function(self)
+      _class_0.__parent.__base.draw(self)
       if self.startindex ~= nil then
-        self:drawarc()
+        return self:drawarc()
       end
-      return self.cursor:draw()
     end
   }
   _base_0.__index = _base_0

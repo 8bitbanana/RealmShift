@@ -251,7 +251,9 @@ do
           ttl = 0.33
         })
       end
-      return self.state:changeState(BattleEnemySelectState)
+      return self.state:changeState(BattleEnemySelectState, {
+        prompt = "Which enemy should " .. tostring(self:currentTurn().name) .. " attack?"
+      })
     end,
     enemyTurn = function(self)
       return self:currentTurn():enemyTurn()
@@ -301,7 +303,9 @@ do
               end
             else
               self.dialogCallback = function(self)
-                return self.state:changeState(BattlePlayerSelectState)
+                return self.state:changeState(BattlePlayerSelectState, {
+                  prompt = "Who would you like to use the\n" .. tostring(item.name) .. " on?"
+                })
               end
             end
             local tree = DialogTree({
@@ -311,7 +315,9 @@ do
               tree = tree
             })
           end
-          return self.state:changeState(BattlePlayerSelectState)
+          return self.state:changeState(BattlePlayerSelectState, {
+            prompt = "Who would you like to use the\n" .. tostring(item.name) .. " on?"
+          })
         elseif nil == _exp_0 then
           item = game.inventory.items[self.indexItemToUse]
           local usable, message = item:is_usable()

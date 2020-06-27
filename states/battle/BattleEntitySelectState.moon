@@ -64,6 +64,15 @@ export class BattleEntitySelectState extends State
 		@parent\turnStart! if input\pressed("back")
 
 	draw: =>
+		if @params.prompt
+			lg.setFont(dialog_font)
+			lg.setColor(1,1,1)
+			lg.rectangle("fill", 3, 3, GAME_WIDTH-6, 50)
+			lg.setColor(0,0,0)
+			lg.rectangle("line", 3, 3, GAME_WIDTH-6, 50)
+			lg.printf(@params.prompt, 6, 6, GAME_WIDTH-12)
+			lg.setFont(default_font)
+
 		@cursor\draw!
 
 export class BattleEnemySelectState extends BattleEntitySelectState
@@ -121,8 +130,8 @@ export class BattleSpaceSelectState extends BattleEntitySelectState
 		lg.line(points)
 	
 	draw: =>
+		super!
 		@drawarc! if @startindex != nil
-		@cursor\draw!
 
 
 export class BattlePlayerSelectState extends BattleEntitySelectState
