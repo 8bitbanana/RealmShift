@@ -70,16 +70,25 @@ do
     end,
     draw = function(self)
       lg.setColor(1, 1, 1)
-      lg.rectangle("fill", 116, 4, 116, 50)
-      lg.setColor(0, 0, 0, 1)
-      lg.rectangle("line", 116, 4, 116, 50)
+      lg.rectangle("fill", 8, 8, GAME_WIDTH / 2 - 12, 16 * 5 + 4)
+      lg.setColor(0, 0, 0)
+      lg.rectangle("line", 8, 8, GAME_WIDTH / 2 - 12, 16 * 5 + 4)
       local currentIndex = 0
       for i = self.scrollWindow.top, self.scrollWindow.bottom do
         local item = self.items[i]
         if item then
+          lg.setColor(0, 0, 0)
           lg.print(item.name, 21, 11 + (currentIndex * 16))
+          item.sprite:draw(100, 14 + (currentIndex * 16))
           currentIndex = currentIndex + 1
         end
+      end
+      lg.setColor(1, 1, 1)
+      lg.rectangle("fill", GAME_WIDTH / 2 + 4, 8, GAME_WIDTH / 2 - 12, 16 * 3 + 6)
+      lg.setColor(0, 0, 0)
+      lg.rectangle("line", GAME_WIDTH / 2 + 4, 8, GAME_WIDTH / 2 - 12, 16 * 3 + 6)
+      if self:selectedItem() ~= nil then
+        lg.printf(self:selectedItem().desc, GAME_WIDTH / 2 + 7, 8, GAME_WIDTH / 2 - 18)
       end
       return self.cursor:draw()
     end

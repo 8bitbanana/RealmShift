@@ -200,9 +200,9 @@ do
     printInitiative = function(self, highlight)
       print("==INITIATIVE==")
       for i, v in pairs(self.initiative) do
-        local icon = "[" .. tostring(i) .. "]"
+        local icon = " " .. tostring(i) .. " "
         if i == highlight then
-          icon = "#" .. tostring(i) .. "#"
+          icon = "[" .. tostring(i) .. "]"
         end
         local type = v.type
         if type == "enemy" then

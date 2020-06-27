@@ -186,9 +186,9 @@ export class GameBattleState extends State
 	printInitiative: (highlight) =>
 		print("==INITIATIVE==")
 		for i,v in pairs @initiative
-			icon = "[#{i}]"
+			icon = " #{i} "
 			if i == highlight
-				icon = "##{i}#"
+				icon = "[#{i}]"
 			type = v.type
 			type ..= " " if type == "enemy"
 			print("#{icon} T:#{type} I:#{v.index} S:#{v.speed}")

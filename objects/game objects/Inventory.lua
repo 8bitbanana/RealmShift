@@ -262,6 +262,15 @@ do
         LesserPotion(),
         Potion(),
         PartyHeal(),
+        PartyHeal(),
+        LesserPotion(),
+        Potion(),
+        PartyHeal(),
+        LesserPotion(),
+        Potion(),
+        PartyHeal(),
+        LesserPotion(),
+        Potion(),
         PartyHeal()
       }
       self.gold = 0

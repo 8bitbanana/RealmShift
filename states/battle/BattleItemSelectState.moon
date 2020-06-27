@@ -54,14 +54,24 @@ export class BattleItemSelectState extends State
 
 	draw: =>
 		lg.setColor(1,1,1)
-		lg.rectangle("fill",116,4,116,50) -- menubox fill
-		lg.setColor(0,0,0,1)
-		lg.rectangle("line",116,4,116,50) -- menubox line
+		lg.rectangle("fill",8,8,GAME_WIDTH/2-12, 16*5+4)
+		lg.setColor(0,0,0)
+		lg.rectangle("line",8,8,GAME_WIDTH/2-12, 16*5+4)
 		currentIndex = 0
 		for i=@scrollWindow.top, @scrollWindow.bottom
 			item = @items[i]
 			if item
+				lg.setColor(0,0,0)
 				lg.print(item.name, 21, 11+(currentIndex*16))
+				item.sprite\draw(100,14+(currentIndex*16))
 				currentIndex+=1
+
+		lg.setColor(1,1,1)
+		lg.rectangle("fill",GAME_WIDTH/2+4, 8, GAME_WIDTH/2-12, 16*3+6)
+		lg.setColor(0,0,0)
+		lg.rectangle("line",GAME_WIDTH/2+4, 8, GAME_WIDTH/2-12, 16*3+6)
+		if @selectedItem! != nil
+			lg.printf(@selectedItem!.desc, GAME_WIDTH/2+7, 8, GAME_WIDTH/2-18)	
+		
 		@cursor\draw!
 

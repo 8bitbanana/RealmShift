@@ -76,6 +76,15 @@ export class Inventory
 			Potion!
 			PartyHeal!
 			PartyHeal!
+			LesserPotion!
+			Potion!
+			PartyHeal!
+			LesserPotion!
+			Potion!
+			PartyHeal!
+			LesserPotion!
+			Potion!
+			PartyHeal!
 		}
 		@gold = 0
 
