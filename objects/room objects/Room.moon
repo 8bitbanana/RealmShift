@@ -25,6 +25,7 @@ export class Room
 
 		-- Get the class of the object we're trying to load
 		obj_class = _G[obj_data.type]
+		print(obj_class)
 
 		-- Get custom parameters of object
 		-- params = table.stripKeys(obj_data.properties) -- returns a table with only the values from obj_data.properties without keys

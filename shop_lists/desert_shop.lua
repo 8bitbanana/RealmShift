@@ -1,6 +1,7 @@
 
 return {
-	Potion,
 	LesserPotion,
+	Potion,
 	PartyHeal,
+	BridgeItem,
 }

@@ -182,7 +182,8 @@ do
     price = 5,
     heal = 30,
     name = "S. Potion",
-    desc = "Heals an ally for 30 HP"
+    desc = "Heals an ally for 30 HP",
+    sprite = sprites.items.small_potion
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
@@ -220,6 +221,16 @@ end
 do
   local _class_0
   local _base_0 = {
+    hasItem = function(self, item)
+      local _list_0 = self.items
+      for _index_0 = 1, #_list_0 do
+        local i = _list_0[_index_0]
+        if i.__class.__name == item.__class.__name then
+          return true
+        end
+      end
+      return false
+    end,
     addItem = function(self, item, index)
       if item.root == nil then
         item.root = self.parent
@@ -265,7 +276,7 @@ do
         LesserPotion(),
         LesserPotion()
       }
-      self.gold = 25
+      self.gold = 60
     end,
     __base = _base_0,
     __name = "Inventory"

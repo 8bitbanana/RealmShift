@@ -8,8 +8,8 @@ return {
   height = 32,
   tilewidth = 8,
   tileheight = 8,
-  nextlayerid = 3,
-  nextobjectid = 4,
+  nextlayerid = 4,
+  nextobjectid = 5,
   properties = {},
   tilesets = {
     {
@@ -417,6 +417,35 @@ return {
             ["is_door"] = true,
             ["tx"] = 344,
             ["ty"] = 88
+          }
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      id = 3,
+      name = "Zones",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 4,
+          name = "Bridge Check Zone",
+          type = "BridgeZone",
+          shape = "rectangle",
+          x = 208,
+          y = 128,
+          width = 24,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["is_bridge"] = true,
+            ["solid"] = true
           }
         }
       }

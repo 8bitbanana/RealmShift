@@ -40,7 +40,9 @@ export class BattleItemSelectState extends State
 		@updateCursorPos!
 
 	select: =>
-		@parent\selectionCallback(@selectedIndex)
+		item = @\selectedItem!
+		if item.consumable
+			@parent\selectionCallback(@selectedIndex)
 
 	back: =>
 		@parent\turnStart!
@@ -63,7 +65,7 @@ export class BattleItemSelectState extends State
 			if item
 				lg.setColor(0,0,0)
 				lg.print(item.name, 21, 11+(currentIndex*16))
-				item.sprite\draw(100,14+(currentIndex*16))
+				item.sprite\draw(92,14+(currentIndex*16))
 				currentIndex+=1
 
 		lg.setColor(1,1,1)
@@ -71,7 +73,7 @@ export class BattleItemSelectState extends State
 		lg.setColor(0,0,0)
 		lg.rectangle("line",GAME_WIDTH/2+4, 8, GAME_WIDTH/2-12, 16*3+6)
 		if @selectedItem! != nil
-			lg.printf(@selectedItem!.desc, GAME_WIDTH/2+7, 8, GAME_WIDTH/2-18)	
-		
+			lg.printf(@selectedItem!.desc, GAME_WIDTH/2+7, 8, GAME_WIDTH/2-18)
+
 		@cursor\draw!
 

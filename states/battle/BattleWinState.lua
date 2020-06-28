@@ -164,7 +164,7 @@ do
       end
     end,
     drawDrops = function(self)
-      local x = 17
+      local x = 12
       for i = 1, self.dcount do
         local y = GAME_HEIGHT - 72 + (i * 16)
         local item = self.drops[i]
@@ -172,7 +172,7 @@ do
           if item.sprite then
             item.sprite:draw(x, y)
           end
-          shadowPrint(item.name, x + 14, y - 4)
+          shadowPrint(item.name, x + 18, y)
         end
       end
     end,

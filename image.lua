@@ -9,10 +9,13 @@ function loadSprites()
 			merchant = Soda.newSprite(lg.newImage("images/sprites/characters/merchant.png"), 8, 8),
 		},
 		overworld = {
+			bridge = Soda.newSprite(lg.newImage("images/sprites/overworld/bridge_tile.png"), 4, 4),
 			enemy = Soda.newSprite(lg.newImage("images/sprites/overworld/enemy_icon.png"), 4, 4),
 		},
 		items = {
-			potion = Soda.newSprite(lg.newImage("images/sprites/item/potion.png"), 4, 4),
+			potion = Soda.newSprite(lg.newImage("images/sprites/item/potion.png"), 8, 8),
+			small_potion = Soda.newSprite(lg.newImage("images/sprites/item/small_potion.png"), 8, 8),
+			bridge = Soda.newSprite(lg.newImage("images/sprites/item/bridge_item.png"), 8, 8),
 		},
 		battle = {
 			cursor_right = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_right.png"), 8, 12),

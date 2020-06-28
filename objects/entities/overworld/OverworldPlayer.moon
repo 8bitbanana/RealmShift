@@ -21,9 +21,17 @@ export class OverworldPlayer
 	move: (dx=0, dy=0) =>
 		-- get Physics world of Overworld
 		world = game.state.current_room.world
+
+		bridge_filter = (item, other) ->
+			if other.is_bridge
+				if game.inventory\hasItem(BridgeItem)
+					return "cross" -- Let Player pass through Bridge zone if they have the bridge
+
+			return "slide" -- Otherwise collid with it like a normal solid block
+
 		-- Move player and deal with collisions
 		d = 8 -- Distance to move
-		@pos.x, @pos.y = world\move(@, @pos.x + (dx * d), @pos.y + (dy * d))
+		@pos.x, @pos.y = world\move(@, @pos.x + (dx * d), @pos.y + (dy * d), bridge_filter)
 
 	update: =>
 		@\checkMove!

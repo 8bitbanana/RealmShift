@@ -5,55 +5,57 @@ class UseItemMenuItem extends MenuItem
 	activate: =>
 		item = @parent.parent\selectedItem!
 		callback = nil
-		
-		switch item.use_target
-			when "player"
-				callback = (option) =>
-					players = {}
-					for player in *game.party
-						table.insert(players, player) if player != nil
-					player = players[option]
-					if player == nil
-						return
 
-					usable, message = @selectedItem!\is_usable_on_target(player)
-					if usable
-						message = @selectedItem!\use(player)
+		if item.consumable then
+
+			switch item.use_target
+				when "player"
+					callback = (option) =>
+						players = {}
+						for player in *game.party
+							table.insert(players, player) if player != nil
+						player = players[option]
+						if player == nil
+							return
+
+						usable, message = @selectedItem!\is_usable_on_target(player)
+						if usable
+							message = @selectedItem!\use(player)
+							if @selectedItem!.consumable
+								@tossCurrentItem!
+							@unhighlightSprite!
+						@dialog\setTree(DialogTree(
+							{DialogBox(message)}
+						))
+					player_options = {}
+					for player in *game.party
+						if player != nil
+							table.insert(player_options, "#{player.name} (#{player.hp}/#{player.stats.hp})")
+					table.insert(player_options, "[CANCEL]Cancel")
+					@parent.parent.dialog\setTree(DialogTree(
+						{DialogBox("Who would you like to\nuse the #{item.name} on?", player_options)},
+						{},
+						{[1]: callback},
+						@parent.parent
+					))
+				when nil
+					callback = (option) =>
+						return if option != 1
+						response = @selectedItem!\use!
+						@dialog\setTree(DialogTree(
+							{DialogBox(response)}
+						))
 						if @selectedItem!.consumable
 							@tossCurrentItem!
 						@unhighlightSprite!
-					@dialog\setTree(DialogTree(
-						{DialogBox(message)}
+					@parent.parent.dialog\setTree(DialogTree(
+						{DialogBox("Are you sure you want\nto use the #{item.name}?", {"Yes", "[CANCEL]No"})},
+						{},
+						{[1]: callback},
+						@parent.parent
 					))
-				player_options = {}
-				for player in *game.party
-					if player != nil
-						table.insert(player_options, "#{player.name} (#{player.hp}/#{player.stats.hp})")
-				table.insert(player_options, "[CANCEL]Cancel")
-				@parent.parent.dialog\setTree(DialogTree(
-					{DialogBox("Who would you like to\nuse the #{item.name} on?", player_options)},
-					{},
-					{[1]: callback},
-					@parent.parent
-				))
-			when nil
-				callback = (option) =>
-					return if option != 1
-					response = @selectedItem!\use!
-					@dialog\setTree(DialogTree(
-						{DialogBox(response)}
-					))
-					if @selectedItem!.consumable
-						@tossCurrentItem!
-					@unhighlightSprite!
-				@parent.parent.dialog\setTree(DialogTree(
-					{DialogBox("Are you sure you want\nto use the #{item.name}?", {"Yes", "[CANCEL]No"})},
-					{},
-					{[1]: callback},
-					@parent.parent
-				))
-		@parent.parent.state\changeState(InventoryWaitState)
-	
+			@parent.parent.state\changeState(InventoryWaitState)
+
 class MoveItemMenuItem extends MenuItem
 	text: "Swap"
 	valid: => return #game.inventory.items > 1
@@ -92,14 +94,14 @@ export class InventoryActionState extends State
 		@cursor = Cursor({x:0,y:0}, "right")
 		@parent\highlightSprite!
 		@updateCursorPos!
-	
+
 	updateCursorPos: =>
 		@cursor.pos = {x:@selectedItem!.pos.x-16,y:@selectedItem!.pos.y-4}
 
 	drawMenu: =>
 		for item in *@items
 			item\draw!
-	
+
 	selectedItem: =>
 		return @items[@selectedIndex]
 
@@ -110,7 +112,7 @@ export class InventoryActionState extends State
 		@select! if input\pressed("confirm")
 		@back! if input\pressed("back")
 		@updateCursorPos!
-	
+
 	select: =>
 		@selectedItem!\clicked!
 
@@ -132,4 +134,4 @@ export class InventoryActionState extends State
 		@drawMenu!
 		@cursor\draw!
 
-	
+

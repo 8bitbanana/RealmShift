@@ -23,6 +23,7 @@ do
       local width = obj_data.width
       local height = obj_data.height
       local obj_class = _G[obj_data.type]
+      print(obj_class)
       if obj_class then
         local obj = obj_class(pos, width, height)
         for k, v in pairs(obj_data.properties) do

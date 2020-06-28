@@ -71,12 +71,14 @@ export class LesserPotion extends Potion
 	heal: 30
 	name: "S. Potion"
 	desc: "Heals an ally for 30 HP"
+	sprite: sprites.items.small_potion
 
 export class Inventory
 	new: =>
 		@items = {
 			LesserPotion!
 			LesserPotion!
+-- 			BridgeItem!
 -- 			Potion!
 -- 			PartyHeal!
 -- 			PartyHeal!
@@ -90,7 +92,13 @@ export class Inventory
 -- 			Potion!
 -- 			PartyHeal!
 		}
-		@gold = 25
+		@gold = 60
+
+	hasItem: (item) =>
+		for i in *@items
+			if i.__class.__name == item.__class.__name
+				return true
+		return false
 
 	addItem: (item, index) =>
 		item.root = @parent if item.root == nil

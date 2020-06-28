@@ -151,7 +151,7 @@ export class BattleWinState extends State
 				@\drawHealthBar(p, x, y-6)
 
 	drawDrops: =>
-		x = 17
+		x = 12
 
 		for i=1, @dcount
 			y = GAME_HEIGHT-72 + (i*16)
@@ -160,7 +160,7 @@ export class BattleWinState extends State
 			if item
 				if item.sprite
 					item.sprite\draw(x, y)
-				shadowPrint(item.name, x+14, y-4)
+				shadowPrint(item.name, x+18, y)
 
 	drawGoldCount: =>
 		x = 110

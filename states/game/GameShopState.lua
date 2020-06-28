@@ -70,7 +70,7 @@ do
       return lg.setFont(default_font)
     end,
     printGold = function(self)
-      return shadowPrint("gold: " .. tostring(game.inventory.gold), 128, 16, GOLD)
+      return shadowPrint("gold: " .. tostring(game.inventory.gold), 160, 16, GOLD)
     end,
     drawCursor = function(self)
       local x = 16 - (self.timer % 0.35) * 8
@@ -79,13 +79,16 @@ do
       return sprites.gui.finger_cursor:draw(x, y)
     end,
     drawShopItems = function(self)
-      local x = 16
+      local x = 32
       local y = 40
       local _list_0 = self.item_list
       for _index_0 = 1, #_list_0 do
         local item = _list_0[_index_0]
-        shadowPrint(item.name, x + 16, y)
-        shadowPrint(tostring(item.price) .. "G", x + 128, y, GOLD)
+        if item.sprite then
+          item.sprite:draw(x, y + 2)
+        end
+        shadowPrint(item.name, x + 24, y)
+        shadowPrint(tostring(item.price) .. "G", x + 160, y, GOLD)
         y = y + 12
       end
       return lg.setColor(WHITE)
@@ -95,7 +98,11 @@ do
       return shadowPrint("x - leave", 128, GAME_HEIGHT - 18)
     end,
     draw = function(self)
-      lg.clear(BLACK)
+      lg.clear({
+        0,
+        0.45,
+        0.7
+      })
       self:printShop()
       self:printGold()
       self:drawShopItems()

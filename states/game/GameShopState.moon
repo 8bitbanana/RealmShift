@@ -65,7 +65,7 @@ export class GameShopState extends State
 		lg.setFont(default_font)
 
 	printGold: =>
-		shadowPrint("gold: #{game.inventory.gold}", 128, 16, GOLD)
+		shadowPrint("gold: #{game.inventory.gold}", 160, 16, GOLD)
 
 	drawCursor: =>
 		x=16 - (@timer % 0.35) * 8
@@ -74,12 +74,15 @@ export class GameShopState extends State
 		sprites.gui.finger_cursor\draw(x, y)
 
 	drawShopItems: =>
-		x=16
+		x=32
 		y=40
 		for item in *@item_list
 -- 			lg.rectangle("fill", x+2,y+4, 4, 4)
-			shadowPrint(item.name, x+16, y)
-			shadowPrint("#{item.price}G", x+128, y, GOLD)
+			-- draw item sprite
+			if item.sprite
+				item.sprite\draw(x, y+2)
+			shadowPrint(item.name, x+24, y)
+			shadowPrint("#{item.price}G", x+160, y, GOLD)
 
 			y += 12
 
@@ -90,7 +93,7 @@ export class GameShopState extends State
 		shadowPrint("x - leave", 128, GAME_HEIGHT-18)
 
 	draw: =>
-		lg.clear(BLACK)
+		lg.clear({0, 0.45, 0.7})
 		@\printShop!
 		@\printGold!
 		@\drawShopItems!

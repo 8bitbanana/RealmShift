@@ -24,8 +24,17 @@ do
         dy = 0
       end
       local world = game.state.current_room.world
+      local bridge_filter
+      bridge_filter = function(item, other)
+        if other.is_bridge then
+          if game.inventory:hasItem(BridgeItem) then
+            return "cross"
+          end
+        end
+        return "slide"
+      end
       local d = 8
-      self.pos.x, self.pos.y = world:move(self, self.pos.x + (dx * d), self.pos.y + (dy * d))
+      self.pos.x, self.pos.y = world:move(self, self.pos.x + (dx * d), self.pos.y + (dy * d), bridge_filter)
     end,
     update = function(self)
       self:checkMove()

@@ -48,7 +48,10 @@ do
       return self:updateCursorPos()
     end,
     select = function(self)
-      return self.parent:selectionCallback(self.selectedIndex)
+      local item = self:selectedItem()
+      if item.consumable then
+        return self.parent:selectionCallback(self.selectedIndex)
+      end
     end,
     back = function(self)
       return self.parent:turnStart()
@@ -79,7 +82,7 @@ do
         if item then
           lg.setColor(0, 0, 0)
           lg.print(item.name, 21, 11 + (currentIndex * 16))
-          item.sprite:draw(100, 14 + (currentIndex * 16))
+          item.sprite:draw(92, 14 + (currentIndex * 16))
           currentIndex = currentIndex + 1
         end
       end
