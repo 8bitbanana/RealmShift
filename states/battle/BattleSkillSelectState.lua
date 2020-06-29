@@ -18,6 +18,7 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.text = self.parent.parent:currentTurn().skillPrimaryInfo.name
+      self.desc = self.parent.parent:currentTurn().skillPrimaryInfo.desc
     end,
     __base = _base_0,
     __name = "PrimaryMenuItem",
@@ -64,6 +65,7 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.text = self.parent.parent:currentTurn().skillSecondaryInfo.name
+      self.desc = self.parent.parent:currentTurn().skillSecondaryInfo.desc
     end,
     __base = _base_0,
     __name = "SecondaryMenuItem",
@@ -134,13 +136,21 @@ do
       }
     end,
     draw = function(self)
-      lg.setColor(1, 1, 1, 1)
-      lg.rectangle("fill", 116, 4, 116, 50)
-      lg.setColor(0, 0, 0, 1)
-      lg.rectangle("line", 116, 4, 116, 50)
-      lg.setColor(1, 1, 1, 1)
+      lg.setColor(1, 1, 1)
+      lg.rectangle("fill", 8, 8, GAME_WIDTH / 2 - 12, 16 * 2 + 4)
+      lg.setColor(0, 0, 0)
+      lg.rectangle("line", 8, 8, GAME_WIDTH / 2 - 12, 16 * 2 + 4)
       self:drawMenu()
-      return self.cursor:draw()
+      self.cursor:draw()
+      lg.setColor(1, 1, 1)
+      lg.rectangle("fill", GAME_WIDTH / 2 + 4, 8, GAME_WIDTH / 2 - 12, 16 * 5)
+      lg.setColor(0, 0, 0)
+      lg.rectangle("line", GAME_WIDTH / 2 + 4, 8, GAME_WIDTH / 2 - 12, 16 * 5)
+      if self:selectedItem() and self:selectedItem().desc then
+        lg.setFont(dialog_font)
+        lg.printf(self:selectedItem().desc, GAME_WIDTH / 2 + 7, 8, GAME_WIDTH / 2 - 18)
+        return lg.setFont(default_font)
+      end
     end
   }
   _base_0.__index = _base_0
@@ -151,14 +161,14 @@ do
       self.items = { }
       if not self.parent:currentTurn().skillPrimaryInfo.unset then
         table.insert(self.items, PrimaryMenuItem(self, {
-          x = 130,
+          x = 21,
           y = 11
         }))
       end
       if not self.parent:currentTurn().skillSecondaryInfo.unset then
         table.insert(self.items, SecondaryMenuItem(self, {
-          x = 130,
-          y = 30
+          x = 21,
+          y = 27
         }))
       end
       self.selectedIndex = 1
