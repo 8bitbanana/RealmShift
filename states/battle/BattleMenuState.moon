@@ -64,10 +64,10 @@ class EmptyMenuItem extends MenuItem
 export class BattleMenuState extends State
 	new: (@parent) =>
 		@items = {
-			AttackMenuItem(@, {x:130,y:11}),
-			WaitMenuItem(@,   {x:130,y:30}),
-			SkillMenuItem(@,  {x:189,y:11}),
-			ItemMenuItem(@,   {x:189,y:30})
+			AttackMenuItem(@, {x:126,y:15}),
+			WaitMenuItem(@,   {x:126,y:34}),
+			SkillMenuItem(@,  {x:185,y:15}),
+			ItemMenuItem(@,   {x:185,y:34})
 		}
 		@selectedIndex = 1
 		@cursor = Cursor({x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}, "right")
@@ -98,21 +98,21 @@ export class BattleMenuState extends State
 
 	draw: () =>
 		lg.setColor(1,1,1,1)
-		lg.rectangle("fill",116,4,116,50) -- menubox fill
+		lg.rectangle("fill",112,8,120,50) -- menubox fill
 		lg.setColor(0,0,0,1)
-		lg.rectangle("line",116,4,116,50) -- menubox line
+		lg.rectangle("line",112,8,120,50) -- menubox line
 		lg.setColor(1,1,1,1)
 		selectedX = @parent\currentTurn!.pos.x
 		lg.polygon("fill",
-			selectedX + 2,  53,
+			selectedX + 2,  57,
 			selectedX + 12, 91,
-			selectedX + 22, 53
+			selectedX + 22, 57
 		) -- player cursor fill
 		lg.setColor(0,0,0,1)
 		lg.line(
-			selectedX + 2, 53,
+			selectedX + 2,  57,
 			selectedX + 12, 91,
-			selectedX + 22, 53
+			selectedX + 22, 57
 		) -- player cursor line
 		@drawMenu!
 		@cursor\draw!

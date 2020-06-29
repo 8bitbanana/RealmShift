@@ -389,14 +389,14 @@ do
     end,
     draw = function(self)
       lg.setColor(1, 1, 1, 1)
-      lg.rectangle("fill", 116, 4, 116, 50)
+      lg.rectangle("fill", 112, 8, 120, 50)
       lg.setColor(0, 0, 0, 1)
-      lg.rectangle("line", 116, 4, 116, 50)
+      lg.rectangle("line", 112, 8, 120, 50)
       lg.setColor(1, 1, 1, 1)
       local selectedX = self.parent:currentTurn().pos.x
-      lg.polygon("fill", selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
+      lg.polygon("fill", selectedX + 2, 57, selectedX + 12, 91, selectedX + 22, 57)
       lg.setColor(0, 0, 0, 1)
-      lg.line(selectedX + 2, 53, selectedX + 12, 91, selectedX + 22, 53)
+      lg.line(selectedX + 2, 57, selectedX + 12, 91, selectedX + 22, 57)
       self:drawMenu()
       return self.cursor:draw()
     end
@@ -408,20 +408,20 @@ do
       self.parent = parent
       self.items = {
         AttackMenuItem(self, {
-          x = 130,
-          y = 11
+          x = 126,
+          y = 15
         }),
         WaitMenuItem(self, {
-          x = 130,
-          y = 30
+          x = 126,
+          y = 34
         }),
         SkillMenuItem(self, {
-          x = 189,
-          y = 11
+          x = 185,
+          y = 15
         }),
         ItemMenuItem(self, {
-          x = 189,
-          y = 30
+          x = 185,
+          y = 34
         })
       }
       self.selectedIndex = 1
