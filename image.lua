@@ -27,7 +27,8 @@ function loadSprites()
 			lancer_enemy = Soda.newSprite(lg.newImage("images/sprites/battle/lancer_enemy.png"), 14, -23),
 			buffs = {
 				rally = Soda.newSprite(lg.newImage("images/sprites/battle/buffs/boost_golden.png"), 5, 5),
-				poison = Soda.newSprite(lg.newImage("images/sprites/battle/buffs/poison.png"), 5, 5)
+				poison = Soda.newSprite(lg.newImage("images/sprites/battle/buffs/poison.png"), 5, 5),
+				defence = Soda.newSprite(lg.newImage("images/sprites/battle/buffs/defence.png"), 5, 5)
 			}
 		},
 		gui = {

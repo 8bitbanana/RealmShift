@@ -20,13 +20,17 @@ do
       end
       self.buffs = {
         rally = false,
-        poison = false
+        poison = false,
+        defence = false
       }
       self.dead = self.hp == 0
       self.initialised = true
     end,
     takeDamage = function(self, incomingattack)
       local damage = math.floor((DAMAGE_FORMULA.va + (DAMAGE_FORMULA.vm * ((incomingattack * DAMAGE_FORMULA.aw) - (self.stats.defence * DAMAGE_FORMULA.dw)))) * DAMAGE_FORMULA.bd)
+      if self.buffs.defence then
+        damage = math.floor(damage * 0.5)
+      end
       if damage < 1 then
         damage = 1
       end
@@ -383,12 +387,33 @@ do
       desc = "Boosts the damage of the next attack from each ally."
     },
     skillPrimary = function(self)
-      local rallyScene = CutsceneRally({
-        type = "player"
+      local rallyScene = CutsceneBuff({
+        buff = "rally",
+        entities = self.parent.players
       })
       self.parent.cutscenes:addCutscene(rallyScene)
       return self.parent.state:changeState(BattleTurnState, {
         ttl = 1.2
+      })
+    end,
+    skillSecondaryInfo = {
+      name = "SHIELD'S UP",
+      desc = "Moves to the front to protect others, boosting your defence until the next turn."
+    },
+    skillSecondary = function(self)
+      local shoveScene = CutsceneShove({
+        tts = 0.1,
+        dir = -4
+      })
+      local buffScene = CutsceneBuff({
+        tts = 1.0,
+        buff = "defence",
+        target = self
+      })
+      self.parent.cutscenes:addCutscene(shoveScene)
+      self.parent.cutscenes:addCutscene(buffScene)
+      return self.parent.state:changeState(BattleTurnState, {
+        ttl = 1.5
       })
     end
   }

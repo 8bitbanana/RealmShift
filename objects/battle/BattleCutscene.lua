@@ -223,31 +223,42 @@ do
   local _parent_0 = BattleCutscene
   local _base_0 = {
     sceneStart = function(self)
-      self.entities = nil
-      if self.args.type == "player" then
-        self.entities = self.root.players
+      if self.args.entities then
+        self.entities = self.args.entities
+        return assert(self.entities ~= nil)
+      else
+        if self.args.target then
+          self.target = self.args.target
+          return assert(self.target ~= nil)
+        else
+          return error("Neither entities/target specified")
+        end
       end
-      if self.args.type == "enemy" then
-        self.entities = self.root.enemies
-      end
-      return assert(self.entities ~= nil)
     end,
     sceneUpdate = function(self) end,
     sceneFinish = function(self)
-      local _list_0 = self.entities
-      for _index_0 = 1, #_list_0 do
-        local _continue_0 = false
-        repeat
-          local entity = _list_0[_index_0]
-          if not entity then
-            _continue_0 = true
-            break
+      if self.target then
+        assert(self.target.buffs[self.args.buff] ~= nil)
+        self.target.buffs[self.args.buff] = true
+      else
+        if self.entities then
+          local _list_0 = self.entities
+          for _index_0 = 1, #_list_0 do
+            local _continue_0 = false
+            repeat
+              local entity = _list_0[_index_0]
+              if not entity then
+                _continue_0 = true
+                break
+              end
+              assert(entity.buffs[self.args.buff] ~= nil)
+              entity.buffs[self.args.buff] = true
+              _continue_0 = true
+            until true
+            if not _continue_0 then
+              break
+            end
           end
-          entity.buffs.rally = true
-          _continue_0 = true
-        until true
-        if not _continue_0 then
-          break
         end
       end
     end
@@ -260,7 +271,7 @@ do
       self.ttl = 0.16
     end,
     __base = _base_0,
-    __name = "CutsceneRally",
+    __name = "CutsceneBuff",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -284,7 +295,7 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  CutsceneRally = _class_0
+  CutsceneBuff = _class_0
 end
 do
   local _class_0

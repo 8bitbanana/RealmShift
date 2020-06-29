@@ -35,7 +35,8 @@ export class BattlePlayer
 		@hp = 0 if @hp < 0
 		@buffs = {
 			rally: false,
-			poison: false
+			poison: false,
+			defence: false
 		}
 		@dead = @hp == 0
 		@initialised = true
@@ -45,6 +46,7 @@ export class BattlePlayer
 	-- Return the amount of hp lost
 	takeDamage: (incomingattack) =>
 		damage = math.floor((DAMAGE_FORMULA.va+(DAMAGE_FORMULA.vm*((incomingattack*DAMAGE_FORMULA.aw)-(@stats.defence*DAMAGE_FORMULA.dw)))) * DAMAGE_FORMULA.bd)
+		damage = math.floor(damage*0.5) if @buffs.defence
 		damage = 1 if damage < 1
 		@hp -= damage
 		print("I took " .. damage .. " damage ("..incomingattack.."ATK "..@stats.defence.."DEF)")
@@ -266,9 +268,20 @@ export class Paladin extends BattlePlayer
 		desc: "Boosts the damage of the next attack from each ally."
 	}
 	skillPrimary: () =>
-		rallyScene = CutsceneRally({type:"player"})
+		rallyScene = CutsceneBuff({buff:"rally", entities:@parent.players})
 		@parent.cutscenes\addCutscene(rallyScene)
 		@parent.state\changeState(BattleTurnState, {ttl:1.2})
+
+	skillSecondaryInfo: {
+		name: "SHIELD'S UP"
+		desc: "Moves to the front to protect others, boosting your defence until the next turn."
+	}
+	skillSecondary: () =>
+		shoveScene = CutsceneShove({tts:0.1, dir:-4})
+		buffScene = CutsceneBuff({tts:1.0, buff:"defence", target:@})
+		@parent.cutscenes\addCutscene(shoveScene)
+		@parent.cutscenes\addCutscene(buffScene)
+		@parent.state\changeState(BattleTurnState, {ttl:1.5})
 
 export class Rogue extends BattlePlayer
 	name: "Rogue"

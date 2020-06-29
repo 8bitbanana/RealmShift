@@ -100,23 +100,32 @@ export class CutsceneAttack extends BattleCutscene
 
 	sceneFinish: =>
 
-export class CutsceneRally extends BattleCutscene
+export class CutsceneBuff extends BattleCutscene
 	new: (...) =>
 		super ...
 		@ttl = 0.16
 
 	sceneStart: =>
-		@entities = nil
-		@entities = @root.players if @args.type == "player"
-		@entities = @root.enemies if @args.type == "enemy"
-		assert @entities != nil
+		if @args.entities
+			@entities = @args.entities
+			assert @entities != nil
+		else if @args.target
+			@target = @args.target
+			assert @target != nil
+		else
+			error "Neither entities/target specified"
 
 	sceneUpdate: =>
 
 	sceneFinish: =>
-		for entity in *@entities
-			continue if not entity
-			entity.buffs.rally = true
+		if @target
+			assert @target.buffs[@args.buff] != nil
+			@target.buffs[@args.buff] = true
+		else if @entities
+			for entity in *@entities
+				continue if not entity
+				assert entity.buffs[@args.buff] != nil
+				entity.buffs[@args.buff] = true
 
 
 
