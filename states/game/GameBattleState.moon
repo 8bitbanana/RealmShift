@@ -210,6 +210,7 @@ export class GameBattleState extends State
 				index: nextInitiative.index
 			}
 			@printInitiative @initiativeIndex
+			@initiative[@initiativeIndex].entity\turnStart!
 		return nextInitiative.entity
 
 

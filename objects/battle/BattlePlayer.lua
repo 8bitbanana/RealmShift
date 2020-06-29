@@ -26,6 +26,9 @@ do
       self.dead = self.hp == 0
       self.initialised = true
     end,
+    turnStart = function(self)
+      self.buffs.defence = false
+    end,
     takeDamage = function(self, incomingattack)
       local damage = math.floor((DAMAGE_FORMULA.va + (DAMAGE_FORMULA.vm * ((incomingattack * DAMAGE_FORMULA.aw) - (self.stats.defence * DAMAGE_FORMULA.dw)))) * DAMAGE_FORMULA.bd)
       if self.buffs.defence then

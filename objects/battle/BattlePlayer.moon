@@ -41,6 +41,9 @@ export class BattlePlayer
 		@dead = @hp == 0
 		@initialised = true
 
+	turnStart: =>
+		@buffs.defence = false
+
 	-- Using incomingattack, run the damage formula and
 	-- reduce @hp by that amount.
 	-- Return the amount of hp lost

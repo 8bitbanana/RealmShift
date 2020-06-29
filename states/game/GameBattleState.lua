@@ -237,6 +237,7 @@ do
           index = nextInitiative.index
         }
         self:printInitiative(self.initiativeIndex)
+        self.initiative[self.initiativeIndex].entity:turnStart()
       end
       return nextInitiative.entity
     end,
