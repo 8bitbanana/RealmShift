@@ -218,6 +218,13 @@ export class Mage extends BattlePlayer
 	}
 
 	skillSecondary: =>
+		@parent.selectionCallback = (index) =>
+			shovescene = CutsceneShove({tts:0.5, ttl:1, dir:4, index:index})
+			bubblescene = CutsceneBubbleRise({tts:0.5, ttl:1, target:@players[index]})
+			@cutscenes\addCutscene(shovescene)
+			@cutscenes\addCutscene(bubblescene)
+			@state\changeState(BattleTurnState, {ttl:1.8})
+		@parent.state\changeState(BattlePlayerSelectState, {prompt:"Who should #{@name} bubble back to safety?"})
 		
 
 

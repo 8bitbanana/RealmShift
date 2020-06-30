@@ -281,6 +281,74 @@ do
   local _parent_0 = BattleCutscene
   local _base_0 = {
     sceneStart = function(self)
+      self.edges = {
+        top = {
+          x = 0,
+          y = -20
+        },
+        bottom = {
+          x = 0,
+          y = 0
+        }
+      }
+      self.offset = {
+        x = 0,
+        y = 0
+      }
+    end,
+    sceneUpdate = function(self)
+      self.args.target.pos = vector.add(self.args.target.pos, self.offset)
+      if self:progress() < 0.5 then
+        local prog = self:progress()
+        prog = math.sin(prog * PI)
+        self.offset = vector.lerp(self.edges.bottom, self.edges.top, prog)
+      else
+        local prog = self:progress() - 0.5
+        prog = math.sin(prog * PI)
+        self.offset = vector.lerp(self.edges.top, self.edges.bottom, prog)
+      end
+    end,
+    sceneFinish = function(self) end
+  }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self, ...)
+      _class_0.__parent.__init(self, ...)
+      self.ttl_max = 1
+    end,
+    __base = _base_0,
+    __name = "CutsceneBubbleRise",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  CutsceneBubbleRise = _class_0
+end
+do
+  local _class_0
+  local _parent_0 = BattleCutscene
+  local _base_0 = {
+    sceneStart = function(self)
       if self.args.entities then
         self.entities = self.args.entities
         return assert(self.entities ~= nil)
@@ -361,7 +429,7 @@ do
   local _base_0 = {
     sceneStart = function(self)
       assert(self.root.turndata.type == "player")
-      local oldindex = self.root.turndata.index
+      local oldindex = self.args.index or self.root.turndata.index
       local newindex = oldindex + self.args.dir
       if newindex < 1 then
         newindex = 1

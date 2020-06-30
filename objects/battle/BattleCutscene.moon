@@ -122,17 +122,33 @@ export class CutsceneHail extends BattleCutscene
 
 	sceneFinish: =>
 
-export class CutsceneBubble extends BattleCutscene
+-- To be used with CutsceneShove
+-- Bubbles the target, lifting them up for the duration
+export class CutsceneBubbleRise extends BattleCutscene
 	new: (...) =>
 		super ...
 		@ttl_max = 1
 
 	sceneStart: =>
+		@edges = {
+			top: {x:0, y:-20}
+			bottom: {x:0, y:0}
+		}
+		
+		@offset = {x:0, y:0}
 
 	sceneUpdate: =>
+		@args.target.pos = vector.add(@args.target.pos, @offset)
+		if @progress! < 0.5
+			prog = @progress!
+			prog = math.sin(prog*PI)
+			@offset = vector.lerp(@edges.bottom, @edges.top, prog)
+		else
+			prog = @progress!-0.5
+			prog = math.sin(prog*PI)
+			@offset = vector.lerp(@edges.top, @edges.bottom, prog)
 
 	sceneFinish: =>
-		
 
 export class CutsceneBuff extends BattleCutscene
 	new: (...) =>
@@ -163,7 +179,7 @@ export class CutsceneBuff extends BattleCutscene
 
 
 
--- currentTurn (player) shoves forwards as far as it can in @args.dir direction
+-- @args.index shoves forwards as far as it can in @args.dir direction
 -- Other players are shoved in the opposite direction to make room
 -- Todo - convert to work on enemies
 export class CutsceneShove extends BattleCutscene
@@ -174,7 +190,7 @@ export class CutsceneShove extends BattleCutscene
 
 	sceneStart: =>
 		assert(@root.turndata.type == "player")
-		oldindex = @root.turndata.index
+		oldindex = @args.index or @root.turndata.index
 		newindex = oldindex + @args.dir
 		newindex = 1 if newindex < 1
 		newindex = 4 if newindex > 4

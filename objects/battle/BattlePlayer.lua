@@ -260,6 +260,33 @@ do
       return self.parent.state:changeState(BattleTurnState, {
         ttl = 2
       })
+    end,
+    skillSecondaryInfo = {
+      name = "Bubble",
+      desc = "Quickly send an ally to the safety of the back lines."
+    },
+    skillSecondary = function(self)
+      self.parent.selectionCallback = function(self, index)
+        local shovescene = CutsceneShove({
+          tts = 0.5,
+          ttl = 1,
+          dir = 4,
+          index = index
+        })
+        local bubblescene = CutsceneBubbleRise({
+          tts = 0.5,
+          ttl = 1,
+          target = self.players[index]
+        })
+        self.cutscenes:addCutscene(shovescene)
+        self.cutscenes:addCutscene(bubblescene)
+        return self.state:changeState(BattleTurnState, {
+          ttl = 1.8
+        })
+      end
+      return self.parent.state:changeState(BattlePlayerSelectState, {
+        prompt = "Who should " .. tostring(self.name) .. " bubble back to safety?"
+      })
     end
   }
   _base_0.__index = _base_0
