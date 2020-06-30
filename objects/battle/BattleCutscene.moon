@@ -21,7 +21,7 @@ export class BattleCutsceneManager
 			cutscene\draw!
 
 export class BattleCutscene
-	new: (@args) =>
+	new: (@args={}) =>
 		@root = nil
 		@started = false
 		@done = false
@@ -99,6 +99,40 @@ export class CutsceneAttack extends BattleCutscene
 		-- Fancy slash graphics to go here
 
 	sceneFinish: =>
+
+export class CutsceneHail extends BattleCutscene
+	new: (...) =>
+		super ...
+		@ttl_max = 2
+		@cooldown = 0
+
+	sceneStart: =>
+
+	sceneUpdate: =>
+		if @cooldown <= 0
+			pos = {
+				x:math.floor(random(110,247)),
+				y:math.floor(random(-40,0))
+			}
+			particle = BattleHail(pos)
+			@root.aniObjs\addObject(particle)
+			@cooldown = 2
+		else
+			@cooldown -= 1
+
+	sceneFinish: =>
+
+export class CutsceneBubble extends BattleCutscene
+	new: (...) =>
+		super ...
+		@ttl_max = 1
+
+	sceneStart: =>
+
+	sceneUpdate: =>
+
+	sceneFinish: =>
+		
 
 export class CutsceneBuff extends BattleCutscene
 	new: (...) =>

@@ -48,3 +48,5 @@ vector.lerp = (a, b, progress) ->
 		x:b.x*progress + a.x*(1-progress)
 		y:b.y*progress + a.y*(1-progress)
 	}
+vector.tostring = (x) ->
+	return "x:#{x.x} y:#{x.y}"

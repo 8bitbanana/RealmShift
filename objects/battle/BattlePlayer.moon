@@ -192,9 +192,34 @@ export class Mage extends BattlePlayer
 		@basestats.hp = 50
 		@basestats.attack = 100--3
 		@basestats.defence = 2
-		@basestats.speed = 5
+		@basestats.speed = 99--5
 		@basestats.magic = 10
 		@init!
+
+	skillPrimaryInfo: {
+		name: "Sapphire Hail"
+		desc: "Cause the sky to rain down bolts of energy, dealing damage to all enemies"
+	}
+
+	skillPrimary: =>
+		@parent.cutscenes\addCutscene(CutsceneHail({ttl:1.5}))
+		scenes = {}
+		for index, enemy in pairs @parent.enemies
+			continue if not enemy
+			continue if not enemy\isValidTarget("attack")
+			table.insert(scenes, CutsceneAttack({tts:1.5, index:index, damage:15}))
+		for scene in *scenes
+			@parent.cutscenes\addCutscene(scene)
+		@parent.state\changeState(BattleTurnState, {ttl:2})
+
+	skillSecondaryInfo: {
+		name: "Bubble"
+		desc: "Quickly send an ally to the safety of the back lines."
+	}
+
+	skillSecondary: =>
+		
+
 
 export class Fighter extends BattlePlayer
 	name: "Fighter"
@@ -209,8 +234,7 @@ export class Fighter extends BattlePlayer
 		@basestats.magic = 2
 		@init!
 
-	-- Lunge - shoves forwards as far as you can,
-	-- dealing more damage with a bigger lunge
+
 	skillPrimaryInfo: {
 		name:"LUNGE",
 		desc:"Lunge forward as far as you can, dealing more damage with a bigger lunge."
@@ -268,7 +292,7 @@ export class Paladin extends BattlePlayer
 	-- to all allies
 	skillPrimaryInfo: {
 		name:"RALLY"
-		desc: "Boosts the damage of the next attack from each ally."
+		desc: "Boost's each ally's morale, making their next attack deal more damage."
 	}
 	skillPrimary: () =>
 		rallyScene = CutsceneBuff({buff:"rally", entities:@parent.players})

@@ -221,7 +221,46 @@ do
   local _class_0
   local _parent_0 = BattlePlayer
   local _base_0 = {
-    name = "Mage"
+    name = "Mage",
+    skillPrimaryInfo = {
+      name = "Sapphire Hail",
+      desc = "Cause the sky to rain down bolts of energy, dealing damage to all enemies"
+    },
+    skillPrimary = function(self)
+      self.parent.cutscenes:addCutscene(CutsceneHail({
+        ttl = 1.5
+      }))
+      local scenes = { }
+      for index, enemy in pairs(self.parent.enemies) do
+        local _continue_0 = false
+        repeat
+          if not enemy then
+            _continue_0 = true
+            break
+          end
+          if not enemy:isValidTarget("attack") then
+            _continue_0 = true
+            break
+          end
+          table.insert(scenes, CutsceneAttack({
+            tts = 1.5,
+            index = index,
+            damage = 15
+          }))
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
+        end
+      end
+      for _index_0 = 1, #scenes do
+        local scene = scenes[_index_0]
+        self.parent.cutscenes:addCutscene(scene)
+      end
+      return self.parent.state:changeState(BattleTurnState, {
+        ttl = 2
+      })
+    end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
@@ -231,7 +270,7 @@ do
       self.basestats.hp = 50
       self.basestats.attack = 100
       self.basestats.defence = 2
-      self.basestats.speed = 5
+      self.basestats.speed = 99
       self.basestats.magic = 10
       return self:init()
     end,
@@ -387,7 +426,7 @@ do
     name = "Paladin",
     skillPrimaryInfo = {
       name = "RALLY",
-      desc = "Boosts the damage of the next attack from each ally."
+      desc = "Boost's each ally's morale, making their next attack deal more damage."
     },
     skillPrimary = function(self)
       local rallyScene = CutsceneBuff({

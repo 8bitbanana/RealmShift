@@ -92,6 +92,9 @@ do
   _base_0.__index = _base_0
   _class_0 = setmetatable({
     __init = function(self, args)
+      if args == nil then
+        args = { }
+      end
       self.args = args
       self.root = nil
       self.started = false
@@ -217,6 +220,61 @@ do
     _parent_0.__inherited(_parent_0, _class_0)
   end
   CutsceneAttack = _class_0
+end
+do
+  local _class_0
+  local _parent_0 = BattleCutscene
+  local _base_0 = {
+    sceneStart = function(self) end,
+    sceneUpdate = function(self)
+      if self.cooldown <= 0 then
+        local pos = {
+          x = math.floor(random(110, 247)),
+          y = math.floor(random(-40, 0))
+        }
+        local particle = BattleHail(pos)
+        self.root.aniObjs:addObject(particle)
+        self.cooldown = 2
+      else
+        self.cooldown = self.cooldown - 1
+      end
+    end,
+    sceneFinish = function(self) end
+  }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self, ...)
+      _class_0.__parent.__init(self, ...)
+      self.ttl_max = 2
+      self.cooldown = 0
+    end,
+    __base = _base_0,
+    __name = "CutsceneHail",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  CutsceneHail = _class_0
 end
 do
   local _class_0

@@ -84,3 +84,6 @@ vector.lerp = function(a, b, progress)
     y = b.y * progress + a.y * (1 - progress)
   }
 end
+vector.tostring = function(x)
+  return "x:" .. tostring(x.x) .. " y:" .. tostring(x.y)
+end
