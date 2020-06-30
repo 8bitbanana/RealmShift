@@ -197,7 +197,7 @@ export class Mage extends BattlePlayer
 		@init!
 
 	skillPrimaryInfo: {
-		name: "Sapphire Hail"
+		name: "SapphireHail"
 		desc: "Cause the sky to rain down bolts of energy, dealing damage to all enemies"
 	}
 

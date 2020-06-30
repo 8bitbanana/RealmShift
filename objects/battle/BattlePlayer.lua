@@ -223,7 +223,7 @@ do
   local _base_0 = {
     name = "Mage",
     skillPrimaryInfo = {
-      name = "Sapphire Hail",
+      name = "SapphireHail",
       desc = "Cause the sky to rain down bolts of energy, dealing damage to all enemies"
     },
     skillPrimary = function(self)
