@@ -13,6 +13,7 @@ function loadSprites()
 			enemy = Soda.newSprite(lg.newImage("images/sprites/overworld/enemy_icon.png"), 4, 4),
 		},
 		items = {
+			full_heal = Soda.newSprite(lg.newImage("images/sprites/item/full_heal.png"), 8, 8),
 			potion = Soda.newSprite(lg.newImage("images/sprites/item/potion.png"), 8, 8),
 			small_potion = Soda.newSprite(lg.newImage("images/sprites/item/small_potion.png"), 8, 8),
 			bridge = Soda.newSprite(lg.newImage("images/sprites/item/bridge_item.png"), 8, 8),

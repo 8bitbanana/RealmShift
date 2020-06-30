@@ -35,7 +35,7 @@ do
     desc = "Fully heals your party",
     consumable = true,
     use_target = nil,
-    sprite = sprites.items.potion,
+    sprite = sprites.items.full_heal,
     is_usable = function(self)
       local _list_0 = game.party
       for _index_0 = 1, #_list_0 do

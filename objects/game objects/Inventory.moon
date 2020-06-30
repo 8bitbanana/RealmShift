@@ -23,7 +23,7 @@ export class PartyHeal extends InventoryItem
 	desc: "Fully heals your party"
 	consumable: true
 	use_target: nil
-	sprite: sprites.items.potion
+	sprite: sprites.items.full_heal
 
 	is_usable: =>
 		for player in *game.party
