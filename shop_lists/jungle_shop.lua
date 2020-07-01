@@ -1,4 +1,5 @@
 return {
+	Potion,
 	PartyHeal,
 	BridgeItem,
 }

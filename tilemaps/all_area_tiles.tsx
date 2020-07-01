@@ -171,9 +171,19 @@
    <property name="collidable" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="195">
+  <properties>
+   <property name="collidable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="196">
+  <properties>
+   <property name="collidable" type="bool" value="true"/>
+  </properties>
+ </tile>
  <tile id="197">
   <properties>
-   <property name="collidable" type="bool" value="false"/>
+   <property name="collidable" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="198">
@@ -187,6 +197,16 @@
   </properties>
  </tile>
  <tile id="225">
+  <properties>
+   <property name="collidable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="226">
+  <properties>
+   <property name="collidable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="227">
   <properties>
    <property name="collidable" type="bool" value="true"/>
   </properties>
