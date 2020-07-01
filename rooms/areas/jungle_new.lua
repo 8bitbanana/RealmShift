@@ -9,7 +9,7 @@ return {
   tilewidth = 8,
   tileheight = 8,
   nextlayerid = 15,
-  nextobjectid = 5,
+  nextobjectid = 6,
   properties = {},
   tilesets = {
     {
@@ -416,6 +416,23 @@ return {
           visible = true,
           properties = {
             ["name"] = "",
+            ["solid"] = true
+          }
+        },
+        {
+          id = 5,
+          name = "Merchant",
+          type = "NPCMerchant",
+          shape = "rectangle",
+          x = 112,
+          y = 128,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 58,
+          visible = true,
+          properties = {
+            ["item_list"] = "shop_lists/jungle_shop.lua",
             ["solid"] = true
           }
         }
