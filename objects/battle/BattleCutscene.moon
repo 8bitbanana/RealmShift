@@ -92,7 +92,7 @@ export class CutsceneAttack extends BattleCutscene
 	sceneUpdate: =>
 		if @ttl <= 0.13 and not @attacked
 			@attacked = true
-			damage = @root\currentTurn!\attack(@root\inactiveEntities![@args.index], @args.damage)
+			damage = @root\currentTurn!\attack(@root\inactiveEntities![@args.index], @args.damage, @args.applySpaceDamage)
 			pos = @root\inactiveEntities![@args.index]\getCursorPos!
 			particle = BattleDamageNumber(pos, damage)
 			@root.aniObjs\addObject(particle)

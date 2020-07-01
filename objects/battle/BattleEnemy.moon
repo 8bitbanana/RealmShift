@@ -22,11 +22,23 @@ export class BattleEnemy extends BattlePlayer
 		targetindex = indexes[love.math.random(#indexes)]
 		return targetindex
 
+	attack: (target, damageOverride) =>
+		damage = nil
+		if damageOverride
+			damage = damageOverride
+		else
+			damage = @stats.attack
+		target\takeDamage(damage)
+
 	enemyTurn: () =>
 		-- Get a list of all the possible targets
 		targetindex = @chooseTarget!
 -- 		print("Attacking target " .. targetindex)
-		attackScene = CutsceneAttack({tts:0.33, index:targetindex})
+		damage = @stats.attack
+		if @spaceDamage
+			print "Enemy damage multi " .. @spaceDamage[targetindex]
+			damage *= @spaceDamage[targetindex]
+		attackScene = CutsceneAttack({tts:0.33, index:targetindex, damage:damage})
 		@parent.cutscenes\addCutscene(attackScene)
 		@parent.state\changeState(BattleTurnState, {ttl:0.66})
 
@@ -54,10 +66,18 @@ export class BattleEnemyArcher extends BattleEnemy
 				continue 
 			return i
 
+	spaceDamage: {
+		0.5,
+		0.7,
+		0.9,
+		1.0
+	}
+
 export class BattleEnemyLancer extends BattleEnemy
 	name: "Lancer"
 	new: (...) =>
 		super ...
+		@basestats.attack = 5
 		@sprite = sprites.battle.lancer_enemy
 
 	-- Lancer tries to hit the front lines
@@ -70,3 +90,10 @@ export class BattleEnemyLancer extends BattleEnemy
 				print "skip"
 				continue 
 			return i
+
+	spaceDamage: {
+		1.0,
+		0.9,
+		0.7,
+		0.5
+	}

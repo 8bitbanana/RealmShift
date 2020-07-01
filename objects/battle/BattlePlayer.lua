@@ -56,7 +56,10 @@ do
         }
       }, 'out-sine')
     end,
-    attack = function(self, target, damageOverride)
+    attack = function(self, target, damageOverride, applySpaceDamage)
+      if applySpaceDamage == nil then
+        applySpaceDamage = false
+      end
       local damage = nil
       if damageOverride then
         damage = damageOverride
@@ -66,6 +69,18 @@ do
       if self.buffs.rally then
         damage = damage * 1.2
         self.buffs.rally = false
+      end
+      if self.spaceDamage and applySpaceDamage then
+        local index = nil
+        for i, pl in pairs(self.parent.players) do
+          if pl == self then
+            index = i
+          end
+        end
+        if index then
+          damage = damage * self.spaceDamage[index]
+          print("Player damage multi " .. self.spaceDamage[index])
+        end
       end
       return target:takeDamage(damage)
     end,
@@ -222,6 +237,12 @@ do
   local _parent_0 = BattlePlayer
   local _base_0 = {
     name = "Mage",
+    spaceDamage = {
+      0.5,
+      0.8,
+      1,
+      1
+    },
     skillPrimaryInfo = {
       name = "SapphireHail",
       desc = "Cause the sky to rain down bolts of energy, dealing damage to all enemies"
@@ -333,6 +354,12 @@ do
   local _parent_0 = BattlePlayer
   local _base_0 = {
     name = "Fighter",
+    spaceDamage = {
+      1,
+      0.9,
+      0.7,
+      0.5
+    },
     skillPrimaryInfo = {
       name = "LUNGE",
       desc = "Lunge forward as far as you can, dealing more damage with a bigger lunge."
@@ -451,6 +478,12 @@ do
   local _parent_0 = BattlePlayer
   local _base_0 = {
     name = "Paladin",
+    spaceDamage = {
+      1,
+      0.95,
+      0.8,
+      0.7
+    },
     skillPrimaryInfo = {
       name = "RALLY",
       desc = "Boost's each ally's morale, making their next attack deal more damage."

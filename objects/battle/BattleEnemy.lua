@@ -27,11 +27,26 @@ do
       local targetindex = indexes[love.math.random(#indexes)]
       return targetindex
     end,
+    attack = function(self, target, damageOverride)
+      local damage = nil
+      if damageOverride then
+        damage = damageOverride
+      else
+        damage = self.stats.attack
+      end
+      return target:takeDamage(damage)
+    end,
     enemyTurn = function(self)
       local targetindex = self:chooseTarget()
+      local damage = self.stats.attack
+      if self.spaceDamage then
+        print("Enemy damage multi " .. self.spaceDamage[targetindex])
+        damage = damage * self.spaceDamage[targetindex]
+      end
       local attackScene = CutsceneAttack({
         tts = 0.33,
-        index = targetindex
+        index = targetindex,
+        damage = damage
       })
       self.parent.cutscenes:addCutscene(attackScene)
       return self.parent.state:changeState(BattleTurnState, {
@@ -119,7 +134,13 @@ do
           break
         end
       end
-    end
+    end,
+    spaceDamage = {
+      0.5,
+      0.7,
+      0.9,
+      1.0
+    }
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
@@ -187,13 +208,20 @@ do
           break
         end
       end
-    end
+    end,
+    spaceDamage = {
+      1.0,
+      0.9,
+      0.7,
+      0.5
+    }
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
+      self.basestats.attack = 5
       self.sprite = sprites.battle.lancer_enemy
     end,
     __base = _base_0,

@@ -67,7 +67,7 @@ export class BattlePlayer
 	-- Run @takedamage on target, according to attack
 	-- Override the damage if needed for a skill
 	-- Apply any damage increasing/reducing buffs
-	attack: (target, damageOverride) =>
+	attack: (target, damageOverride, applySpaceDamage=false) =>
 		damage = nil
 		if damageOverride
 			damage = damageOverride
@@ -76,6 +76,14 @@ export class BattlePlayer
 		if @buffs.rally
 			damage *= 1.2
 			@buffs.rally = false
+		if @spaceDamage and applySpaceDamage
+			index = nil
+			for i, pl in pairs @parent.players
+				if pl == @
+					index = i
+			if index
+				damage *= @spaceDamage[index]
+				print("Player damage multi "..@spaceDamage[index])
 		target\takeDamage(damage)
 
 	-- Skill metadata, to be overridden
@@ -89,6 +97,7 @@ export class BattlePlayer
 		desc: "Base secondary skill"
 		unset: true
 	}
+
 
 	-- Do primary/secondary skills, to be overridden
 	skillPrimary: () =>
@@ -196,6 +205,13 @@ export class Mage extends BattlePlayer
 		@basestats.magic = 10
 		@init!
 
+	spaceDamage: {
+		0.5,
+		0.8,
+		1,
+		1
+	}
+
 	skillPrimaryInfo: {
 		name: "SapphireHail"
 		desc: "Cause the sky to rain down bolts of energy, dealing damage to all enemies"
@@ -241,6 +257,12 @@ export class Fighter extends BattlePlayer
 		@basestats.magic = 2
 		@init!
 
+	spaceDamage: {
+		1,
+		0.9,
+		0.7,
+		0.5
+	}
 
 	skillPrimaryInfo: {
 		name:"LUNGE",
@@ -294,6 +316,13 @@ export class Paladin extends BattlePlayer
 		@basestats.speed = 3
 		@basestats.magic = 6
 		@init!
+
+	spaceDamage: {
+		1,
+		0.95,
+		0.8,
+		0.7
+	}
 
 	-- Rally - apply a small damage and speed buff
 	-- to all allies

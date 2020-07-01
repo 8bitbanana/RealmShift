@@ -245,7 +245,8 @@ do
       self.selectionCallback = function(self, index)
         local attackscene = CutsceneAttack({
           tts = 0.1,
-          index = index
+          index = index,
+          applySpaceDamage = true
         })
         self.cutscenes:addCutscene(attackscene)
         return self.state:changeState(BattleTurnState, {

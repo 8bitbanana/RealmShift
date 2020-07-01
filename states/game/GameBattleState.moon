@@ -216,7 +216,7 @@ export class GameBattleState extends State
 
 	attackAction: () =>
 		@selectionCallback = (index) =>
-			attackscene = CutsceneAttack({tts:0.1, index:index})
+			attackscene = CutsceneAttack({tts:0.1, index:index, applySpaceDamage:true})
 			@cutscenes\addCutscene(attackscene)
 			@state\changeState(BattleTurnState, {ttl:0.33})
 		@state\changeState(BattleEnemySelectState, {prompt:"Which enemy should #{@currentTurn!.name} attack?"})

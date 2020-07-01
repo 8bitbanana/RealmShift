@@ -178,7 +178,7 @@ do
     sceneUpdate = function(self)
       if self.ttl <= 0.13 and not self.attacked then
         self.attacked = true
-        local damage = self.root:currentTurn():attack(self.root:inactiveEntities()[self.args.index], self.args.damage)
+        local damage = self.root:currentTurn():attack(self.root:inactiveEntities()[self.args.index], self.args.damage, self.args.applySpaceDamage)
         local pos = self.root:inactiveEntities()[self.args.index]:getCursorPos()
         local particle = BattleDamageNumber(pos, damage)
         return self.root.aniObjs:addObject(particle)
