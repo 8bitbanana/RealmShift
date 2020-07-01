@@ -55,8 +55,8 @@
   <object id="3" template="../../../Object Templates/exit.tx" name="Tropical_Town" x="256" y="184" width="8" height="8">
    <properties>
     <property name="dest_room" value="areas/tropical_new"/>
-    <property name="tx" type="int" value="344"/>
-    <property name="ty" type="int" value="88"/>
+    <property name="tx" type="int" value="188"/>
+    <property name="ty" type="int" value="32"/>
    </properties>
   </object>
  </objectgroup>

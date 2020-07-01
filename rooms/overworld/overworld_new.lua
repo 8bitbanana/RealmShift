@@ -415,8 +415,8 @@ return {
           properties = {
             ["dest_room"] = "areas/tropical_new",
             ["is_door"] = true,
-            ["tx"] = 344,
-            ["ty"] = 88
+            ["tx"] = 188,
+            ["ty"] = 32
           }
         }
       }
