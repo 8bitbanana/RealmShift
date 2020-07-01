@@ -4,7 +4,7 @@ do
   local _parent_0 = BattlePlayer
   local _base_0 = {
     name = "BattleEnemy",
-    enemyTurn = function(self)
+    chooseTarget = function(self)
       local indexes = { }
       for i, target in pairs(self.parent:inactiveEntities()) do
         local _continue_0 = false
@@ -25,6 +25,10 @@ do
         end
       end
       local targetindex = indexes[love.math.random(#indexes)]
+      return targetindex
+    end,
+    enemyTurn = function(self)
+      local targetindex = self:chooseTarget()
       local attackScene = CutsceneAttack({
         tts = 0.33,
         index = targetindex
@@ -87,7 +91,35 @@ do
   local _class_0
   local _parent_0 = BattleEnemy
   local _base_0 = {
-    name = "Archer"
+    name = "Archer",
+    chooseTarget = function(self)
+      for i = 4, 1, -1 do
+        local _continue_0 = false
+        repeat
+          do
+            local target = self.parent:inactiveEntities()[i]
+            if target == nil then
+              _continue_0 = true
+              break
+            end
+            if not target:isValidTarget("attack") then
+              _continue_0 = true
+              break
+            end
+            if random(0, 1) > 0.9 then
+              print("skip")
+              _continue_0 = true
+              break
+            end
+            return i
+          end
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
+        end
+      end
+    end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
@@ -127,7 +159,35 @@ do
   local _class_0
   local _parent_0 = BattleEnemy
   local _base_0 = {
-    name = "Lancer"
+    name = "Lancer",
+    chooseTarget = function(self)
+      for i = 1, 4, 1 do
+        local _continue_0 = false
+        repeat
+          do
+            local target = self.parent:inactiveEntities()[i]
+            if target == nil then
+              _continue_0 = true
+              break
+            end
+            if not target:isValidTarget("attack") then
+              _continue_0 = true
+              break
+            end
+            if random(0, 1) > 0.9 then
+              print("skip")
+              _continue_0 = true
+              break
+            end
+            return i
+          end
+          _continue_0 = true
+        until true
+        if not _continue_0 then
+          break
+        end
+      end
+    end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)

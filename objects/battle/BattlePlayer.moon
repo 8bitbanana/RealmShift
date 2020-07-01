@@ -190,9 +190,9 @@ export class Mage extends BattlePlayer
 	new: (...) =>
 		super ...
 		@basestats.hp = 50
-		@basestats.attack = 100--3
-		@basestats.defence = 2
-		@basestats.speed = 99--5
+		@basestats.attack = 4
+		@basestats.defence = 3
+		@basestats.speed = 5
 		@basestats.magic = 10
 		@init!
 
@@ -207,7 +207,7 @@ export class Mage extends BattlePlayer
 		for index, enemy in pairs @parent.enemies
 			continue if not enemy
 			continue if not enemy\isValidTarget("attack")
-			table.insert(scenes, CutsceneAttack({tts:1.5, index:index, damage:15}))
+			table.insert(scenes, CutsceneAttack({tts:1.5, index:index, damage:@stats.attack*0.75}))
 		for scene in *scenes
 			@parent.cutscenes\addCutscene(scene)
 		@parent.state\changeState(BattleTurnState, {ttl:2})
@@ -235,7 +235,7 @@ export class Fighter extends BattlePlayer
 		@sprite = sprites.battle.artificer_char
 		-- Sprite does not match class but is temporary until classes are finalised
 		@basestats.hp = 50
-		@basestats.attack = 100--8
+		@basestats.attack = 8
 		@basestats.defence = 4
 		@basestats.speed = 7
 		@basestats.magic = 2
@@ -288,9 +288,9 @@ export class Paladin extends BattlePlayer
 		super ...
 		@sprite = sprites.battle.paladin_char
 		@basestats.hp = 50
-		@basestats.attack = 100--5
+		@basestats.attack = 5
 
-		@basestats.defence = 8
+		@basestats.defence = 5
 		@basestats.speed = 3
 		@basestats.magic = 6
 		@init!

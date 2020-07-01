@@ -245,7 +245,7 @@ do
           table.insert(scenes, CutsceneAttack({
             tts = 1.5,
             index = index,
-            damage = 15
+            damage = self.stats.attack * 0.75
           }))
           _continue_0 = true
         until true
@@ -295,9 +295,9 @@ do
     __init = function(self, ...)
       _class_0.__parent.__init(self, ...)
       self.basestats.hp = 50
-      self.basestats.attack = 100
-      self.basestats.defence = 2
-      self.basestats.speed = 99
+      self.basestats.attack = 4
+      self.basestats.defence = 3
+      self.basestats.speed = 5
       self.basestats.magic = 10
       return self:init()
     end,
@@ -413,7 +413,7 @@ do
       _class_0.__parent.__init(self, ...)
       self.sprite = sprites.battle.artificer_char
       self.basestats.hp = 50
-      self.basestats.attack = 100
+      self.basestats.attack = 8
       self.basestats.defence = 4
       self.basestats.speed = 7
       self.basestats.magic = 2
@@ -493,8 +493,8 @@ do
       _class_0.__parent.__init(self, ...)
       self.sprite = sprites.battle.paladin_char
       self.basestats.hp = 50
-      self.basestats.attack = 100
-      self.basestats.defence = 8
+      self.basestats.attack = 5
+      self.basestats.defence = 5
       self.basestats.speed = 3
       self.basestats.magic = 6
       return self:init()

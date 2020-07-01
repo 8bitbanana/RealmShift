@@ -13,14 +13,18 @@ export class BattleEnemy extends BattlePlayer
 		@size = {w:30, h:48}
 		@init!
 
-	enemyTurn: () =>
-		-- Get a list of all the possible targets
+	chooseTarget: =>
 		indexes = {}
 		for i, target in pairs @parent\inactiveEntities!
 			continue if target == nil
 			continue if not target\isValidTarget("attack")
 			table.insert(indexes, i)
 		targetindex = indexes[love.math.random(#indexes)]
+		return targetindex
+
+	enemyTurn: () =>
+		-- Get a list of all the possible targets
+		targetindex = @chooseTarget!
 -- 		print("Attacking target " .. targetindex)
 		attackScene = CutsceneAttack({tts:0.33, index:targetindex})
 		@parent.cutscenes\addCutscene(attackScene)
@@ -32,25 +36,6 @@ export class BattleEnemy extends BattlePlayer
 			y:@pos.y-68
 		}
 
--- 	draw_alive: () =>
--- 		if @sprite
--- 			@sprite\draw(@pos.x, @pos.y)
--- 		else
--- 			lg.setColor(RED)
--- 			lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
--- 			lg.setColor(BLACK)
--- 			lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
-
--- 	draw_dead: () =>
--- 		if @sprite
--- 			lg.setColor({1,1,1,@opacity})
--- 			@sprite\draw(@pos.x, @pos.y)
--- 		else
--- 			lg.setColor(GRAY)
--- 			lg.rectangle("fill", @pos.x, @pos.y-@size.h, @size.w, @size.h)
--- 			lg.setColor(BLACK)
--- 			lg.rectangle("line", @pos.x, @pos.y-@size.h, @size.w, @size.h)
-
 
 export class BattleEnemyArcher extends BattleEnemy
 	name: "Archer"
@@ -58,8 +43,30 @@ export class BattleEnemyArcher extends BattleEnemy
 		super ...
 		@sprite = sprites.battle.archer_enemy
 
+	-- Archer tries to hit the back lines
+	chooseTarget: =>
+		for i=4, 1, -1
+			target = @parent\inactiveEntities![i]
+			continue if target == nil
+			continue if not target\isValidTarget("attack")
+			if random(0,1) > 0.9
+				print "skip"
+				continue 
+			return i
+
 export class BattleEnemyLancer extends BattleEnemy
 	name: "Lancer"
 	new: (...) =>
 		super ...
 		@sprite = sprites.battle.lancer_enemy
+
+	-- Lancer tries to hit the front lines
+	chooseTarget: =>
+		for i=1, 4, 1
+			target = @parent\inactiveEntities![i]
+			continue if target == nil
+			continue if not target\isValidTarget("attack")
+			if random(0,1) > 0.9
+				print "skip"
+				continue 
+			return i

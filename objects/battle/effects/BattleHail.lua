@@ -1,7 +1,7 @@
 local TAIL_LENGTH = 6
 local OFFSET_PER_FRAME = {
-  x = -5,
-  y = 5
+  x = -8,
+  y = 8
 }
 do
   local _class_0
@@ -9,7 +9,7 @@ do
     update = function(self)
       self.startoffset = vector.add(self.startoffset, OFFSET_PER_FRAME)
       self.endoffset = vector.add(self.endoffset, OFFSET_PER_FRAME)
-      if self.endoffset.y > 140 then
+      if self.endoffset.y > self.maxoffset then
         self.destroyed = true
       else
         self.time = self.time + 1
@@ -28,6 +28,7 @@ do
       self.endoffset = vector.add(self.startoffset, vector.mult(OFFSET_PER_FRAME, TAIL_LENGTH))
       self.time = 0
       self.destroyed = false
+      self.maxoffset = math.floor(random(130, 150))
     end,
     __base = _base_0,
     __name = "BattleHail"
