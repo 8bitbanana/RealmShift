@@ -26,8 +26,10 @@ export class OverworldPlayer
 			if other.is_bridge
 				if game.inventory\hasItem(BridgeItem)
 					return "cross" -- Let Player pass through Bridge zone if they have the bridge
+				else
+					sounds.negative\play! -- Really wierd / bad place to be calling sounds from but it kind of works - Cody
 
-			return "slide" -- Otherwise collid with it like a normal solid block
+			return "slide" -- Otherwise collide with it like a normal solid block
 
 		-- Move player and deal with collisions
 		d = 8 -- Distance to move

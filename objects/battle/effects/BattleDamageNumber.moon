@@ -1,4 +1,4 @@
-Inspect = require("lib/inspect")
+--Inspect = require("lib/inspect")
 export class BattleDamageNumber
 	new: (@pos, @number) =>
 		@currentoffset = {x:0,y:0}

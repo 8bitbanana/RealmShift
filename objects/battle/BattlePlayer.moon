@@ -6,7 +6,7 @@ DAMAGE_FORMULA = {
 	va: 2 -- variance addition
 }
 
-Inspect = require("lib/inspect")
+--Inspect = require("lib/inspect")
 
 export class BattlePlayer
 	name: "BattlePlayer"
@@ -147,7 +147,7 @@ export class BattlePlayer
 -- 		shadowPrint("/", x+6, y+10)
 		shadowPrint(hp, x, y+8)
 
-	draw_buffs: => 
+	draw_buffs: =>
 		icon_size = {w:10,h:10}
 		start_offset = {x:-5,y:-8}
 		position = vector.add(@pos, start_offset)
@@ -225,7 +225,7 @@ export class Mage extends BattlePlayer
 			@cutscenes\addCutscene(bubblescene)
 			@state\changeState(BattleTurnState, {ttl:1.8})
 		@parent.state\changeState(BattlePlayerSelectState, {prompt:"Who should #{@name} bubble back to safety?"})
-		
+
 
 
 export class Fighter extends BattlePlayer

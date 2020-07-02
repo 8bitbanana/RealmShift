@@ -17,6 +17,7 @@ function loadSprites()
 			potion = Soda.newSprite(lg.newImage("images/sprites/item/potion.png"), 8, 8),
 			small_potion = Soda.newSprite(lg.newImage("images/sprites/item/small_potion.png"), 8, 8),
 			bridge = Soda.newSprite(lg.newImage("images/sprites/item/bridge_item.png"), 8, 8),
+			boss_key = Soda.newSprite(lg.newImage("images/sprites/item/boss_key.png"), 8, 8),
 		},
 		battle = {
 			cursor_right = Soda.newSprite(lg.newImage("images/sprites/battle/cursor_right.png"), 8, 12),

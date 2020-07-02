@@ -1,10 +1,11 @@
 local Serpent = require("lib/serpent")
-local Inspect = require("lib/inspect")
 local classmap = {
   InventoryItem,
   Potion,
   PartyHeal,
   LesserPotion,
+  BridgeItem,
+  BossKeyItem,
   BattlePlayer,
   Mage,
   Fighter,

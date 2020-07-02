@@ -1,4 +1,4 @@
-Inspect = require("lib/inspect")
+--Inspect = require("lib/inspect")
 class UseItemMenuItem extends MenuItem
 	text: "Use"
 	valid: => return true

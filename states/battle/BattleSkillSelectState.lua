@@ -1,5 +1,4 @@
 require("states/state")
-local Inspect = require("lib/inspect")
 local PrimaryMenuItem
 do
   local _class_0

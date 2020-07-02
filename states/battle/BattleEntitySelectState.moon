@@ -1,5 +1,5 @@
 require "states/state"
-Inspect = require "lib/inspect"
+--Inspect = require "lib/inspect"
 
 -- NOTE
 -- To make a back out function - just make
@@ -8,7 +8,7 @@ Inspect = require "lib/inspect"
 -- Keep everything the same - make a function
 -- in GameBattleState that resets the turn
 -- and make BattleEntitySelectState and friends
--- and call it when B is pressed 
+-- and call it when B is pressed
 
 export class BattleEntitySelectState extends State
 	new: (@parent, @params) =>
@@ -48,7 +48,7 @@ export class BattleEntitySelectState extends State
 		if @isValidTarget newindex
 			@selectedIndex = newindex
 			@setCursor(newindex)
-	
+
 	setCursor: (index) =>
 		entity = @entities[index]
 		@cursor.pos = entity\getCursorPos!
@@ -128,7 +128,7 @@ export class BattleSpaceSelectState extends BattleEntitySelectState
 			table.insert(points, point.y)
 		lg.setColor(BLACK)
 		lg.line(points)
-	
+
 	draw: =>
 		super!
 		@drawarc! if @startindex != nil

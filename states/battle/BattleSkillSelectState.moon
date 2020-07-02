@@ -1,12 +1,12 @@
 require "states/state"
-Inspect = require "lib/inspect"
+--Inspect = require "lib/inspect"
 
 class PrimaryMenuItem extends MenuItem
 	new: (...) =>
 		super ...
 		@text = @parent.parent\currentTurn!.skillPrimaryInfo.name
 		@desc = @parent.parent\currentTurn!.skillPrimaryInfo.desc
-		
+
 	activate: () => @parent.parent\currentTurn!\skillPrimary!
 	valid: () => return true
 
@@ -51,7 +51,7 @@ export class BattleSkillSelectState extends State
 		return if newindex > #@items
 		@selectedIndex = newindex
 		@cursor.pos = {x:@selectedItem!.pos.x-15,y:@selectedItem!.pos.y-4}
-	
+
 	draw: () =>
 		-- lg.setColor(1,1,1,1)
 		-- lg.rectangle("fill",116,4,116,50) -- menubox fill

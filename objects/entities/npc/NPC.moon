@@ -1,7 +1,7 @@
 
 require "objects/entities/player/Player"
 require "objects/game objects/dialog/Dialog"
-Inspect = require "lib/inspect"
+--Inspect = require "lib/inspect"
 
 export class NPC extends Player
 	new: (@pos = {x: 0, y: 0}) => -- Instance specific data for NPC is loaded my Room's loadMapObjects method

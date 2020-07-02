@@ -1,6 +1,5 @@
 require("objects/entities/player/Player")
 require("objects/game objects/dialog/Dialog")
-local Inspect = require("lib/inspect")
 do
   local _class_0
   local _parent_0 = Player

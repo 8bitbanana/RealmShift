@@ -1,5 +1,4 @@
 local Timer = require("lib/Timer")
-local Inspect = require("lib/inspect")
 local X_SPACING = 0
 local Y_SPACING = 0
 local FRAME_MOD = 2

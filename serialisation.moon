@@ -1,11 +1,13 @@
 Serpent = require "lib/serpent"
-Inspect = require "lib/inspect"
+--Inspect = require "lib/inspect"
 
 classmap = {
 	InventoryItem,
 	Potion,
 	PartyHeal,
 	LesserPotion,
+	BridgeItem,
+	BossKeyItem,
 	BattlePlayer,
 	Mage,
 	Fighter,
@@ -51,7 +53,7 @@ export serialise = (game, write=true) ->
 		file\write(serial)
 		file\close!
 	return serial
-		
+
 export deserialise = (game, serial) ->
 	if serial == nil
 		file = io.open("save.dat", "rb")
@@ -73,5 +75,5 @@ export deserialise = (game, serial) ->
 		player.stats = plsave.stats
 		game.party[i] = player
 
-	
-	
+
+

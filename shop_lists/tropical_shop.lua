@@ -1,0 +1,6 @@
+
+return {
+	LesserPotion,
+	Potion,
+	BossKeyItem,
+}

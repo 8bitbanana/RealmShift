@@ -1,5 +1,5 @@
 
-Inspect = require "lib/inspect"
+--Inspect = require "lib/inspect"
 export class Cursor
 	new: (@pos, @dir)=>
 		@posoffset={x:0,y:0}

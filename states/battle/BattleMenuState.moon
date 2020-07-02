@@ -1,5 +1,5 @@
 require "states/state"
-Inspect = require "lib/inspect"
+--Inspect = require "lib/inspect"
 
 WRAP_ITEM_CURSOR = false
 

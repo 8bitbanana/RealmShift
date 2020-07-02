@@ -9,7 +9,7 @@ return {
   tilewidth = 8,
   tileheight = 8,
   nextlayerid = 10,
-  nextobjectid = 4,
+  nextobjectid = 5,
   properties = {},
   tilesets = {
     {
@@ -242,9 +242,21 @@ return {
           }
         },
         {
+          id = 195,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 196,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
           id = 197,
           properties = {
-            ["collidable"] = false
+            ["collidable"] = true
           }
         },
         {
@@ -261,6 +273,18 @@ return {
         },
         {
           id = 225,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 226,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 227,
           properties = {
             ["collidable"] = true
           }
@@ -645,8 +669,8 @@ return {
           name = "",
           type = "NPC",
           shape = "rectangle",
-          x = 48,
-          y = 64,
+          x = 200,
+          y = 88,
           width = 8,
           height = 8,
           rotation = 0,
@@ -671,6 +695,23 @@ return {
           visible = true,
           properties = {
             ["name"] = "",
+            ["solid"] = true
+          }
+        },
+        {
+          id = 4,
+          name = "Merchant",
+          type = "NPCMerchant",
+          shape = "rectangle",
+          x = 96,
+          y = 32,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          gid = 58,
+          visible = true,
+          properties = {
+            ["item_list"] = "shop_lists/tropical_shop.lua",
             ["solid"] = true
           }
         }

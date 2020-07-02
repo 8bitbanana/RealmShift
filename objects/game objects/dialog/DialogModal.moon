@@ -1,4 +1,4 @@
-Inspect = require "lib/inspect"
+--Inspect = require "lib/inspect"
 export class ModalOption
 	new: (@text, @cancel=false) =>
 		@pos = {x:0, y:0}
