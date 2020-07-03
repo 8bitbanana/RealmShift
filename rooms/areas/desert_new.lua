@@ -242,9 +242,21 @@ return {
           }
         },
         {
+          id = 195,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 196,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
           id = 197,
           properties = {
-            ["collidable"] = false
+            ["collidable"] = true
           }
         },
         {
@@ -261,6 +273,18 @@ return {
         },
         {
           id = 225,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 226,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 227,
           properties = {
             ["collidable"] = true
           }

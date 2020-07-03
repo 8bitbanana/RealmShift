@@ -5,8 +5,7 @@ do
   local _base_0 = {
     init = function(self)
       print(self.item_list)
-      self.item_list = loadfile(self.item_list)()
-      print(self.item_list)
+      self.item_list = lf.load(self.item_list)()
       self.state = NPCShopState(self)
     end
   }

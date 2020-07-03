@@ -12,12 +12,12 @@ do
     end,
     loadDialog = function(self)
       if (self.name ~= nil) and (self.name ~= "") then
-        local file_path = "dialog." .. tostring(self.name) .. ".lua"
-        local file, error = loadfile(file_path)
-        if error then
-          print(error)
+        local file_path = "dialog/" .. tostring(self.name) .. ".lua"
+        local chunk, err = lf.load(file_path)
+        if err then
+          print(err)
         else
-          local d = file()
+          local d = chunk()
           return d
         end
       end

@@ -22,14 +22,15 @@ export class NPC extends Player
 
 	loadDialog: =>
 		if (@name ~= nil) and (@name ~= "")
-			file_path = "dialog.#{@name}.lua"
+			file_path = "dialog/#{@name}.lua"
 			-- load file as a 'chunk' of code to be executed
-			file, error = loadfile(file_path)
-			if error
-				print(error)
+-- 			file, error = loadfile(file_path)
+			chunk, err = lf.load(file_path)
+			if err
+				print(err)
 			else
 				-- return DialogTree inside file
-				d = file()
+				d = chunk()
 				return d
 		return nil
 
