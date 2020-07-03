@@ -105,15 +105,23 @@ shadowPrint = (text="empty_text", x=0, y=0, col=WHITE) ->
 
 ------------------------------------------
 
+
+-- replaceSlashes is needed to replace forward slashes in a directory string so we can properly require files on any OS
+replaceSlashes = (path) ->
+	return path\gsub("/", ".")
+
 -- recursiveEnumerate used with requireFiles to recursively require all .lua files in a directory
-recursiveEnumerate = (folder, file_list) ->
-	items = love.filesystem.getDirectoryItems(folder)
-	for _, item in ipairs(items) do
-		file = folder .. '/' .. item
-		if love.filesystem.getInfo(file).type == "file"
-			table.insert(file_list, file)
-		elseif love.filesystem.getInfo(file).type == "directory"
-			recursiveEnumerate(file, file_list)
+recursiveEnumerate = (path, file_list) ->
+	files = lf.getDirectoryItems(path)
+	for f in *files
+		file_path = path.."/"..f
+		typ = lf.getInfo(file_path).type
+
+		if typ == "file"
+			require_path = replaceSlashes(file_path)
+			table.insert(file_list, require_path)
+		elseif typ == "directory"
+			recursiveEnumerate(file_path, file_list)
 
 requireFiles = (files) ->
 	-- This func will only require .lua files

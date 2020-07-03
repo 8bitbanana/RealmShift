@@ -135,14 +135,20 @@ shadowPrint = function(text, x, y, col)
     text
   }, x, y)
 end
-recursiveEnumerate = function(folder, file_list)
-  local items = love.filesystem.getDirectoryItems(folder)
-  for _, item in ipairs(items) do
-    local file = folder .. '/' .. item
-    if love.filesystem.getInfo(file).type == "file" then
-      table.insert(file_list, file)
-    elseif love.filesystem.getInfo(file).type == "directory" then
-      recursiveEnumerate(file, file_list)
+replaceSlashes = function(path)
+  return path:gsub("/", ".")
+end
+recursiveEnumerate = function(path, file_list)
+  local files = lf.getDirectoryItems(path)
+  for _index_0 = 1, #files do
+    local f = files[_index_0]
+    local file_path = path .. "/" .. f
+    local typ = lf.getInfo(file_path).type
+    if typ == "file" then
+      local require_path = replaceSlashes(file_path)
+      table.insert(file_list, require_path)
+    elseif typ == "directory" then
+      recursiveEnumerate(file_path, file_list)
     end
   end
 end
