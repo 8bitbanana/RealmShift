@@ -1,4 +1,4 @@
-require("objects/entities/npc/NPC")
+require("objects.entities.npc.NPC")
 do
   local _class_0
   local _parent_0 = NPC

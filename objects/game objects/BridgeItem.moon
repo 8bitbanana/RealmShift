@@ -1,5 +1,5 @@
 
-require "objects/game objects/inventory"
+require "objects.game objects.Inventory"
 
 export class BridgeItem extends InventoryItem
 	price: 60

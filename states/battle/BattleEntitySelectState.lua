@@ -1,5 +1,5 @@
-require("states/state")
-local Inspect = require("lib/inspect")
+require("states.state")
+local Inspect = require("lib.inspect")
 do
   local _class_0
   local _parent_0 = State

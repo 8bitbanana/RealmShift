@@ -1,6 +1,6 @@
-require("objects/entities/player/Player")
-require("objects/game objects/dialog/Dialog")
-local Inspect = require("lib/inspect")
+require("objects.entities.player.Player")
+require("objects.game objects.dialog.Dialog")
+local Inspect = require("lib.inspect")
 do
   local _class_0
   local _parent_0 = Player
@@ -12,7 +12,7 @@ do
     end,
     loadDialog = function(self)
       if (self.name ~= nil) and (self.name ~= "") then
-        local file_path = "dialog/" .. tostring(self.name) .. ".lua"
+        local file_path = "dialog." .. tostring(self.name) .. ".lua"
         local file, error = loadfile(file_path)
         if error then
           print(error)

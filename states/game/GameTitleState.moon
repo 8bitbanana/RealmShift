@@ -1,5 +1,5 @@
 
-require "states/state"
+require "states.state"
 
 export class GameTitleState extends State
 	new: (@parent) =>

@@ -1,5 +1,5 @@
 
--- require "states/state"
+-- require "states.state"
 
 -- export class GamePauseState extends State
 -- 	new: (@parent, @return_state, @objects) =>

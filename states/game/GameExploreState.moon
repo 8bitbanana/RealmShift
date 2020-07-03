@@ -1,5 +1,5 @@
 
-require "states/state"
+require "states.state"
 
 export class GameExploreState extends State
 	new: (@parent, @room_path="areas/desert_new", @tx=88, @ty=88) =>

@@ -88,6 +88,15 @@ export class GameShopState extends State
 
 		lg.setColor(WHITE)
 
+	drawItemDescription: =>
+		item = @item_list[@cursor]
+		font = lg.getFont!
+		_, text = font\getWrap(item.desc, GAME_WIDTH-48)
+		y = 108
+		for line in *text
+			shadowPrint(line, 24, y)
+			y += 10
+
 	drawTooltips: =>
 		shadowPrint("z - purchase", 32, GAME_HEIGHT-18)
 		shadowPrint("x - leave", 128, GAME_HEIGHT-18)
@@ -97,6 +106,7 @@ export class GameShopState extends State
 		@\printShop!
 		@\printGold!
 		@\drawShopItems!
+		@\drawItemDescription!
 		@\drawCursor!
 		@\drawTooltips!
 

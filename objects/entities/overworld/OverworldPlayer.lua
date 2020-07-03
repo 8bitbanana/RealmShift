@@ -29,6 +29,8 @@ do
         if other.is_bridge then
           if game.inventory:hasItem(BridgeItem) then
             return "cross"
+          else
+            sounds.negative:play()
           end
         end
         return "slide"

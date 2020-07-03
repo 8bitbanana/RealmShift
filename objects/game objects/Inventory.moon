@@ -92,7 +92,7 @@ export class Inventory
 -- 			Potion!
 -- 			PartyHeal!
 		}
-		@gold = 60
+		@gold = 300
 
 	hasItem: (item) =>
 		for i in *@items

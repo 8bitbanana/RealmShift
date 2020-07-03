@@ -1,4 +1,4 @@
-Inspect = require("lib/inspect")
+Inspect = require("lib.inspect")
 export class GameInventoryState extends State
 	new: (@parent) =>
 		@dialog = DialogManager!
@@ -12,12 +12,12 @@ export class GameInventoryState extends State
 	highlightSprite: (index) =>
 		index = index or @selectedIndex
 		@timer\tween(0.2, @, {spriteScale:1.2}, "in-out-cubic")
-	
+
 	unhighlightSprite: (index) =>
 		index = index or @selectedIndex
 		--@timer\tween(0.2, @, {spriteScale: 1}, "in-out-cubic")
 		@spriteScale = 1
-	
+
 
 	scrollTo: (index) =>
 		index = @selectedIndex if index == nil

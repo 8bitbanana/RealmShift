@@ -1,4 +1,4 @@
-local Inspect = require("lib/Inspect")
+local Inspect = require("lib.inspect")
 do
   local _class_0
   local _base_0 = {

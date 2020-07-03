@@ -1,5 +1,5 @@
 
-require "objects/entities/npc/NPC"
+require "objects.entities.npc.NPC"
 
 export class NPCMerchant extends NPC
 	new: (@pos = {x: 0, y: 0}) =>

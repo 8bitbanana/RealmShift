@@ -1,4 +1,4 @@
-require("objects/battle/BattlePlayer")
+require("objects.battle.BattlePlayer")
 do
   local _class_0
   local _parent_0 = BattlePlayer

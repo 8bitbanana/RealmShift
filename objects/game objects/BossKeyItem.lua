@@ -1,13 +1,13 @@
-require("objects.game objects.Inventory")
+require("objects/game objects/Inventory")
 do
   local _class_0
   local _parent_0 = InventoryItem
   local _base_0 = {
-    price = 60,
-    name = "Wooden Raft",
-    desc = "A simple wooden raft for crossing rivers",
+    price = 150,
+    name = "Tower Key",
+    desc = "A rusted key to a dark and monolithic tower...",
     consumable = false,
-    sprite = sprites.items.bridge
+    sprite = sprites.items.boss_key
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
@@ -16,7 +16,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "BridgeItem",
+    __name = "BossKeyItem",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -40,5 +40,5 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  BridgeItem = _class_0
+  BossKeyItem = _class_0
 end

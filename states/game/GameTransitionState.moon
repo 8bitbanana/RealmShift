@@ -1,5 +1,5 @@
 
--- require "states/state"
+-- require "states.state"
 
 -- export class GameTransitionState extends State
 	-- new: (@parent, @params={}) =>

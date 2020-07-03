@@ -1,4 +1,4 @@
--- require "objects/game objects/Inventory"
+-- require "objects.game objects.Inventory"
 
 export class BattleWinState extends State
 	new: (@parent, args) =>

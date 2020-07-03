@@ -1,5 +1,5 @@
 
-Inspect = require "lib/inspect"
+Inspect = require "lib.inspect"
 
 export class PlayerMoveState extends State
 	new: (@parent) =>

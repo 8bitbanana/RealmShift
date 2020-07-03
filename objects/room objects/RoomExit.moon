@@ -1,6 +1,6 @@
 
 export class RoomExit
-	new: (@pos={x: 0, y: 0}, @width=16, @height=16, @dest_room="test_town", @is_door=false, @tx=0, @ty=0) =>
+	new: (@pos={x: 0, y: 0}, @width=16, @height=16, @dest_room="test_town", @is_door=false, @needs_item=nil, @tx=0, @ty=0) =>
 		-- RoomExits are created when the current Room calls loadObjects.
 		-- RoomExits are created with default values shown above and then
 		-- have their custom values assigned in createMapObject in Room.moon
@@ -35,7 +35,14 @@ export class RoomExit
 				if @is_door
 					game.button_prompts.z = "Enter"
 					if input\pressed("open_door")
-						@\changeRoom!
+						if @needs_item
+							item = _G[@needs_item]
+							if game.inventory\hasItem(item)
+								@\changeRoom!
+							else
+								sounds.negative\play!
+						else
+							@\changeRoom!
 				else
 					@\changeRoom!
 

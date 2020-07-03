@@ -9,7 +9,7 @@ return {
   tilewidth = 8,
   tileheight = 8,
   nextlayerid = 4,
-  nextobjectid = 5,
+  nextobjectid = 6,
   properties = {},
   tilesets = {
     {
@@ -415,8 +415,27 @@ return {
           properties = {
             ["dest_room"] = "areas/tropical_new",
             ["is_door"] = true,
-            ["tx"] = 344,
-            ["ty"] = 88
+            ["tx"] = 188,
+            ["ty"] = 32
+          }
+        },
+        {
+          id = 5,
+          name = "Boss_Tower",
+          type = "RoomExit",
+          shape = "rectangle",
+          x = 296,
+          y = 56,
+          width = 8,
+          height = 8,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dest_room"] = "end_room",
+            ["is_door"] = true,
+            ["needs_item"] = "BossKeyItem",
+            ["tx"] = 120,
+            ["ty"] = 96
           }
         }
       }

@@ -1,5 +1,5 @@
-require "states/state"
-Inspect = require "lib/inspect"
+require "states.state"
+Inspect = require "lib.inspect"
 
 WRAP_PLAYER_CURSOR = false
 

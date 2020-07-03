@@ -276,7 +276,7 @@ do
         LesserPotion(),
         LesserPotion()
       }
-      self.gold = 60
+      self.gold = 300
     end,
     __base = _base_0,
     __name = "Inventory"

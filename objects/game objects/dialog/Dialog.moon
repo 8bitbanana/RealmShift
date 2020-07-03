@@ -1,5 +1,5 @@
-Timer = require "lib/Timer"
-Inspect = require "lib/inspect"
+Timer = require "lib.Timer"
+Inspect = require "lib.inspect"
 
 X_SPACING = 0
 Y_SPACING = 0

@@ -1,4 +1,4 @@
-Inspect = require("lib/Inspect")
+Inspect = require("lib.inspect")
 
 export class BattleCutsceneManager
 	new: (@parent) =>
@@ -71,7 +71,7 @@ export class CutsceneDialog extends BattleCutscene
 
 	sceneStart: =>
 		@dialog = DialogBox(@args.text)
-	
+
 	sceneUpdate: =>
 		@dialog\update! if @dialog
 
@@ -134,7 +134,7 @@ export class CutsceneBubbleRise extends BattleCutscene
 			top: {x:0, y:-20}
 			bottom: {x:0, y:0}
 		}
-		
+
 		@offset = {x:0, y:0}
 
 	sceneUpdate: =>

@@ -2,4 +2,5 @@
 return {
 	LesserPotion,
 	Potion,
+	BossKeyItem,
 }

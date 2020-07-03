@@ -1,4 +1,4 @@
-require "objects/game objects/Menu"
+require "objects.game objects.Menu"
 
 export class MainMenu extends Menu
 	new: =>

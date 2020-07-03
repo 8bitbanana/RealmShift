@@ -1,4 +1,4 @@
-local Inspect = require("lib/inspect")
+local Inspect = require("lib.inspect")
 local UseItemMenuItem
 do
   local _class_0

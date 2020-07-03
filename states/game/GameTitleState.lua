@@ -1,4 +1,4 @@
-require("states/state")
+require("states.state")
 do
   local _class_0
   local _parent_0 = State

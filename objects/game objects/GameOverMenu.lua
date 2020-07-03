@@ -1,4 +1,4 @@
-require("objects/game objects/Menu")
+require("objects.game objects.Menu")
 do
   local _class_0
   local _parent_0 = Menu

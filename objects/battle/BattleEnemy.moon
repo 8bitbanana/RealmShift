@@ -1,4 +1,4 @@
-require "objects/battle/BattlePlayer"
+require "objects.battle.BattlePlayer"
 
 -- @pos is the bottom left to accomadate different sizes
 

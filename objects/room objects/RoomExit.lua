@@ -34,7 +34,16 @@ do
           if self.is_door then
             game.button_prompts.z = "Enter"
             if input:pressed("open_door") then
-              return self:changeRoom()
+              if self.needs_item then
+                local item = _G[self.needs_item]
+                if game.inventory:hasItem(item) then
+                  return self:changeRoom()
+                else
+                  return sounds.negative:play()
+                end
+              else
+                return self:changeRoom()
+              end
             end
           else
             return self:changeRoom()
@@ -72,7 +81,7 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, pos, width, height, dest_room, is_door, tx, ty)
+    __init = function(self, pos, width, height, dest_room, is_door, needs_item, tx, ty)
       if pos == nil then
         pos = {
           x = 0,
@@ -91,13 +100,16 @@ do
       if is_door == nil then
         is_door = false
       end
+      if needs_item == nil then
+        needs_item = nil
+      end
       if tx == nil then
         tx = 0
       end
       if ty == nil then
         ty = 0
       end
-      self.pos, self.width, self.height, self.dest_room, self.is_door, self.tx, self.ty = pos, width, height, dest_room, is_door, tx, ty
+      self.pos, self.width, self.height, self.dest_room, self.is_door, self.needs_item, self.tx, self.ty = pos, width, height, dest_room, is_door, needs_item, tx, ty
       self.icon_timer = 0
     end,
     __base = _base_0,

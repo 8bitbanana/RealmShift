@@ -1,5 +1,5 @@
-require("states/state")
-local Inspect = require("lib/inspect")
+require("states.state")
+local Inspect = require("lib.inspect")
 local WRAP_PLAYER_CURSOR = false
 do
   local _class_0

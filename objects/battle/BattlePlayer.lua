@@ -5,7 +5,7 @@ local DAMAGE_FORMULA = {
   vm = 0.25,
   va = 2
 }
-local Inspect = require("lib/inspect")
+local Inspect = require("lib.inspect")
 do
   local _class_0
   local _base_0 = {

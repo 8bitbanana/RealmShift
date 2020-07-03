@@ -1,4 +1,4 @@
-local Timer = require("lib/Timer")
+local Timer = require("lib.Timer")
 local font = lg.newFont("fonts/iso8.ttf")
 string.split = function(s, delim)
   local _accum_0 = { }

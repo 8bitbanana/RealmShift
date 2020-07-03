@@ -1,7 +1,7 @@
 
-require "objects/entities/player/Player"
-require "objects/game objects/dialog/Dialog"
-Inspect = require "lib/inspect"
+require "objects.entities.player.Player"
+require "objects.game objects.dialog.Dialog"
+Inspect = require "lib.inspect"
 
 export class NPC extends Player
 	new: (@pos = {x: 0, y: 0}) => -- Instance specific data for NPC is loaded my Room's loadMapObjects method
@@ -22,7 +22,7 @@ export class NPC extends Player
 
 	loadDialog: =>
 		if (@name ~= nil) and (@name ~= "")
-			file_path = "dialog/#{@name}.lua"
+			file_path = "dialog.#{@name}.lua"
 			-- load file as a 'chunk' of code to be executed
 			file, error = loadfile(file_path)
 			if error

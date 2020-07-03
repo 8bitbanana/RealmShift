@@ -93,6 +93,17 @@ do
       end
       return lg.setColor(WHITE)
     end,
+    drawItemDescription = function(self)
+      local item = self.item_list[self.cursor]
+      local font = lg.getFont()
+      local _, text = font:getWrap(item.desc, GAME_WIDTH - 48)
+      local y = 108
+      for _index_0 = 1, #text do
+        local line = text[_index_0]
+        shadowPrint(line, 24, y)
+        y = y + 10
+      end
+    end,
     drawTooltips = function(self)
       shadowPrint("z - purchase", 32, GAME_HEIGHT - 18)
       return shadowPrint("x - leave", 128, GAME_HEIGHT - 18)
@@ -106,6 +117,7 @@ do
       self:printShop()
       self:printGold()
       self:drawShopItems()
+      self:drawItemDescription()
       self:drawCursor()
       return self:drawTooltips()
     end

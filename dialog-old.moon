@@ -1,4 +1,4 @@
-Timer = require "lib/Timer"
+Timer = require "lib.Timer"
 
 font = lg.newFont("fonts/iso8.ttf")
 
